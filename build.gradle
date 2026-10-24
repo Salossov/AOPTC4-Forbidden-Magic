@@ -56,9 +56,28 @@ if (!file("${defaultCoreRoot}/api").isDirectory()) {
 }
 def coreRoot = providers.gradleProperty('coreRoot').isPresent() ? file(providers.gradleProperty('coreRoot').get()) : defaultCoreRoot
 def apiJar = file(providers.gradleProperty('thaumcraftApiJar').getOrElse("${coreRoot}/api/build/libs/thaumcraft-api-${project.thaumcraft_version}.jar"))
+def defaultCompatRoot = file('../../../../Thaumic_Tinkerer/analysis/compat_reference')
+if (!defaultCompatRoot.isDirectory()) {
+    defaultCompatRoot = file('../../Thaumic_Tinkerer/analysis/compat_reference')
+}
+def botaniaJar = file("${defaultCompatRoot}/botania/botania-neoforge-1.21.1-456-20260912.043547-15.jar")
+def bloodMagicJar = file("${defaultCompatRoot}/bloodmagic/bloodmagic-3.4.0-46-alpha.jar")
+def modopediaJar = file("${defaultCompatRoot}/bloodmagic/modopedia-neoforge-1.21.1-1.1.5.jar")
 dependencies {
     compileOnly files(apiJar)
     nativeVerificationRuntimeOnly files(apiJar)
+    if (botaniaJar.isFile()) {
+        compileOnly files(botaniaJar)
+        nativeVerificationCompileOnly files(botaniaJar)
+    }
+    if (bloodMagicJar.isFile()) {
+        compileOnly files(bloodMagicJar)
+        nativeVerificationCompileOnly files(bloodMagicJar)
+    }
+    if (modopediaJar.isFile()) {
+        compileOnly files(modopediaJar)
+        nativeVerificationCompileOnly files(modopediaJar)
+    }
     compileOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}"
     runtimeOnly files(providers.gradleProperty('thaumcraftRuntimeJar').getOrElse("${coreRoot}/mod/build/libs/thaumcraft-1.21.1-${project.thaumcraft_version}.jar"))
