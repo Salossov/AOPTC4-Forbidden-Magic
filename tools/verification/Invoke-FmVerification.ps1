@@ -124,6 +124,9 @@ $testDefinitions = @(
     @{ Id = 'V-P02-WAND'; Task = 'p02WandCheck'; Name = 'P02 Wands, Foci & Upgrades Check'; Marker = 'FORBIDDEN_P02_WAND_PASS'; Phase = 'Offline' },
     @{ Id = 'V-P03-CAGE'; Task = 'p03WrathCageCheck'; Name = 'P03 Wrath Cage & Spawner Logic Check'; Marker = 'FORBIDDEN_P03_WRATH_CAGE_PASS'; Phase = 'Offline' },
     @{ Id = 'V-P03-VILLAGER'; Task = 'p03VillagerCheck'; Name = 'P03 Heretic Villager & Study POI Check'; Marker = 'FORBIDDEN_P03_VILLAGER_PASS'; Phase = 'Offline' },
+    @{ Id = 'V-P04-COMPAT'; Task = 'p04CompatCheck'; Name = 'P04 TT, TF & Viewers Cross-Mod Compat Check'; Marker = 'FORBIDDEN_P04_COMPAT_PASS'; Phase = 'Offline' },
+    @{ Id = 'V-P04-BM'; Task = 'p04BloodMagicCheck'; Name = 'P04 Blood Magic Integration Check'; Marker = 'FORBIDDEN_P04_BLOODMAGIC_PASS'; Phase = 'Offline' },
+    @{ Id = 'V-P04-BOT'; Task = 'p04BotaniaCheck'; Name = 'P04 Botania Integration Check'; Marker = 'FORBIDDEN_P04_BOTANIA_PASS'; Phase = 'Offline' },
     @{ Id = 'V-SRV-01'; Task = 'serverAcceptance'; Name = 'Dedicated Server Runtime & World Load'; Marker = 'ACC_SERVER_PASS'; Phase = 'Acceptance' },
     @{ Id = 'V-CLI-01'; Task = 'clientAcceptance'; Name = 'Client Render & Screen Interaction'; Marker = 'ACC_CLIENT_PASS'; Phase = 'Acceptance' }
 )
