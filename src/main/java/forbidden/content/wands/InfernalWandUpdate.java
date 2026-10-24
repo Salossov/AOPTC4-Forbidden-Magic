@@ -11,9 +11,10 @@ import thaumcraft.api.wands.WandApi;
 
 /**
  * Infernal wand update (B18):
- * In the Nether: charges Ignis up to 20% max capacity and other primals up to 10% max capacity every 100 ticks.
- * When player is on fire: extinguishes player and recharges Ignis.
- * When player has Wither: removes effect and recharges Perditio.
+ * Recharges Ignis up to 20% max capacity every 100 ticks.
+ * In the Nether: also charges other primals up to 10% max capacity every 100 ticks.
+ * When player is on fire: extinguishes player.
+ * When player has Wither: removes effect.
  */
 public final class InfernalWandUpdate implements BiConsumer<ItemStack, Player> {
     public static final InfernalWandUpdate INSTANCE = new InfernalWandUpdate();
@@ -29,29 +30,17 @@ public final class InfernalWandUpdate implements BiConsumer<ItemStack, Player> {
     public void accept(ItemStack wand, Player player) {
         if (player.level().isClientSide()) return;
 
-        // Extinguish player and recharge Ignis
+        // Extinguish player
         if (player.isOnFire()) {
             player.clearFire();
-            var ignis = Aspect.getAspect("ignis");
-            int current = WandApi.stored(wand, ignis);
-            int cap = WandApi.capacity(wand) / 5;
-            if (current < cap) {
-                WandApi.set(wand, ignis, current + 1);
-            }
         }
 
-        // Remove wither effect and recharge Perditio
+        // Remove wither effect
         if (player.hasEffect(MobEffects.WITHER)) {
             player.removeEffect(MobEffects.WITHER);
-            var perditio = Aspect.getAspect("perditio");
-            int current = WandApi.stored(wand, perditio);
-            int cap = WandApi.capacity(wand) / 10;
-            if (current < cap) {
-                WandApi.set(wand, perditio, current + 1);
-            }
         }
 
-        // 100-tick interval Nether charging
+        // 100-tick interval charging
         if (player.tickCount % 100 == 0) {
             if (player.level().dimension() == Level.NETHER) {
                 for (var aspect : NON_FIRE_PRIMALS) {

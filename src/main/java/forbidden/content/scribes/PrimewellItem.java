@@ -19,7 +19,7 @@ public class PrimewellItem extends Item implements IScribeTools {
 
     @Override
     public void setDamage(ItemStack stack, int damage) {
-        // Unbreakable ink: damage is permanently locked to 0
+        super.setDamage(stack, 0);
     }
 
     @Override

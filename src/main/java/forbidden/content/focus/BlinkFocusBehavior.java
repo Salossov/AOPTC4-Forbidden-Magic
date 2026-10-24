@@ -16,7 +16,8 @@ import thaumcraft.api.wands.FocusUpgradeType;
 import thaumcraft.api.wands.WandApi;
 
 /**
- * FocusBehavior implementation for BlinkFocus (B21).
+ * FocusBehavior implementation for BlinkFocus (B21):
+ * Teleports player towards look direction / clicked block face up to 128 blocks.
  * Deducts vis ONLY upon successful teleportation.
  */
 public class BlinkFocusBehavior implements FocusBehavior {
@@ -40,7 +41,7 @@ public class BlinkFocusBehavior implements FocusBehavior {
         }
 
         int potency = focusItem.getUpgradeLevel(focus, FocusUpgradeType.potency);
-        double maxDistance = 16.0 + 8.0 * potency;
+        double maxDistance = 128.0;
 
         Vec3 eyePos = player.getEyePosition();
         Vec3 lookVec = player.getLookAngle();
