@@ -61,7 +61,16 @@ public final class P01ContentCheck {
         check(WandRod.rods.get("forbidden:neutronium").getCapacity()==9001&&WandRod.rods.get("forbidden:neutronium_staff").getCapacity()==9002,"creative rod capacities");
         check(!WandRod.rods.containsKey("forbidden:soul"),"physical soul core does not activate dead rod");
         var cake=ForbiddenContent.ARCANE_CAKE.get();check(cake.getStateDefinition().getPossibleStates().size()==12,"twelve cake states");
-        for(var state:cake.getStateDefinition().getPossibleStates())check(state.getShape(net.minecraft.world.level.EmptyBlockGetter.INSTANCE,BlockPos.ZERO).isEmpty()==(state.getValue(ArcaneCakeBlock.BITES)==11),"release cake bounds mapped without invalid voxel boxes");
+        for(var state:cake.getStateDefinition().getPossibleStates()){
+            var shape=state.getShape(net.minecraft.world.level.EmptyBlockGetter.INSTANCE,BlockPos.ZERO);
+            check(!shape.isEmpty(),"all twelve cake portions remain visible/selectable");
+            var bounds=shape.bounds();int remaining=12-state.getValue(ArcaneCakeBlock.BITES);
+            check(Math.abs(bounds.getXsize()-remaining*14.0/192)<1e-9&&bounds.maxX==15.0/16&&bounds.minZ==1.0/16&&bounds.maxZ==15.0/16,"equal cake slices retain the fixed right edge");
+            var hit=shape.clip(new net.minecraft.world.phys.Vec3(-1,.25,.5),new net.minecraft.world.phys.Vec3(2,.25,.5),BlockPos.ZERO);
+            check(hit!=null&&Math.abs(hit.getLocation().x-bounds.minX)<1e-9,"each remaining portion can be targeted from its cut face");
+            var collision=state.getCollisionShape(net.minecraft.world.level.EmptyBlockGetter.INSTANCE,BlockPos.ZERO).bounds();
+            check(collision.minX==bounds.minX&&collision.maxX==bounds.maxX&&collision.maxY==7.0/16&&bounds.maxY==.5,"cake collision follows the remaining width and retains release heights");
+        }
         var be=new WrathCageEntity(BlockPos.ZERO,ForbiddenContent.WRATH_CAGE.get().defaultBlockState());var data=new CompoundTag();
         data.putBoolean("MobSet",true);data.putString("EntityId","minecraft:creeper");data.putShort("Wrath",(short)63);data.putShort("Sloth",(short)62);data.putShort("Special",(short)61);data.putByte("Mode",(byte)2);data.putShort("Delay",(short)219);data.putShort("Fuel",(short)9);data.putBoolean("Slothful",true);
         be.loadWithComponents(data,RegistryAccess.EMPTY);var saved=be.saveWithoutMetadata(RegistryAccess.EMPTY);

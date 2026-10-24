@@ -17,8 +17,10 @@ public final class ArcaneCakeBlock extends Block {
     public static final IntegerProperty BITES = IntegerProperty.create("bites", 0, 11);
     public ArcaneCakeBlock(Properties properties) { super(properties); registerDefaultState(stateDefinition.any().setValue(BITES, 0)); }
     @Override protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) { builder.add(BITES); }
-    @Override protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { return state.getValue(BITES)==11?Shapes.empty():box(16.0 * (1 + state.getValue(BITES)) / 12, 0, 1, 15, 8, 15); }
-    @Override protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { return state.getValue(BITES)==11?Shapes.empty():box(16.0 * (1 + state.getValue(BITES)) / 12, 0, 1, 15, 7, 15); }
+    // Approved Q03: divide the 14-pixel cake width into twelve equal slices.
+    private static double left(BlockState state) { return 1 + state.getValue(BITES) * 14.0 / 12; }
+    @Override protected VoxelShape getShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { return box(left(state), 0, 1, 15, 8, 15); }
+    @Override protected VoxelShape getCollisionShape(BlockState state, BlockGetter level, BlockPos pos, CollisionContext context) { return box(left(state), 0, 1, 15, 7, 15); }
     @Override protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) { return level.getBlockState(pos.below()).isSolid(); }
     @Override protected BlockState updateShape(BlockState state, Direction side, BlockState neighbor, LevelAccessor level, BlockPos pos, BlockPos neighborPos) { return !canSurvive(state, level, pos) ? Blocks.AIR.defaultBlockState() : state; }
     @Override protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hit) { eat(state, level, pos, player); return InteractionResult.sidedSuccess(level.isClientSide); }

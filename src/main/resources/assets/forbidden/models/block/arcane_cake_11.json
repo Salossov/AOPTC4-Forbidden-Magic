@@ -6,5 +6,74 @@
     "top": "forbidden:blocks/cake_top",
     "bottom": "forbidden:blocks/cake_bottom"
   },
-  "elements": []
+  "elements": [
+    {
+      "from": [
+        13.833333333333334,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        8,
+        15
+      ],
+      "faces": {
+        "up": {
+          "texture": "#top",
+          "uv": [
+            13.833333333333334,
+            1,
+            15,
+            15
+          ]
+        },
+        "down": {
+          "texture": "#bottom",
+          "uv": [
+            13.833333333333334,
+            1,
+            15,
+            15
+          ]
+        },
+        "west": {
+          "texture": "#inside",
+          "uv": [
+            1,
+            8,
+            15,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            1,
+            8,
+            15,
+            16
+          ]
+        },
+        "north": {
+          "texture": "#side",
+          "uv": [
+            1,
+            8,
+            2.166666666666666,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#side",
+          "uv": [
+            13.833333333333334,
+            8,
+            15,
+            16
+          ]
+        }
+      }
+    }
+  ]
 }
