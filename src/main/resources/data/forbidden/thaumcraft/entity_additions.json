@@ -1,0 +1,48 @@
+{
+  "kind": "entity_aspect_additions",
+  "entries": {
+    "thaumcraft:brainy_zombie": {
+      "forbidden:ira": 3
+    },
+    "thaumcraft:giant_brainy_zombie": {
+      "forbidden:ira": 4
+    },
+    "thaumcraft:firebat": {
+      "forbidden:ira": 1,
+      "forbidden:infernus": 2
+    },
+    "minecraft:wither_skeleton": {
+      "forbidden:infernus": 3
+    },
+    "minecraft:creeper": {
+      "forbidden:ira": 2
+    },
+    "minecraft:wither": {
+      "forbidden:infernus": 7,
+      "forbidden:ira": 7
+    },
+    "minecraft:ocelot": {
+      "forbidden:desidia": 3
+    },
+    "minecraft:enderman": {
+      "forbidden:superbia": 4,
+      "forbidden:invidia": 4
+    },
+    "minecraft:ghast": {
+      "forbidden:infernus": 3,
+      "forbidden:ira": 3
+    },
+    "minecraft:zombified_piglin": {
+      "forbidden:ira": 6
+    },
+    "minecraft:ender_dragon": {
+      "forbidden:superbia": 10
+    },
+    "minecraft:pig": {
+      "forbidden:gula": 3
+    },
+    "minecraft:magma_cube": {
+      "forbidden:infernus": 1
+    }
+  }
+}

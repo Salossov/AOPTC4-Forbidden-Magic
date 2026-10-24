@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:taint_goo",
+    "forbidden:taint_shard"
+  ]
+}

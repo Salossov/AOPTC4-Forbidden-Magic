@@ -1,0 +1,11 @@
+{
+  "replace": false,
+  "values": [
+    "forbidden:taint_log",
+    "forbidden:taint_planks",
+    "forbidden:taint_leaves",
+    "forbidden:taint_sapling",
+    "forbidden:taint_stone",
+    "forbidden:taint_bricks"
+  ]
+}

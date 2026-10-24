@@ -1,0 +1,22 @@
+{
+  "type": "thaumcraft:infusion_enchantment",
+  "research": "forbidden:educational",
+  "enchantment": "forbidden:educational",
+  "instability": 3,
+  "aspects": {
+    "praecantatio": 4,
+    "telum": 4,
+    "cognitio": 8
+  },
+  "components": [
+    {
+      "item": "thaumcraft:zombie_brain"
+    },
+    {
+      "item": "minecraft:book"
+    },
+    {
+      "item": "thaumcraft:salis_mundus"
+    }
+  ]
+}

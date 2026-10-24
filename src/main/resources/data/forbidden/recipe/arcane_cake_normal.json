@@ -1,0 +1,42 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:arcanecake",
+  "input": {
+    "item": "minecraft:cake"
+  },
+  "components": [
+    {
+      "item": "thaumcraft:salis_mundus"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "minecraft:milk_bucket"
+    },
+    {
+      "item": "minecraft:egg"
+    },
+    {
+      "item": "forbidden:gluttony_shard"
+    },
+    {
+      "item": "forbidden:gluttony_shard"
+    }
+  ],
+  "aspects": {
+    "forbidden:gula": 12,
+    "fames": 24,
+    "fabrico": 24
+  },
+  "instability": 3,
+  "result": {
+    "id": "forbidden:arcane_cake"
+  },
+  "neoforge:conditions": [
+    {
+      "type": "forbidden:content",
+      "gate": "gluttony_normal"
+    }
+  ]
+}

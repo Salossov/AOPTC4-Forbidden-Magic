@@ -1,0 +1,7 @@
+{
+  "parent": "thaumcraft:sceptre/wood_iron",
+  "textures": {
+    "rod": "forbidden:models/wand_rod_infernal",
+    "particle": "forbidden:models/wand_rod_infernal"
+  }
+}

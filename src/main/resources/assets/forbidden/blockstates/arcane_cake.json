@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "bites=0": {
+      "model": "forbidden:block/arcane_cake_0"
+    },
+    "bites=1": {
+      "model": "forbidden:block/arcane_cake_1"
+    },
+    "bites=2": {
+      "model": "forbidden:block/arcane_cake_2"
+    },
+    "bites=3": {
+      "model": "forbidden:block/arcane_cake_3"
+    },
+    "bites=4": {
+      "model": "forbidden:block/arcane_cake_4"
+    },
+    "bites=5": {
+      "model": "forbidden:block/arcane_cake_5"
+    },
+    "bites=6": {
+      "model": "forbidden:block/arcane_cake_6"
+    },
+    "bites=7": {
+      "model": "forbidden:block/arcane_cake_7"
+    },
+    "bites=8": {
+      "model": "forbidden:block/arcane_cake_8"
+    },
+    "bites=9": {
+      "model": "forbidden:block/arcane_cake_9"
+    },
+    "bites=10": {
+      "model": "forbidden:block/arcane_cake_10"
+    },
+    "bites=11": {
+      "model": "forbidden:block/arcane_cake_11"
+    }
+  }
+}

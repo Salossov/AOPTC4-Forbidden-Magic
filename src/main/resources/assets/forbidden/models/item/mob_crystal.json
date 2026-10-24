@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "forbidden:items/emptycrystal"
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "forbidden:filled": 1
+      },
+      "model": "forbidden:item/mob_crystal_filled"
+    }
+  ]
+}

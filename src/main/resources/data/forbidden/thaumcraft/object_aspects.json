@@ -1,0 +1,73 @@
+{
+  "kind": "object_aspects",
+  "entries": {
+    "forbidden:wrath_shard": {
+      "forbidden:infernus": 1,
+      "forbidden:ira": 2,
+      "vitreus": 1
+    },
+    "forbidden:envy_shard": {
+      "forbidden:infernus": 1,
+      "forbidden:invidia": 2,
+      "vitreus": 1
+    },
+    "forbidden:pride_shard": {
+      "forbidden:infernus": 1,
+      "forbidden:superbia": 2,
+      "vitreus": 1
+    },
+    "forbidden:sloth_shard": {
+      "forbidden:infernus": 1,
+      "forbidden:desidia": 2,
+      "vitreus": 1
+    },
+    "forbidden:gluttony_shard": {
+      "forbidden:infernus": 1,
+      "forbidden:gula": 2,
+      "vitreus": 1
+    },
+    "forbidden:taint_shard": {
+      "vitium": 3,
+      "vitreus": 1
+    },
+    "forbidden:greed_shard": {
+      "forbidden:infernus": 1,
+      "lucrum": 2,
+      "vitreus": 1
+    },
+    "forbidden:emerald_nugget": {
+      "vitreus": 1
+    },
+    "forbidden:black_dye": {
+      "tenebrae": 1
+    },
+    "forbidden:ink_flower": {
+      "herba": 1,
+      "victus": 1,
+      "sensus": 1,
+      "tenebrae": 1
+    },
+    "forbidden:taint_fruit": {
+      "vitium": 2,
+      "venenum": 1
+    },
+    "forbidden:taint_coal": {
+      "vitium": 2,
+      "perditio": 2
+    },
+    "forbidden:taint_leaves": {
+      "vitium": 1,
+      "herba": 1
+    },
+    "forbidden:taint_log": {
+      "vitium": 1,
+      "arbor": 3
+    },
+    "forbidden:taint_planks": {
+      "arbor": 1
+    },
+    "forbidden:taint_bricks": {
+      "terra": 1
+    }
+  }
+}

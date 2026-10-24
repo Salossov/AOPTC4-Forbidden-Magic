@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "##",
+    "##"
+  ],
+  "key": {
+    "#": {
+      "item": "forbidden:taint_stone"
+    }
+  },
+  "result": {
+    "id": "forbidden:taint_bricks",
+    "count": 4
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "kind": "item_aspect_additions",
+  "entries": {
+    "minecraft:saddle": {
+      "forbidden:luxuria": 2
+    },
+    "minecraft:lead": {
+      "forbidden:luxuria": 2
+    }
+  }
+}

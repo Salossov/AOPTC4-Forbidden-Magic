@@ -1,0 +1,14 @@
+{
+  "kind": "stack_aspect_minimums",
+  "entries": {
+    "minecraft:ender_eye": {
+      "sensus": 4,
+      "alienis": 4,
+      "praecantatio": 3
+    },
+    "minecraft:comparator": {
+      "machina": 2,
+      "ordo": 2
+    }
+  }
+}

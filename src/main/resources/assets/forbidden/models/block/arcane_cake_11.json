@@ -1,0 +1,10 @@
+{
+  "textures": {
+    "particle": "forbidden:blocks/cake_side",
+    "side": "forbidden:blocks/cake_side",
+    "inside": "forbidden:blocks/cake_inner",
+    "top": "forbidden:blocks/cake_top",
+    "bottom": "forbidden:blocks/cake_bottom"
+  },
+  "elements": []
+}

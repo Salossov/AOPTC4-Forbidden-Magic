@@ -1,0 +1,7 @@
+{
+  "parent": "thaumcraft:staff/blaze_silver",
+  "textures": {
+    "rod": "forbidden:models/wand_rod_dreamwood",
+    "particle": "forbidden:models/wand_rod_dreamwood"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "thaumcraft:wand/wood_thaumium",
+  "textures": {
+    "rod": "forbidden:models/wand_rod_profane",
+    "particle": "forbidden:models/wand_rod_profane"
+  }
+}

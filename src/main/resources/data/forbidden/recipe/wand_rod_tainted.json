@@ -1,0 +1,39 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:rod_tainted",
+  "input": {
+    "item": "thaumcraft:taint_tendril"
+  },
+  "components": [
+    {
+      "item": "thaumcraft:salis_mundus"
+    },
+    {
+      "item": "forbidden:taint_shard"
+    },
+    {
+      "item": "forbidden:taint_shard"
+    },
+    {
+      "item": "forbidden:taint_shard"
+    },
+    {
+      "item": "forbidden:taint_shard"
+    },
+    {
+      "item": "forbidden:taint_shard"
+    },
+    {
+      "item": "forbidden:taint_shard"
+    }
+  ],
+  "aspects": {
+    "vitium": 24,
+    "praecantatio": 12,
+    "perditio": 12
+  },
+  "instability": 5,
+  "result": {
+    "id": "forbidden:wand_rod_tainted"
+  }
+}

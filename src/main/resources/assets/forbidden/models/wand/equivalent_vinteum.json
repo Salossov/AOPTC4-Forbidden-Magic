@@ -1,0 +1,8 @@
+{
+  "parent": "thaumcraft:wand/wood_iron",
+  "textures": {
+    "rod": "forbidden:models/wand_rod_equivalent",
+    "particle": "forbidden:models/wand_rod_equivalent",
+    "cap": "forbidden:models/wand_cap_vinteum"
+  }
+}

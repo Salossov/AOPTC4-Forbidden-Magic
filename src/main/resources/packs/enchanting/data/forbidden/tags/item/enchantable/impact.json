@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "forbidden:morph_pickaxe",
+      "required": false
+    },
+    {
+      "id": "forbidden:morph_shovel",
+      "required": false
+    }
+  ]
+}

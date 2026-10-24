@@ -1,0 +1,21 @@
+{
+  "type": "thaumcraft:crucible",
+  "research": "forbidden:transemerald",
+  "catalyst": {
+    "tag": "c:nuggets/emerald"
+  },
+  "aspects": {
+    "vitreus": 2,
+    "lucrum": 2
+  },
+  "result": {
+    "id": "forbidden:emerald_nugget",
+    "count": 4
+  },
+  "neoforge:conditions": [
+    {
+      "type": "forbidden:content",
+      "gate": "emerald_transmutation"
+    }
+  ]
+}

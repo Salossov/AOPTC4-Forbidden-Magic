@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#"
+  ],
+  "key": {
+    "#": {
+      "item": "forbidden:ink_flower"
+    }
+  },
+  "result": {
+    "id": "forbidden:black_dye",
+    "count": 2
+  }
+}

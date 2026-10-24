@@ -1,0 +1,7 @@
+{
+  "parent": "thaumcraft:sceptre/wood_thaumium",
+  "textures": {
+    "rod": "forbidden:models/wand_rod_equivalent",
+    "particle": "forbidden:models/wand_rod_equivalent"
+  }
+}

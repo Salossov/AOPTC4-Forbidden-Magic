@@ -1,0 +1,24 @@
+{
+  "kind": "item_tag_aspects",
+  "entries": {
+    "c:foods/bacon": {
+      "aspects": {
+        "corpus": 6,
+        "victus": 6,
+        "potentia": 6,
+        "bestia": 4
+      }
+    },
+    "c:ores/quartz": {
+      "aspects": {
+        "vitreus": 3
+      }
+    },
+    "minecraft:beds": {
+      "aspects": {
+        "fabrico": 3,
+        "pannus": 6
+      }
+    }
+  }
+}

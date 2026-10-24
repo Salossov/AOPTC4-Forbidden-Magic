@@ -1,0 +1,7 @@
+{
+  "parent": "thaumcraft:sceptre/wood_copper",
+  "textures": {
+    "rod": "forbidden:models/wand_rod_witchwood",
+    "particle": "forbidden:models/wand_rod_witchwood"
+  }
+}

@@ -1,0 +1,176 @@
+[
+  {
+    "mob": "minecraft:zombie",
+    "aspect": "corpus"
+  },
+  {
+    "mob": "minecraft:skeleton",
+    "aspect": "mortuus"
+  },
+  {
+    "mob": "minecraft:creeper",
+    "aspect": "ignis"
+  },
+  {
+    "mob": "minecraft:horse",
+    "aspect": "bestia"
+  },
+  {
+    "mob": "minecraft:pig",
+    "aspect": "bestia"
+  },
+  {
+    "mob": "minecraft:sheep",
+    "aspect": "pannus"
+  },
+  {
+    "mob": "minecraft:cow",
+    "aspect": "bestia"
+  },
+  {
+    "mob": "minecraft:mooshroom",
+    "aspect": "herba"
+  },
+  {
+    "mob": "minecraft:ocelot",
+    "aspect": "bestia"
+  },
+  {
+    "mob": "minecraft:chicken",
+    "aspect": "volatus"
+  },
+  {
+    "mob": "minecraft:squid",
+    "aspect": "sensus"
+  },
+  {
+    "mob": "minecraft:wolf",
+    "aspect": "bestia"
+  },
+  {
+    "mob": "minecraft:bat",
+    "aspect": "volatus"
+  },
+  {
+    "mob": "minecraft:spider",
+    "aspect": "pannus"
+  },
+  {
+    "mob": "minecraft:slime",
+    "aspect": "limus"
+  },
+  {
+    "mob": "minecraft:ghast",
+    "aspect": "forbidden:infernus"
+  },
+  {
+    "mob": "minecraft:zombified_piglin",
+    "aspect": "lucrum"
+  },
+  {
+    "mob": "minecraft:enderman",
+    "aspect": "alienis"
+  },
+  {
+    "mob": "minecraft:cave_spider",
+    "aspect": "venenum"
+  },
+  {
+    "mob": "minecraft:silverfish",
+    "aspect": "lucrum",
+    "silverfishEmeralds": true
+  },
+  {
+    "mob": "minecraft:silverfish",
+    "aspect": "bestia",
+    "silverfishEmeralds": false
+  },
+  {
+    "mob": "minecraft:blaze",
+    "aspect": "ignis"
+  },
+  {
+    "mob": "minecraft:magma_cube",
+    "aspect": "ignis"
+  },
+  {
+    "mob": "minecraft:witch",
+    "aspect": "praecantatio"
+  },
+  {
+    "mob": "minecraft:villager",
+    "aspect": "lucrum"
+  },
+  {
+    "mob": "thaumcraft:firebat",
+    "aspect": "ignis"
+  },
+  {
+    "mob": "thaumcraft:wisp",
+    "aspect": "auram"
+  },
+  {
+    "mob": "thaumcraft:thaumic_slime",
+    "aspect": "vitium"
+  },
+  {
+    "mob": "thaumcraft:brainy_zombie",
+    "aspect": "cognitio"
+  },
+  {
+    "mob": "thaumcraft:giant_brainy_zombie",
+    "aspect": "cognitio"
+  },
+  {
+    "mob": "thaumcraft:taint_spider",
+    "aspect": "vitium"
+  },
+  {
+    "mob": "thaumcraft:taint_swarm",
+    "aspect": "vitium"
+  },
+  {
+    "mob": "thaumcraft:taint_pig",
+    "aspect": "vitium"
+  },
+  {
+    "mob": "thaumcraft:taint_sheep",
+    "aspect": "vitium"
+  },
+  {
+    "mob": "thaumcraft:taint_cow",
+    "aspect": "vitium"
+  },
+  {
+    "mob": "thaumcraft:taint_chicken",
+    "aspect": "vitium"
+  },
+  {
+    "mob": "thaumcraft:taint_villager",
+    "aspect": "vitium"
+  },
+  {
+    "mob": "thaumcraft:cultist_knight",
+    "aspect": "alienis"
+  },
+  {
+    "mob": "thaumcraft:cultist_cleric",
+    "aspect": "alienis"
+  },
+  {
+    "mob": "thaumcraft:eldritch_crab",
+    "aspect": "alienis"
+  },
+  {
+    "mob": "thaumcraft:inhabited_zombie",
+    "aspect": "alienis"
+  },
+  {
+    "mob": "thaumcraft:pech",
+    "aspect": "lucrum"
+  },
+  {
+    "mob": "thaumcraft:eldritch_guardian",
+    "aspect": "alienis"
+  }
+]

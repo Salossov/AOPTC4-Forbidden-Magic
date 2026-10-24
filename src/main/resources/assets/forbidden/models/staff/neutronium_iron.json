@@ -1,0 +1,7 @@
+{
+  "parent": "thaumcraft:staff/blaze_iron",
+  "textures": {
+    "rod": "forbidden:models/wand_rod_neutronium",
+    "particle": "forbidden:models/wand_rod_neutronium"
+  }
+}

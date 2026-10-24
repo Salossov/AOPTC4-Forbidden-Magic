@@ -1,0 +1,34 @@
+{
+  "type": "thaumcraft:infusion_enchantment",
+  "research": "forbidden:greedy",
+  "enchantment": "forbidden:greedy",
+  "instability": 4,
+  "aspects": {
+    "forbidden:infernus": 16,
+    "telum": 8,
+    "lucrum": 16
+  },
+  "components": [
+    {
+      "item": "minecraft:golden_sword"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "forbidden:greed_shard"
+    },
+    {
+      "item": "forbidden:greed_shard"
+    },
+    {
+      "item": "thaumcraft:salis_mundus"
+    }
+  ],
+  "neoforge:conditions": [
+    {
+      "type": "forbidden:content",
+      "gate": "greedy"
+    }
+  ]
+}

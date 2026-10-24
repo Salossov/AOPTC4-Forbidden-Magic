@@ -1,0 +1,22 @@
+{
+  "type": "thaumcraft:infusion_enchantment",
+  "research": "forbidden:consuming",
+  "enchantment": "forbidden:consuming",
+  "instability": 3,
+  "aspects": {
+    "vacuos": 8,
+    "instrumentum": 8,
+    "fames": 8
+  },
+  "components": [
+    {
+      "item": "minecraft:iron_pickaxe"
+    },
+    {
+      "item": "minecraft:lava_bucket"
+    },
+    {
+      "item": "thaumcraft:salis_mundus"
+    }
+  ]
+}

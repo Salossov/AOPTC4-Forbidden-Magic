@@ -1,0 +1,24 @@
+{
+  "type": "thaumcraft:infusion_enchantment",
+  "research": "forbidden:impact",
+  "enchantment": "forbidden:impact",
+  "instability": 4,
+  "aspects": {
+    "perditio": 16,
+    "perfodio": 16
+  },
+  "components": [
+    {
+      "item": "thaumcraft:salis_mundus"
+    },
+    {
+      "item": "forbidden:envy_shard"
+    },
+    {
+      "item": "forbidden:envy_shard"
+    },
+    {
+      "item": "thaumcraft:elemental_shovel"
+    }
+  ]
+}

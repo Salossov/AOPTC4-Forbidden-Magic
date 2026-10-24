@@ -6,7 +6,7 @@ modId="forbidden"
 version="${mod_version}"
 displayName="Forbidden Magic"
 authors="SpitefulFox and original contributors; unofficial port contributors"
-description='''Foundation for an unofficial port of Forbidden Magic 0.575. Gameplay migration and acceptance testing are incomplete.'''
+description='''Unofficial port of Forbidden Magic 0.575. Base content is implemented; remaining gameplay migration and server/client acceptance testing are incomplete.'''
 [[dependencies.forbidden]]
 modId="minecraft"
 type="required"

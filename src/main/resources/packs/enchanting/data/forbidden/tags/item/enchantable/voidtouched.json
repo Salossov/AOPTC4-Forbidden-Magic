@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    {
+      "id": "forbidden:morph_pickaxe",
+      "required": false
+    },
+    {
+      "id": "forbidden:morph_sword",
+      "required": false
+    },
+    {
+      "id": "forbidden:morph_axe",
+      "required": false
+    },
+    {
+      "id": "forbidden:morph_shovel",
+      "required": false
+    }
+  ]
+}

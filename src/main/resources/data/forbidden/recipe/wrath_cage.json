@@ -1,0 +1,58 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:wrathcage",
+  "input": {
+    "item": "thaumcraft:thaumium_block"
+  },
+  "components": [
+    {
+      "item": "forbidden:wrath_shard"
+    },
+    {
+      "item": "forbidden:wrath_shard"
+    },
+    {
+      "item": "forbidden:wrath_shard"
+    },
+    {
+      "item": "forbidden:wrath_shard"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "thaumcraft:warded_jar"
+    },
+    {
+      "item": "thaumcraft:warded_jar"
+    },
+    {
+      "item": "thaumcraft:warded_jar"
+    }
+  ],
+  "aspects": {
+    "forbidden:ira": 32,
+    "praecantatio": 32,
+    "bestia": 32,
+    "machina": 16
+  },
+  "instability": 10,
+  "result": {
+    "id": "forbidden:wrath_cage"
+  },
+  "neoforge:conditions": [
+    {
+      "type": "forbidden:content",
+      "gate": "wrath_cage"
+    }
+  ]
+}

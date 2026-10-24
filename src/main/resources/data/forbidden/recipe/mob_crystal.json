@@ -1,0 +1,21 @@
+{
+  "type": "thaumcraft:crucible",
+  "research": "forbidden:wrathcage",
+  "catalyst": {
+    "item": "minecraft:diamond"
+  },
+  "aspects": {
+    "cognitio": 10,
+    "potentia": 10
+  },
+  "result": {
+    "id": "forbidden:mob_crystal",
+    "count": 1
+  },
+  "neoforge:conditions": [
+    {
+      "type": "forbidden:content",
+      "gate": "wrath_cage"
+    }
+  ]
+}

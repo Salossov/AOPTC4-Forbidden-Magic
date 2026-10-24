@@ -1,0 +1,23 @@
+{
+  "description": {
+    "translate": "enchantment.forbidden.impact"
+  },
+  "supported_items": "#forbidden:enchantable/impact",
+  "primary_items": "#forbidden:enchantable/infusion_only",
+  "weight": 1,
+  "max_level": 1,
+  "min_cost": {
+    "base": 30,
+    "per_level_above_first": 0
+  },
+  "max_cost": {
+    "base": 21,
+    "per_level_above_first": 10
+  },
+  "anvil_cost": 8,
+  "slots": [
+    "mainhand"
+  ],
+  "exclusive_set": [],
+  "effects": {}
+}

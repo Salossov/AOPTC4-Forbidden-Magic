@@ -1,0 +1,15 @@
+{
+  "type": "thaumcraft:crucible",
+  "research": "forbidden:tainttree",
+  "catalyst": {
+    "item": "minecraft:oak_sapling"
+  },
+  "aspects": {
+    "vitium": 10,
+    "venenum": 4
+  },
+  "result": {
+    "id": "forbidden:taint_sapling",
+    "count": 1
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "kind": "entity_aspect_additions",
+  "entries": {
+    "thaumcraft:taintacle": {
+      "forbidden:luxuria": 3
+    }
+  }
+}

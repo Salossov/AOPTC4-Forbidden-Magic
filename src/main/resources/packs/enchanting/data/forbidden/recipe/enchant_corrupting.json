@@ -1,0 +1,22 @@
+{
+  "type": "thaumcraft:infusion_enchantment",
+  "research": "forbidden:corrupting",
+  "enchantment": "forbidden:corrupting",
+  "instability": 4,
+  "aspects": {
+    "forbidden:infernus": 16,
+    "permutatio": 16,
+    "vitreus": 8
+  },
+  "components": [
+    {
+      "item": "minecraft:nether_wart"
+    },
+    {
+      "item": "minecraft:soul_sand"
+    },
+    {
+      "item": "thaumcraft:salis_mundus"
+    }
+  ]
+}

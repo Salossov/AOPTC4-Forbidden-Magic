@@ -1,0 +1,72 @@
+{
+  "kind": "item_aspect_additions",
+  "entries": {
+    "minecraft:netherrack": {
+      "forbidden:infernus": 1
+    },
+    "minecraft:nether_portal": {
+      "forbidden:infernus": 4
+    },
+    "minecraft:nether_star": {
+      "forbidden:infernus": 8,
+      "forbidden:superbia": 8
+    },
+    "minecraft:nether_wart": {
+      "forbidden:infernus": 1
+    },
+    "minecraft:nether_brick": {
+      "forbidden:infernus": 1
+    },
+    "minecraft:nether_bricks": {
+      "forbidden:infernus": 2
+    },
+    "minecraft:ghast_tear": {
+      "forbidden:ira": 4
+    },
+    "minecraft:wither_skeleton_skull": {
+      "forbidden:infernus": 4
+    },
+    "minecraft:creeper_head": {
+      "forbidden:ira": 2
+    },
+    "minecraft:tnt": {
+      "forbidden:ira": 2
+    },
+    "minecraft:golden_helmet": {
+      "forbidden:superbia": 2
+    },
+    "minecraft:golden_chestplate": {
+      "forbidden:superbia": 1
+    },
+    "minecraft:golden_leggings": {
+      "forbidden:superbia": 1
+    },
+    "minecraft:golden_boots": {
+      "forbidden:superbia": 1
+    },
+    "minecraft:golden_sword": {
+      "forbidden:superbia": 2
+    },
+    "#minecraft:beds": {
+      "forbidden:desidia": 4
+    },
+    "minecraft:ender_eye": {
+      "forbidden:invidia": 4
+    },
+    "minecraft:cake": {
+      "forbidden:gula": 7
+    },
+    "minecraft:cookie": {
+      "forbidden:gula": 1
+    },
+    "minecraft:fire_charge": {
+      "forbidden:ira": 1
+    },
+    "minecraft:comparator": {
+      "forbidden:invidia": 2
+    },
+    "#c:ores/quartz": {
+      "forbidden:infernus": 2
+    }
+  }
+}

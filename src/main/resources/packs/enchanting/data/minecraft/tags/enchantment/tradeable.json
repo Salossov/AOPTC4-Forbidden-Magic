@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "forbidden:cluster",
+    "forbidden:wrath",
+    "forbidden:greedy",
+    "forbidden:consuming",
+    "forbidden:educational",
+    "forbidden:corrupting",
+    "forbidden:voidtouched",
+    "forbidden:impact"
+  ]
+}

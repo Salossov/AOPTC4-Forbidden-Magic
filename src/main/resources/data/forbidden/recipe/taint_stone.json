@@ -1,0 +1,25 @@
+{
+  "type": "thaumcraft:arcane",
+  "research": "forbidden:taintstone",
+  "vis": {
+    "perditio": 2,
+    "ordo": 1
+  },
+  "pattern": [
+    "SSS",
+    "SXS",
+    "SSS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:stone"
+    },
+    "X": {
+      "tag": "forbidden:resource_taint"
+    }
+  },
+  "result": {
+    "id": "forbidden:taint_stone",
+    "count": 9
+  }
+}

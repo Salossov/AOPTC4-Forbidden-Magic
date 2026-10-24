@@ -1,0 +1,10 @@
+{
+  "kind": "object_aspects",
+  "entries": {
+    "forbidden:lust_shard": {
+      "forbidden:infernus": 1,
+      "forbidden:luxuria": 2,
+      "vitreus": 1
+    }
+  }
+}

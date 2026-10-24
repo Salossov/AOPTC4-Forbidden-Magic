@@ -1,0 +1,7 @@
+{
+  "parent": "thaumcraft:wand/wood_void",
+  "textures": {
+    "rod": "forbidden:models/wand_rod_blood",
+    "particle": "forbidden:models/wand_rod_blood"
+  }
+}

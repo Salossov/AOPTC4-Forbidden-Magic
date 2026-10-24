@@ -1,0 +1,8 @@
+{
+  "kind": "item_aspect_additions",
+  "entries": {
+    "#c:foods/bacon": {
+      "forbidden:gula": 6
+    }
+  }
+}

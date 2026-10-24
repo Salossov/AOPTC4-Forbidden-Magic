@@ -1,8 +1,16 @@
 # Forbidden Magic — unofficial 1.21.1 port
 
-Foundation for porting Forbidden Magic 0.575 by SpitefulFox. Minecraft 1.21.1,
+Unofficial port of Forbidden Magic 0.575 by SpitefulFox. Minecraft 1.21.1,
 NeoForge 21.1.252, Java 21, local Thaumcraft/API 1.0.0 and Curios 9.5.1+1.21.1.
-Gameplay is not yet implemented. A successful build is not server/client acceptance.
+The first implementation batch adds aspects, shards/resources, tainted plants and
+trees, cake, standard wand-part definitions, enchantment data, and the cage/crystal
+exchange. Tools, wand updates, enchantment effects, cage spawning/essentia,
+research and optional integrations remain incomplete. A successful build is not
+server/client acceptance. No game server or client acceptance has been performed.
+
+Use the matching local Thaumcraft/API build with the explicit aspect-blend
+overload and `entity_variant_aspect_additions`. Earlier 1.0.0 artifacts without
+these additions are incompatible despite sharing the same version string.
 
 Build the matching local Thaumcraft API first, then run PowerShell:
 
@@ -17,7 +25,9 @@ dependency (`-PaopUiJar=...`). `-PthaumcraftRuntimeJar=...` overrides the runtim
 `foundationRules` checks config gates without Minecraft. `componentCodecCheck` checks
 persistence and network codec round trips without starting a server. Both run during `build`.
 `src/client` contains client presentation; `src/nativeVerification` contains private native
-checks; `src/rules` contains platform-independent checks. Only main/client ship in the gameplay JAR.
+checks; `src/rules` contains platform-independent checks. Three P01 registry/JVM
+fixtures cover normal, No Lust and disabled-cage profiles. Only main/client ship
+in the gameplay JAR.
 
 `runClient`, `runServer` and `runGameTestServer` use isolated `runs/private-*` directories.
 The project never creates `eula.txt` automatically. No gameplay or worlds are supplied.

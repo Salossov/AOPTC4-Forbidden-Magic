@@ -1,0 +1,14 @@
+{
+  "kind": "item_tag_aspects",
+  "entries": {
+    "forbidden:lust_crop": {
+      "aspects": {
+        "arbor": 2,
+        "pannus": 2,
+        "bestia": 1,
+        "forbidden:luxuria": 1,
+        "telum": 1
+      }
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "kind": "entity_variant_aspect_additions",
+  "entries": {
+    "minecraft:creeper": [
+      {
+        "field": "powered",
+        "value": "1",
+        "aspects": {
+          "forbidden:ira": 2
+        }
+      }
+    ]
+  }
+}

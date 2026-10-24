@@ -1,0 +1,39 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:rod_infernal",
+  "input": {
+    "item": "minecraft:blaze_rod"
+  },
+  "components": [
+    {
+      "item": "thaumcraft:salis_mundus"
+    },
+    {
+      "item": "forbidden:pride_shard"
+    },
+    {
+      "item": "forbidden:pride_shard"
+    },
+    {
+      "item": "minecraft:soul_sand"
+    },
+    {
+      "item": "minecraft:wither_skeleton_skull"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    }
+  ],
+  "aspects": {
+    "forbidden:infernus": 32,
+    "praecantatio": 12,
+    "forbidden:superbia": 12
+  },
+  "instability": 5,
+  "result": {
+    "id": "forbidden:wand_rod_infernal"
+  }
+}

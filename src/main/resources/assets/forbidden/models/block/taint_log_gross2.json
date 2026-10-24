@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "forbidden:blocks/taint_log_bottom",
+    "side": "forbidden:blocks/taint_log_side_gross2"
+  }
+}

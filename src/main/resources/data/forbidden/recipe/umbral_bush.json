@@ -1,0 +1,15 @@
+{
+  "type": "thaumcraft:crucible",
+  "research": "forbidden:blackflower",
+  "catalyst": {
+    "item": "minecraft:rose_bush"
+  },
+  "aspects": {
+    "tenebrae": 8,
+    "victus": 5
+  },
+  "result": {
+    "id": "forbidden:umbral_bush",
+    "count": 1
+  }
+}

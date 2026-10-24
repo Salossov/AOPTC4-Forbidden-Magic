@@ -1,0 +1,19 @@
+{
+  "type": "thaumcraft:infusion_enchantment",
+  "research": "forbidden:cluster",
+  "enchantment": "forbidden:cluster",
+  "instability": 3,
+  "aspects": {
+    "ignis": 4,
+    "metallum": 4,
+    "lucrum": 4
+  },
+  "components": [
+    {
+      "item": "thaumcraft:elemental_pickaxe"
+    },
+    {
+      "item": "thaumcraft:salis_mundus"
+    }
+  ]
+}

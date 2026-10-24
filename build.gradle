@@ -54,6 +54,7 @@ def coreRoot = file('../../../repo')
 def apiJar = file(providers.gradleProperty('thaumcraftApiJar').getOrElse("${coreRoot}/api/build/libs/thaumcraft-api-${project.thaumcraft_version}.jar"))
 dependencies {
     compileOnly files(apiJar)
+    nativeVerificationRuntimeOnly files(apiJar)
     compileOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}"
     runtimeOnly files(providers.gradleProperty('thaumcraftRuntimeJar').getOrElse("${coreRoot}/mod/build/libs/thaumcraft-1.21.1-${project.thaumcraft_version}.jar"))
@@ -93,3 +94,12 @@ tasks.register('componentCodecCheck', JavaExec) {
     mainClass = 'forbidden.verification.ComponentCodecCheck'
 }
 tasks.named('check') { dependsOn 'foundationRules', 'componentCodecCheck', 'clientClasses' }
+['normal': ['false', 'true'], 'noLust': ['true', 'true'], 'noCage': ['false', 'false']].each { profile, flags ->
+    tasks.register("p01Content${profile.capitalize()}", JavaExec) {
+        dependsOn 'nativeVerificationClasses'
+        classpath = sourceSets.nativeVerification.runtimeClasspath
+        mainClass = 'forbidden.verification.P01ContentCheck'
+        args flags
+    }
+    tasks.named('check') { dependsOn "p01Content${profile.capitalize()}" }
+}

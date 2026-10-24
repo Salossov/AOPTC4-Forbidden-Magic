@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "forbidden:taint_log"
+  },
+  "result": {
+    "id": "forbidden:taint_coal"
+  },
+  "experience": 0.15,
+  "cookingtime": 200
+}

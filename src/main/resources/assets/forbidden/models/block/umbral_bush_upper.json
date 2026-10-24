@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "forbidden:blocks/umbral_rose_top"
+  },
+  "render_type": "minecraft:cutout"
+}

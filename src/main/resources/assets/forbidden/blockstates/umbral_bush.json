@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "half=upper": {
+      "model": "forbidden:block/umbral_bush_upper"
+    },
+    "half=lower": {
+      "model": "forbidden:block/umbral_bush_lower"
+    }
+  }
+}

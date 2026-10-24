@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "forbidden:blocks/flower_black"
+  },
+  "render_type": "minecraft:cutout"
+}

@@ -1,0 +1,26 @@
+{
+  "description": {
+    "translate": "enchantment.forbidden.greedy"
+  },
+  "supported_items": "#forbidden:enchantable/weapon",
+  "primary_items": "#forbidden:enchantable/infusion_only",
+  "weight": 1,
+  "max_level": 1,
+  "min_cost": {
+    "base": 20,
+    "per_level_above_first": 0
+  },
+  "max_cost": {
+    "base": 61,
+    "per_level_above_first": 10
+  },
+  "anvil_cost": 8,
+  "slots": [
+    "mainhand"
+  ],
+  "exclusive_set": [
+    "minecraft:looting",
+    "forbidden:educational"
+  ],
+  "effects": {}
+}
