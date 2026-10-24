@@ -1,0 +1,44 @@
+{
+  "kind": "research",
+  "key": "forbidden:euclidaisy",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:botany",
+    "INFUSION"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "herba": 8,
+    "praecantatio": 4,
+    "auram": 12
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -3,
+  "row": 5,
+  "text_pages": [
+    "forbidden.research_page.EUCLIDAISY.1"
+  ],
+  "recipe_pages": [
+    "forbidden:euclidaisy"
+  ],
+  "page_order": [
+    "forbidden.research_page.EUCLIDAISY.1",
+    "forbidden:euclidaisy"
+  ],
+  "icon": "forbidden:euclidaisy",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

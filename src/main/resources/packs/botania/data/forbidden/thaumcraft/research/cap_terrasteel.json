@@ -1,0 +1,42 @@
+{
+  "kind": "research",
+  "key": "forbidden:cap_terrasteel",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:cap_manasteel"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "potentia": 1,
+    "metallum": 1
+  },
+  "complexity": 1,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": 3,
+  "row": 2,
+  "text_pages": [
+    "forbidden.research_page.CAP_terrasteel.1"
+  ],
+  "recipe_pages": [
+    "forbidden:wand_cap_terrasteel"
+  ],
+  "page_order": [
+    "forbidden.research_page.CAP_terrasteel.1",
+    "forbidden:wand_cap_terrasteel"
+  ],
+  "icon": "forbidden:wand_cap_terrasteel",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": true,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

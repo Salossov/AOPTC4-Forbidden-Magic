@@ -1,0 +1,48 @@
+{
+  "kind": "research",
+  "key": "forbidden:rod_dreamwood_staff",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:rod_livingwood",
+    "ROD_silverwood_staff"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "arbor": 16,
+    "praecantatio": 8,
+    "alienis": 6
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": 1,
+  "row": 3,
+  "text_pages": [
+    "forbidden.research_page.ROD_dreamwood_staff.1"
+  ],
+  "recipe_pages": [
+    "forbidden:wand_rod_dreamwood_staff",
+    "forbidden:wand_rod_dreamwood"
+  ],
+  "page_order": [
+    "forbidden.research_page.ROD_dreamwood_staff.1",
+    "forbidden:wand_rod_dreamwood_staff",
+    "forbidden:wand_rod_dreamwood"
+  ],
+  "icon": "forbidden:wand_rod_dreamwood_staff",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [
+    "forbidden:rod_dreamwood"
+  ],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

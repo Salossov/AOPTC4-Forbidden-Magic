@@ -1,0 +1,47 @@
+{
+  "kind": "research",
+  "key": "forbidden:cap_elementium",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:rod_dreamwood_staff"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "ignis": 8,
+    "praecantatio": 12,
+    "aqua": 8,
+    "aer": 8,
+    "terra": 8
+  },
+  "complexity": 4,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": 3,
+  "row": 3,
+  "text_pages": [
+    "forbidden.research_page.CAP_elementium.1"
+  ],
+  "recipe_pages": [
+    "forbidden:wand_cap_elementium_inert",
+    "forbidden:wand_cap_elementium"
+  ],
+  "page_order": [
+    "forbidden.research_page.CAP_elementium.1",
+    "forbidden:wand_cap_elementium_inert",
+    "forbidden:wand_cap_elementium"
+  ],
+  "icon": "forbidden:wand_cap_elementium",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

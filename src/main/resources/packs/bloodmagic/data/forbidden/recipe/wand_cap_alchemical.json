@@ -1,0 +1,20 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:cap_alchemical",
+  "input": {
+    "item": "thaumcraft:wand_cap_iron"
+  },
+  "components": [
+    { "item": "bloodmagic:magicales" },
+    { "item": "bloodmagic:magicales" },
+    { "item": "bloodmagic:magicales" }
+  ],
+  "aspects": {
+    "victus": 12,
+    "aqua": 6
+  },
+  "instability": 3,
+  "result": {
+    "id": "forbidden:wand_cap_alchemical"
+  }
+}

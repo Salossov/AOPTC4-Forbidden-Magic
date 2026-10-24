@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:bloodwell",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:bloodmagic"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "victus": 5,
+    "cognitio": 4,
+    "sensus": 3
+  },
+  "complexity": 1,
+  "auto_unlock": false,
+  "concealed": false,
+  "column": 1,
+  "row": -1,
+  "text_pages": [
+    "forbidden.research_page.BLOODWELL.1"
+  ],
+  "recipe_pages": [
+    "forbidden:bloodwell"
+  ],
+  "page_order": [
+    "forbidden.research_page.BLOODWELL.1",
+    "forbidden:bloodwell"
+  ],
+  "icon": "forbidden:bloodwell",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

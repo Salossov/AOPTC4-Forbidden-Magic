@@ -1,5 +1,6 @@
 package forbidden.verification;
 
+import com.google.gson.JsonParser;
 import forbidden.compat.bloodmagic.BloodMagicBridge;
 import forbidden.compat.bloodmagic.BloodMagicCompat;
 import forbidden.compat.bloodmagic.BloodMagicItems;
@@ -16,12 +17,16 @@ import forbidden.content.ForbiddenAspects;
 import forbidden.content.ForbiddenContent;
 import forbidden.content.ForbiddenWandVisuals;
 import forbidden.content.wands.ForbiddenWandMechanics;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -115,6 +120,7 @@ public final class P04BloodMagicCheck {
         testC07Items();
         testC08RitualAndFlower();
         testVisualsClasspathIntegrity();
+        testDataPackIntegrity();
 
         System.out.println("FORBIDDEN_P04_BLOODMAGIC_PASS checks=" + checks);
     }
@@ -153,6 +159,7 @@ public final class P04BloodMagicCheck {
         check(bloodStaff instanceof StaffRod, "blood_staff is instance of StaffRod");
         check(bloodStaff.getCapacity() == 250, "blood staff capacity is 250");
         check(bloodStaff.getCraftCost() == 25, "blood staff cost is 25");
+        check("forbidden:rod_blood_staff".equals(bloodStaff.getResearch()), "blood staff research is forbidden:rod_blood_staff");
         check(WandRod.rods.get("blood_staff") == bloodStaff, "blood staff also accessible via 'blood_staff'");
 
         // Alchemical Cap
@@ -160,7 +167,7 @@ public final class P04BloodMagicCheck {
         check(alchemicalCap != null, "forbidden:alchemical cap registered");
         check(Math.abs(alchemicalCap.getBaseCostModifier() - 0.85f) < 1e-5, "alchemical cap 0.85f modifier (15% discount)");
         check(alchemicalCap.getCraftCost() == 7, "alchemical cap cost is 7");
-        check("CAP_alchemical".equals(alchemicalCap.getResearch()), "alchemical cap research is CAP_alchemical");
+        check("forbidden:cap_alchemical".equals(alchemicalCap.getResearch()), "alchemical cap research is forbidden:cap_alchemical");
         check(WandCap.caps.get("alchemical") == alchemicalCap, "alchemical cap also accessible via 'alchemical'");
 
         // Updates
@@ -229,12 +236,67 @@ public final class P04BloodMagicCheck {
 
         var block = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("forbidden:bloodthorn"));
         check(block instanceof BloodthornBlock, "bloodthorn is BloodthornBlock");
+        check(BloodthornBlockEntity.MAX_MANA == 360, "bloodthorn max mana 360");
+        check(BloodthornBlockEntity.COST == 40, "bloodthorn cost 40");
+        check(BloodthornBlockEntity.RANGE == 6, "bloodthorn range 6");
+
+        var bloodthornBE = new BloodthornBlockEntity(BlockPos.ZERO, block.defaultBlockState());
+        check(bloodthornBE.getMana() == 0, "bloodthorn starts at 0 mana");
+        check(bloodthornBE.getMaxMana() == 360, "bloodthorn max mana == 360");
+        bloodthornBE.addMana(120);
+        check(bloodthornBE.getMana() == 120, "bloodthorn mana after add == 120");
+        bloodthornBE.addMana(1000);
+        check(bloodthornBE.getMana() == 360, "bloodthorn mana capped at 360");
+        bloodthornBE.setTicksExisted(88);
+        bloodthornBE.setBindingPos(new BlockPos(2, 4, 6));
+
+        CompoundTag bloodthornTag = new CompoundTag();
+        bloodthornBE.writeCustomData(bloodthornTag);
+        check(bloodthornTag.getInt("mana") == 360, "bloodthorn tag mana == 360");
+        check(bloodthornTag.getInt("ticksExisted") == 88, "bloodthorn tag ticks == 88");
+        var bloodthornReloaded = new BloodthornBlockEntity(BlockPos.ZERO, block.defaultBlockState());
+        bloodthornReloaded.readCustomData(bloodthornTag);
+        check(bloodthornReloaded.getMana() == 360, "reloaded bloodthorn mana == 360");
+        check(bloodthornReloaded.getTicksExisted() == 88, "reloaded bloodthorn ticks == 88");
+        check(new BlockPos(2, 4, 6).equals(bloodthornReloaded.getBindingPos()), "reloaded bloodthorn boundPos matches");
 
         // Blood Seal Mob Effect
         check(BuiltInRegistries.MOB_EFFECT.containsKey(ResourceLocation.parse("forbidden:blood_seal")), "registered forbidden:blood_seal mob effect");
         var seal = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse("forbidden:blood_seal"));
         check(seal instanceof BloodSealEffect, "blood seal is BloodSealEffect");
         check(seal.getCategory() == MobEffectCategory.HARMFUL, "blood seal is harmful");
+    }
+
+    private static void testDataPackIntegrity() throws Exception {
+        List<String> researches = List.of(
+                "bloodmagic", "rod_blood", "rod_blood_staff", "cap_alchemical",
+                "bloodwell", "bloodrapier", "eldritch_orb", "bloodthorn"
+        );
+        for (String r : researches) {
+            String path = "/packs/bloodmagic/data/forbidden/thaumcraft/research/" + r + ".json";
+            var stream = P04BloodMagicCheck.class.getResourceAsStream(path);
+            check(stream != null, "Blood Magic research exists: " + path);
+            try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+                var json = JsonParser.parseReader(reader).getAsJsonObject();
+                check(json.has("key") && !json.get("key").getAsString().isEmpty(), "Research has non-empty key: " + r);
+                check(json.has("category") && json.get("category").getAsString().equals("forbidden:FORBIDDEN"), "Research in FORBIDDEN category: " + r);
+            }
+        }
+
+        List<String> recipes = List.of(
+                "wand_rod_blood", "wand_rod_blood_staff", "wand_cap_alchemical", "bloodwell",
+                "blood_rapier", "eldritch_orb", "boundwell", "bloodthorn"
+        );
+        for (String rec : recipes) {
+            String path = "/packs/bloodmagic/data/forbidden/recipe/" + rec + ".json";
+            var stream = P04BloodMagicCheck.class.getResourceAsStream(path);
+            check(stream != null, "Blood Magic recipe exists: " + path);
+            try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+                var json = JsonParser.parseReader(reader).getAsJsonObject();
+                check(json.has("type") && !json.get("type").getAsString().isEmpty(), "Recipe has non-empty type: " + rec);
+                check(json.has("result") || json.has("key"), "Recipe has result or key: " + rec);
+            }
+        }
     }
 
     private static void testVisualsClasspathIntegrity() {

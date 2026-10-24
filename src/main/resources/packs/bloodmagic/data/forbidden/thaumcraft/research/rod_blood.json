@@ -1,0 +1,47 @@
+{
+  "kind": "research",
+  "key": "forbidden:rod_blood",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "ROD_silverwood",
+    "INFUSION",
+    "forbidden:bloodmagic"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "victus": 5,
+    "aqua": 4,
+    "telum": 3
+  },
+  "complexity": 3,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -1,
+  "row": -3,
+  "text_pages": [
+    "forbidden.research_page.ROD_blood.1",
+    "forbidden.research_page.ROD_blood.2"
+  ],
+  "recipe_pages": [
+    "forbidden:wand_rod_blood"
+  ],
+  "page_order": [
+    "forbidden.research_page.ROD_blood.1",
+    "forbidden:wand_rod_blood",
+    "forbidden.research_page.ROD_blood.2"
+  ],
+  "icon": "forbidden:wand_rod_blood",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 2,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

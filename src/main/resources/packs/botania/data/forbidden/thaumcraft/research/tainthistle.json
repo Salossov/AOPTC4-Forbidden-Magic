@@ -1,0 +1,44 @@
+{
+  "kind": "research",
+  "key": "forbidden:tainthistle",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:botany",
+    "INFUSION"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "herba": 8,
+    "vitium": 10,
+    "praecantatio": 4
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -2,
+  "row": 5,
+  "text_pages": [
+    "forbidden.research_page.TAINTHISTLE.1"
+  ],
+  "recipe_pages": [
+    "forbidden:tainthistle"
+  ],
+  "page_order": [
+    "forbidden.research_page.TAINTHISTLE.1",
+    "forbidden:tainthistle"
+  ],
+  "icon": "forbidden:tainthistle",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

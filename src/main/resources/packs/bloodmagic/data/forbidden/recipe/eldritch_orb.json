@@ -1,0 +1,23 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:eldritch_orb",
+  "input": {
+    "item": "bloodmagic:archmagebloodorb"
+  },
+  "components": [
+    { "item": "thaumcraft:primordial_pearl" },
+    { "item": "thaumcraft:void_seed" },
+    { "item": "minecraft:nether_star" },
+    { "item": "forbidden:taint_coal" }
+  ],
+  "aspects": {
+    "victus": 64,
+    "alienis": 48,
+    "tenebrae": 32,
+    "vacuos": 64
+  },
+  "instability": 2,
+  "result": {
+    "id": "forbidden:eldritch_orb"
+  }
+}

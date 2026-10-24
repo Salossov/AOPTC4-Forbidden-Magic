@@ -1,0 +1,36 @@
+{
+  "kind": "research",
+  "key": "forbidden:bloodmagic",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:schools"
+  ],
+  "hidden_parents": [],
+  "aspects": {},
+  "complexity": 0,
+  "auto_unlock": true,
+  "concealed": false,
+  "column": -1,
+  "row": -1,
+  "text_pages": [
+    "forbidden.research_page.BLOODMAGIC.1"
+  ],
+  "recipe_pages": [],
+  "page_order": [
+    "forbidden.research_page.BLOODMAGIC.1"
+  ],
+  "icon": "bloodmagic:sacrificialdagger",
+  "virtual": false,
+  "round": true,
+  "stub": true,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

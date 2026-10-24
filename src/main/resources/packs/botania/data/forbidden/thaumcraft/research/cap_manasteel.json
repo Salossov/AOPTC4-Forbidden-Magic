@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:cap_manasteel",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:rod_livingwood"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "auram": 6,
+    "praecantatio": 4,
+    "metallum": 4
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": 1,
+  "row": 2,
+  "text_pages": [
+    "forbidden.research_page.CAP_manasteel.1"
+  ],
+  "recipe_pages": [
+    "forbidden:wand_cap_manasteel_inert"
+  ],
+  "page_order": [
+    "forbidden.research_page.CAP_manasteel.1",
+    "forbidden:wand_cap_manasteel_inert"
+  ],
+  "icon": "forbidden:wand_cap_manasteel",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": true,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

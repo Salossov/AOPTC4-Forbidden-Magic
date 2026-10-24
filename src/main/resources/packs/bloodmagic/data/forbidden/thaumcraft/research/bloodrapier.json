@@ -1,0 +1,46 @@
+{
+  "kind": "research",
+  "key": "forbidden:bloodrapier",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:bloodmagic",
+    "INFUSION",
+    "VOIDMETAL"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "victus": 16,
+    "fames": 12,
+    "telum": 12,
+    "praecantatio": 12
+  },
+  "complexity": 3,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": 1,
+  "row": -2,
+  "text_pages": [
+    "forbidden.research_page.BLOODRAPIER.1"
+  ],
+  "recipe_pages": [
+    "forbidden:blood_rapier"
+  ],
+  "page_order": [
+    "forbidden.research_page.BLOODRAPIER.1",
+    "forbidden:blood_rapier"
+  ],
+  "icon": "forbidden:blood_rapier",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 2,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

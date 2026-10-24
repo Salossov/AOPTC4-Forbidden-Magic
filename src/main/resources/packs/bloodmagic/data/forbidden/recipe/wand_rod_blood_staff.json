@@ -1,0 +1,29 @@
+{
+  "type": "thaumcraft:arcane",
+  "research": "forbidden:rod_blood_staff",
+  "pattern": [
+    "  D",
+    " B ",
+    "B  "
+  ],
+  "key": {
+    "B": {
+      "item": "forbidden:wand_rod_blood"
+    },
+    "D": {
+      "item": "bloodmagic:demonslate"
+    }
+  },
+  "vis": {
+    "aer": 26,
+    "terra": 26,
+    "ignis": 26,
+    "aqua": 26,
+    "ordo": 26,
+    "perditio": 26
+  },
+  "result": {
+    "id": "forbidden:wand_rod_blood_staff",
+    "count": 1
+  }
+}

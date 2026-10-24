@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:whisperweed",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:botany"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "herba": 8,
+    "cognitio": 10,
+    "sensus": 4
+  },
+  "complexity": 1,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -4,
+  "row": 5,
+  "text_pages": [
+    "forbidden.research_page.WHISPERWEED.1"
+  ],
+  "recipe_pages": [
+    "forbidden:whisperweed"
+  ],
+  "page_order": [
+    "forbidden.research_page.WHISPERWEED.1",
+    "forbidden:whisperweed"
+  ],
+  "icon": "forbidden:whisperweed",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

@@ -1,0 +1,45 @@
+{
+  "kind": "research",
+  "key": "forbidden:rod_livingwood",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:botany",
+    "ROD_silverwood",
+    "INFUSION"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "arbor": 8,
+    "praecantatio": 4,
+    "herba": 6
+  },
+  "complexity": 3,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -1,
+  "row": 3,
+  "text_pages": [
+    "forbidden.research_page.ROD_livingwood.1"
+  ],
+  "recipe_pages": [
+    "forbidden:wand_rod_livingwood"
+  ],
+  "page_order": [
+    "forbidden.research_page.ROD_livingwood.1",
+    "forbidden:wand_rod_livingwood"
+  ],
+  "icon": "forbidden:wand_rod_livingwood",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 2,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

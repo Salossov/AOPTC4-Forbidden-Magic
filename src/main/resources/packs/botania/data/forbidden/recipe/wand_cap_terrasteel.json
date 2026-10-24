@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NNN",
+    "N N"
+  ],
+  "key": {
+    "N": {
+      "item": "botania:terrasteel_nugget"
+    }
+  },
+  "result": {
+    "id": "forbidden:wand_cap_terrasteel",
+    "count": 1
+  }
+}

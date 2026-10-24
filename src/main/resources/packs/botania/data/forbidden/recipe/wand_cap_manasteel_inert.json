@@ -1,0 +1,25 @@
+{
+  "type": "thaumcraft:arcane",
+  "research": "forbidden:cap_manasteel",
+  "pattern": [
+    "NNN",
+    "N N"
+  ],
+  "key": {
+    "N": {
+      "item": "forbidden:manasteel_nugget"
+    }
+  },
+  "vis": {
+    "aer": 6,
+    "terra": 6,
+    "ignis": 6,
+    "aqua": 6,
+    "ordo": 6,
+    "perditio": 6
+  },
+  "result": {
+    "id": "forbidden:wand_cap_manasteel_inert",
+    "count": 1
+  }
+}

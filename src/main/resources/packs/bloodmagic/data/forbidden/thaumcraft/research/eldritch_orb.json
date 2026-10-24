@@ -1,0 +1,47 @@
+{
+  "kind": "research",
+  "key": "forbidden:eldritch_orb",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:bloodmagic",
+    "INFUSION",
+    "PRIMPEARL",
+    "VOIDMETAL"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "victus": 24,
+    "vacuos": 32,
+    "vitreus": 24,
+    "alienis": 12
+  },
+  "complexity": 4,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": 1,
+  "row": -3,
+  "text_pages": [
+    "forbidden.research_page.ELDRITCHORB.1"
+  ],
+  "recipe_pages": [
+    "forbidden:eldritch_orb"
+  ],
+  "page_order": [
+    "forbidden.research_page.ELDRITCHORB.1",
+    "forbidden:eldritch_orb"
+  ],
+  "icon": "forbidden:eldritch_orb",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 3,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": true,
+  "recipe_groups": {}
+}

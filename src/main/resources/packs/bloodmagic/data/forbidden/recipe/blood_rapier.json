@@ -1,0 +1,23 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:bloodrapier",
+  "input": {
+    "item": "thaumcraft:void_sword"
+  },
+  "components": [
+    { "item": "thaumcraft:void_seed" },
+    { "item": "forbidden:wrath_shard" },
+    { "item": "forbidden:gluttony_shard" },
+    { "item": "minecraft:feather" },
+    { "item": "thaumcraft:quicksilver" }
+  ],
+  "aspects": {
+    "victus": 18,
+    "fames": 32,
+    "telum": 8
+  },
+  "instability": 8,
+  "result": {
+    "id": "forbidden:blood_rapier"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "type": "thaumcraft:arcane",
+  "research": "forbidden:rod_dreamwood_staff",
+  "pattern": [
+    "  D",
+    " B ",
+    "B  "
+  ],
+  "key": {
+    "B": {
+      "item": "forbidden:wand_rod_dreamwood"
+    },
+    "D": {
+      "item": "botania:dragonstone"
+    }
+  },
+  "vis": {
+    "aer": 26,
+    "terra": 26,
+    "ignis": 26,
+    "aqua": 26,
+    "ordo": 26,
+    "perditio": 26
+  },
+  "result": {
+    "id": "forbidden:wand_rod_dreamwood_staff",
+    "count": 1
+  }
+}

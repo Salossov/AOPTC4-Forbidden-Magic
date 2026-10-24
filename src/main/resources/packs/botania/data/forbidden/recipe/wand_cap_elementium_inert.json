@@ -1,0 +1,25 @@
+{
+  "type": "thaumcraft:arcane",
+  "research": "forbidden:cap_elementium",
+  "pattern": [
+    "NNN",
+    "N N"
+  ],
+  "key": {
+    "N": {
+      "item": "forbidden:elementium_nugget"
+    }
+  },
+  "vis": {
+    "aer": 27,
+    "terra": 27,
+    "ignis": 27,
+    "aqua": 27,
+    "ordo": 27,
+    "perditio": 27
+  },
+  "result": {
+    "id": "forbidden:wand_cap_elementium_inert",
+    "count": 1
+  }
+}

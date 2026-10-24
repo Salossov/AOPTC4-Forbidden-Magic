@@ -1,0 +1,27 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:rod_blood",
+  "input": {
+    "item": "bloodmagic:masterbloodorb"
+  },
+  "components": [
+    { "item": "bloodmagic:magicales" },
+    { "item": "bloodmagic:reinforcedslate" },
+    { "item": "bloodmagic:reinforcedslate" },
+    { "item": "bloodmagic:blankslate" },
+    { "item": "bloodmagic:sanctus" },
+    { "item": "bloodmagic:aquasalus" },
+    { "item": "bloodmagic:incendium" },
+    { "item": "bloodmagic:terrae" },
+    { "item": "bloodmagic:aether" }
+  ],
+  "aspects": {
+    "victus": 32,
+    "praecantatio": 12,
+    "aqua": 16
+  },
+  "instability": 2,
+  "result": {
+    "id": "forbidden:wand_rod_blood_inert"
+  }
+}

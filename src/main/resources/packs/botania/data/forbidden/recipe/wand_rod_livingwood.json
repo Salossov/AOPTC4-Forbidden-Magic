@@ -1,0 +1,29 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:rod_livingwood",
+  "input": {
+    "item": "botania:livingwood_log"
+  },
+  "components": [
+    { "item": "botania:mana_string" },
+    { "item": "botania:rune_water" },
+    { "item": "botania:rune_fire" },
+    { "item": "botania:rune_earth" },
+    { "item": "botania:rune_air" },
+    { "item": "botania:rune_spring" },
+    { "item": "botania:rune_summer" },
+    { "item": "botania:rune_autumn" },
+    { "item": "botania:rune_winter" }
+  ],
+  "aspects": {
+    "praecantatio": 16,
+    "arbor": 32,
+    "victus": 16,
+    "sensus": 8,
+    "herba": 8
+  },
+  "instability": 3,
+  "result": {
+    "id": "forbidden:wand_rod_livingwood_inert"
+  }
+}

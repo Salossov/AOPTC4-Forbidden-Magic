@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "forbidden:crystalwell" },
+    { "item": "bloodmagic:weakbloodorb" }
+  ],
+  "result": {
+    "id": "forbidden:boundwell",
+    "count": 1
+  }
+}

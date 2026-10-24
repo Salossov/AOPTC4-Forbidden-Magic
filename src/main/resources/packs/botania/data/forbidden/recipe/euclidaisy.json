@@ -1,0 +1,25 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:euclidaisy",
+  "input": {
+    "item": "botania:cyan_mystical_flower"
+  },
+  "components": [
+    { "item": "thaumcraft:salis_mundus" },
+    { "item": "botania:mana_pearl" },
+    { "item": "botania:mana_diamond" },
+    { "item": "botania:cyan_petal" },
+    { "item": "botania:cyan_petal" },
+    { "item": "botania:rune_autumn" },
+    { "item": "botania:rune_winter" }
+  ],
+  "aspects": {
+    "auram": 8,
+    "alienis": 10,
+    "praecantatio": 8
+  },
+  "instability": 8,
+  "result": {
+    "id": "forbidden:euclidaisy"
+  }
+}

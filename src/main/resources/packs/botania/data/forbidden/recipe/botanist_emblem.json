@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " P ",
+    "PEP",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "item": "botania:mana_petal"
+    },
+    "E": {
+      "item": "minecraft:emerald"
+    }
+  },
+  "result": {
+    "id": "forbidden:botanist_emblem",
+    "count": 1
+  }
+}

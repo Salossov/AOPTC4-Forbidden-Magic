@@ -1,0 +1,24 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:tainthistle",
+  "input": {
+    "item": "forbidden:taint_stone"
+  },
+  "components": [
+    { "item": "botania:purple_petal" },
+    { "item": "botania:purple_petal" },
+    { "item": "botania:purple_petal" },
+    { "item": "botania:rune_wrath" },
+    { "item": "botania:rune_spring" }
+  ],
+  "aspects": {
+    "vitium": 8,
+    "fames": 4,
+    "aer": 4,
+    "aqua": 4
+  },
+  "instability": 4,
+  "result": {
+    "id": "forbidden:tainthistle"
+  }
+}

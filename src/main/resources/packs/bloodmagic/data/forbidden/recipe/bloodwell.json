@@ -1,0 +1,18 @@
+{
+  "type": "thaumcraft:arcane_shapeless",
+  "research": "forbidden:bloodwell",
+  "ingredients": [
+    { "item": "minecraft:feather" },
+    { "item": "bloodmagic:life_essence_bucket" },
+    { "item": "minecraft:glass_bottle" },
+    { "item": "bloodmagic:weakbloodorb" }
+  ],
+  "vis": {
+    "aqua": 10,
+    "terra": 10
+  },
+  "result": {
+    "id": "forbidden:bloodwell",
+    "count": 1
+  }
+}

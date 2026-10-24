@@ -1,0 +1,24 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:cap_elementium",
+  "input": {
+    "item": "forbidden:wand_cap_elementium_inert"
+  },
+  "components": [
+    { "item": "botania:pixie_dust" },
+    { "item": "botania:rune_water" },
+    { "item": "botania:rune_fire" },
+    { "item": "botania:rune_earth" },
+    { "item": "botania:rune_air" }
+  ],
+  "aspects": {
+    "terra": 18,
+    "ignis": 18,
+    "aqua": 18,
+    "aer": 18
+  },
+  "instability": 1,
+  "result": {
+    "id": "forbidden:wand_cap_elementium"
+  }
+}

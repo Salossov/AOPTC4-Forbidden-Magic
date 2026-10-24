@@ -52,7 +52,7 @@ public final class BotaniaCompat {
         // C02: Livingwood Rod (cap 100, cost 12, YandereWandUpdate)
         var livingwood = new WandRod(
                 ResourceLocation.fromNamespaceAndPath("forbidden", "livingwood"),
-                "ROD_livingwood",
+                "forbidden:rod_livingwood",
                 100,
                 () -> new ItemStack(ForbiddenContent.item("wand_rod_livingwood")),
                 12,
@@ -63,7 +63,7 @@ public final class BotaniaCompat {
         // C02: Dreamwood Rod (cap 100, cost 12, YandereWandUpdate)
         var dreamwood = new WandRod(
                 ResourceLocation.fromNamespaceAndPath("forbidden", "dreamwood"),
-                "ROD_dreamwood",
+                "forbidden:rod_dreamwood",
                 100,
                 () -> new ItemStack(ForbiddenContent.item("wand_rod_dreamwood")),
                 12,
@@ -73,7 +73,8 @@ public final class BotaniaCompat {
 
         // C02: Dreamwood Staff (cap 250, cost 25, YandereWandUpdate)
         var dreamwoodStaff = new StaffRod(
-                "forbidden:dreamwood",
+                ResourceLocation.fromNamespaceAndPath("forbidden", "dreamwood"),
+                "forbidden:rod_dreamwood_staff",
                 250,
                 () -> new ItemStack(ForbiddenContent.item("wand_rod_dreamwood_staff")),
                 25,
@@ -81,10 +82,10 @@ public final class BotaniaCompat {
         );
         WandRod.rods.putIfAbsent("dreamwood_staff", dreamwoodStaff);
 
-        // C02: Manasteel Cap (discount 10% -> 0.90f base modifier, cost 6, research "CAP_manasteel")
+        // C02: Manasteel Cap (discount 10% -> 0.90f base modifier, cost 6, research "forbidden:cap_manasteel")
         var manasteel = new WandCap(
                 ResourceLocation.fromNamespaceAndPath("forbidden", "manasteel"),
-                "CAP_manasteel",
+                "forbidden:cap_manasteel",
                 0.9f,
                 Set.of(),
                 0.0f,
@@ -93,10 +94,10 @@ public final class BotaniaCompat {
         );
         WandCap.caps.putIfAbsent("manasteel", manasteel);
 
-        // C02: Elementium Cap (discount 20% -> 0.80f base modifier, cost 9, research "CAP_elementium")
+        // C02: Elementium Cap (discount 20% -> 0.80f base modifier, cost 9, research "forbidden:cap_elementium")
         var elementium = new WandCap(
                 ResourceLocation.fromNamespaceAndPath("forbidden", "elementium"),
-                "CAP_elementium",
+                "forbidden:cap_elementium",
                 0.8f,
                 Set.of(),
                 0.0f,
@@ -105,10 +106,10 @@ public final class BotaniaCompat {
         );
         WandCap.caps.putIfAbsent("elementium", elementium);
 
-        // C02: Terrasteel Cap (1.8f base modifier, cost 1, research "CAP_terrasteel")
+        // C02: Terrasteel Cap (1.8f base modifier, cost 1, research "forbidden:cap_terrasteel")
         var terrasteel = new WandCap(
                 ResourceLocation.fromNamespaceAndPath("forbidden", "terrasteel"),
-                "CAP_terrasteel",
+                "forbidden:cap_terrasteel",
                 1.8f,
                 Set.of(),
                 0.0f,
@@ -128,6 +129,24 @@ public final class BotaniaCompat {
             return BotaniaBridge.requestManaExactForTool(stack, player, mana);
         } catch (Throwable t) {
             return false;
+        }
+    }
+
+    public static int drawMana(net.minecraft.world.level.Level level, net.minecraft.core.BlockPos pos, net.minecraft.core.BlockPos boundPos, int needed) {
+        if (!isLoaded()) return 0;
+        try {
+            return BotaniaBridge.drawManaFromPool(level, pos, boundPos, needed);
+        } catch (Throwable t) {
+            return 0;
+        }
+    }
+
+    public static int emitMana(net.minecraft.world.level.Level level, net.minecraft.core.BlockPos pos, net.minecraft.core.BlockPos boundPos, int available) {
+        if (!isLoaded()) return 0;
+        try {
+            return BotaniaBridge.emptyManaIntoCollector(level, pos, boundPos, available);
+        } catch (Throwable t) {
+            return 0;
         }
     }
 

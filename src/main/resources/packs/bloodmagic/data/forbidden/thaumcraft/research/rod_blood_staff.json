@@ -1,0 +1,44 @@
+{
+  "kind": "research",
+  "key": "forbidden:rod_blood_staff",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "ROD_silverwood_staff",
+    "forbidden:rod_blood"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "victus": 8,
+    "aqua": 7,
+    "telum": 6
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -3,
+  "row": -2,
+  "text_pages": [
+    "forbidden.research_page.ROD_blood_staff.1"
+  ],
+  "recipe_pages": [
+    "forbidden:wand_rod_blood_staff"
+  ],
+  "page_order": [
+    "forbidden.research_page.ROD_blood_staff.1",
+    "forbidden:wand_rod_blood_staff"
+  ],
+  "icon": "forbidden:wand_rod_blood_staff",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": true,
+  "recipe_groups": {}
+}

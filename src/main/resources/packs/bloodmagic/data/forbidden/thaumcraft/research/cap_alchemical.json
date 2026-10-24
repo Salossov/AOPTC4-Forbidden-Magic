@@ -1,0 +1,44 @@
+{
+  "kind": "research",
+  "key": "forbidden:cap_alchemical",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:rod_blood",
+    "CAP_gold"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "victus": 4,
+    "instrumentum": 1,
+    "aqua": 3
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -3,
+  "row": -3,
+  "text_pages": [
+    "forbidden.research_page.CAP_alchemical.1"
+  ],
+  "recipe_pages": [
+    "forbidden:wand_cap_alchemical"
+  ],
+  "page_order": [
+    "forbidden.research_page.CAP_alchemical.1",
+    "forbidden:wand_cap_alchemical"
+  ],
+  "icon": "forbidden:wand_cap_alchemical",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": true,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

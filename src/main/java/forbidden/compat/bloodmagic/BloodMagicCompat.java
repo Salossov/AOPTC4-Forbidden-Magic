@@ -67,7 +67,8 @@ public final class BloodMagicCompat {
 
         // C06: Blood Staff (cap 250, cost 25, BloodStaffUpdate)
         var bloodStaff = new StaffRod(
-                "forbidden:blood",
+                ResourceLocation.fromNamespaceAndPath("forbidden", "blood"),
+                "forbidden:rod_blood_staff",
                 250,
                 () -> new ItemStack(ForbiddenContent.item("wand_rod_blood_staff")),
                 25,
@@ -78,7 +79,7 @@ public final class BloodMagicCompat {
         // C06: Alchemical Cap (discount 15% -> 0.85f base modifier, cost 7)
         var alchemical = new WandCap(
                 ResourceLocation.fromNamespaceAndPath("forbidden", "alchemical"),
-                "CAP_alchemical",
+                "forbidden:cap_alchemical",
                 0.85f,
                 Set.of(),
                 0.0f,
