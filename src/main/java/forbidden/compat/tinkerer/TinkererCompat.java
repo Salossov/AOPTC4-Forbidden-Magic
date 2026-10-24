@@ -63,6 +63,23 @@ public final class TinkererCompat {
     }
 
     /**
+     * Directly registers the 8 Forbidden Magic enchantments into the receiver's catalog (Thaumic Tinkerer)
+     * if Thaumic Tinkerer is active on classpath. Returns count of registered entries.
+     */
+    public static int registerWithReceiver() {
+        int registered = 0;
+        try {
+            Class<?> imcClass = Class.forName("thaumic.tinkerer.compat.TinkererResearchImc");
+            var method = imcClass.getMethod("registerEnchantmentFromPayload", Object.class, String.class);
+            for (OsmoticCostEntry entry : TinkererEnchantmentRegistry.getAll()) {
+                Object res = method.invoke(null, entry, "forbidden");
+                if (Boolean.TRUE.equals(res)) registered++;
+            }
+        } catch (Throwable ignored) {}
+        return registered;
+    }
+
+    /**
      * Resolves KAMI aspects for a shard item if KAMI is present.
      * Original 1.7.10 Compat.java:
      * - kamiResource 6 (nether shard): DarkAspects.NETHER (2), MAGIC (1), CRYSTAL (1)

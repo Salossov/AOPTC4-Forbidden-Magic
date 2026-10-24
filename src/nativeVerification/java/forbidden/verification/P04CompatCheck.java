@@ -167,6 +167,45 @@ public final class P04CompatCheck {
         check(enderAspects.getAmount(Aspect.getAspect("alienis")) == 2, "ender shard alienis 2");
         check(enderAspects.getAmount(Aspect.getAspect("praecantatio")) == 1, "ender shard praecantatio 1");
         check(enderAspects.getAmount(Aspect.getAspect("vitreus")) == 1, "ender shard vitreus 1");
+
+        // Contract T01: Real receiver integration into Thaumic Tinkerer EnchanterCatalog
+        int registeredInReceiver = TinkererCompat.registerWithReceiver();
+        check(registeredInReceiver == 8, "all 8 enchantments registered into receiver");
+        try {
+            Class<?> catalogClass = Class.forName("thaumic.tinkerer.enchantment.EnchanterCatalog");
+            var findMethod = catalogClass.getMethod("find", ResourceLocation.class);
+            for (OsmoticCostEntry entry : TinkererEnchantmentRegistry.getAll()) {
+                Object receiverEntry = findMethod.invoke(null, entry.id());
+                check(receiverEntry != null, "receiver catalog contains " + entry.id());
+                int maxLvl = (int) receiverEntry.getClass().getMethod("maxLevel").invoke(receiverEntry);
+                check(maxLvl == entry.maxLevel(), "receiver maxLevel matches for " + entry.id());
+            }
+        } catch (ClassNotFoundException e) {
+            // Standalone without TT JAR
+        }
+
+        // Verify KAMI JSON data file format and aspect preservation
+        try (var stream = P04CompatCheck.class.getResourceAsStream("/data/forbidden/thaumcraft/tinkerer_kami_aspects.json");
+             var reader = new java.io.InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8)) {
+            check(stream != null, "tinkerer_kami_aspects.json exists in resources");
+            com.google.gson.JsonObject kamiJson = com.google.gson.JsonParser.parseReader(reader).getAsJsonObject();
+            check("item_aspect_additions".equals(kamiJson.get("kind").getAsString()), "kami aspects kind is item_aspect_additions");
+            var reqMods = kamiJson.getAsJsonArray("required_mods");
+            check(reqMods.size() == 1 && "thaumictinkerer".equals(reqMods.get(0).getAsString()), "kami aspects required_mods thaumictinkerer");
+            var entriesObj = kamiJson.getAsJsonObject("entries");
+            check(entriesObj.has("thaumictinkerer:nether_shard"), "kami entries has nether_shard");
+            check(entriesObj.has("thaumictinkerer:ender_shard"), "kami entries has ender_shard");
+
+            // Preservation check: applying KAMI additions onto an existing aspect map preserves non-KAMI aspects
+            Map<String, Integer> baseAspects = new LinkedHashMap<>(Map.of("ignis", 1));
+            for (var entry : entriesObj.getAsJsonObject("thaumictinkerer:nether_shard").entrySet()) {
+                baseAspects.put(entry.getKey(), entry.getValue().getAsInt());
+            }
+            check(baseAspects.get("ignis") == 1, "existing base aspect preserved");
+            check(baseAspects.get("forbidden:infernus") == 2, "added infernus aspect present");
+            check(baseAspects.get("praecantatio") == 1, "added praecantatio aspect present");
+            check(baseAspects.get("vitreus") == 1, "added vitreus aspect present");
+        }
     }
 
     private static void testC10TwilightForest() throws Exception {

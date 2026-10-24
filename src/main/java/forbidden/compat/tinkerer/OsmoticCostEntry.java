@@ -13,6 +13,8 @@ import thaumcraft.api.aspects.AspectList;
  */
 public record OsmoticCostEntry(
         ResourceLocation id,
+        int legacyId,
+        String legacyType,
         int maxLevel,
         Map<String, Integer> baseAspects,
         String texture,
@@ -24,6 +26,28 @@ public record OsmoticCostEntry(
         baseAspects = Collections.unmodifiableMap(baseAspects);
         if (texture == null) texture = "";
         if (research == null) research = "";
+        if (legacyType == null || legacyType.isBlank()) legacyType = defaultLegacyType(id);
+    }
+
+    public OsmoticCostEntry(
+            ResourceLocation id,
+            int maxLevel,
+            Map<String, Integer> baseAspects,
+            String texture,
+            String research
+    ) {
+        this(id, 0, defaultLegacyType(id), maxLevel, baseAspects, texture, research);
+    }
+
+    private static String defaultLegacyType(ResourceLocation id) {
+        if (id == null) return "all";
+        String path = id.getPath();
+        return switch (path) {
+            case "wrath", "educational" -> "weapon";
+            case "cluster", "consuming", "corrupting", "impact" -> "digger";
+            case "greedy", "voidtouched" -> "breakable";
+            default -> "all";
+        };
     }
 
     /**
