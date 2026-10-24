@@ -162,7 +162,12 @@ tasks.register('p04BotaniaCheck', JavaExec) {
     classpath = sourceSets.nativeVerification.runtimeClasspath
     mainClass = 'forbidden.verification.P04BotaniaCheck'
 }
-tasks.named('check') { dependsOn 'p02ToolsCheck', 'p02WandCheck', 'p03WrathCageCheck', 'p03VillagerCheck', 'p04CompatCheck', 'p04BloodMagicCheck', 'p04BotaniaCheck' }
+tasks.register('semanticDataCheck', JavaExec) {
+    dependsOn 'nativeVerificationClasses'
+    classpath = sourceSets.nativeVerification.runtimeClasspath
+    mainClass = 'forbidden.verification.SemanticDataCheck'
+}
+tasks.named('check') { dependsOn 'p02ToolsCheck', 'p02WandCheck', 'p03WrathCageCheck', 'p03VillagerCheck', 'p04CompatCheck', 'p04BloodMagicCheck', 'p04BotaniaCheck', 'semanticDataCheck' }
 ['normal': ['false', 'true'], 'noLust': ['true', 'true'], 'noCage': ['false', 'false']].each { profile, flags ->
     tasks.register("p01Content${profile.capitalize()}", JavaExec) {
         dependsOn 'nativeVerificationClasses'

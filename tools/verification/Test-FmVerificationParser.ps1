@@ -84,7 +84,6 @@ Assert-Condition "Case 4: Suite A without marker failed" ($suiteA4.Status -eq 'f
 Assert-Condition "Case 4: Overall failure" ($res4.OverallStatus -eq 'FAILURE') "Expected overall status FAILURE when a suite fails marker check"
 
 # Test Case 5: Another task's _PASS, followed by failure of tested task -> tested task failed
-# (The exact false-PASS bug reproducing lines 154-155 of the old launcher)
 Write-Host "Case 5: Alien _PASS, then failure of tested task" -ForegroundColor Yellow
 $fixture5 = @(
     "> Task :taskA",
@@ -125,9 +124,64 @@ $suiteAcc7 = $res7.Suites | Where-Object { $_.Task -eq 'serverAcceptance' }
 Assert-Condition "Case 7: Offline suites marked not_run" ($suiteA7.Status -eq 'not_run') "Expected taskA not_run in Acceptance phase"
 Assert-Condition "Case 7: Acceptance suite marked blocked" ($suiteAcc7.Status -eq 'blocked') "Expected serverAcceptance blocked"
 
+# Test Case 8: Artifact script missing -> strict overall failure
+Write-Host "Case 8: Artifact script missing" -ForegroundColor Yellow
+$audit8 = Evaluate-FmArtifactAudit -ArtifactAuditEnabled $true -ScriptFound $false -ErrorMessage "Script not found"
+$res8 = Parse-FmGradleOutput -OutputLines $fixture6 -GradleExitCode 0 -TestDefinitions $sampleDefs -Phase 'Offline' -ArtifactAudit $audit8
+Assert-Condition "Case 8: Audit marked failed" ($audit8.Passed -eq $false) "Expected audit to report failure"
+Assert-Condition "Case 8: Overall status strictly FAILURE" ($res8.OverallStatus -eq 'FAILURE') "Expected overall status FAILURE when artifact script missing"
+Assert-Condition "Case 8: Offline status strictly FAILURE" ($res8.OfflineStatus -eq 'FAILURE') "Expected offline status FAILURE"
+
+# Test Case 9: Artifact output missing / unparseable JSON -> strict overall failure
+Write-Host "Case 9: Artifact report JSON missing / unparseable" -ForegroundColor Yellow
+$audit9 = Evaluate-FmArtifactAudit -ArtifactAuditEnabled $true -ScriptFound $true -ScriptExitCode 0 -ArtifactReport $null
+$res9 = Parse-FmGradleOutput -OutputLines $fixture6 -GradleExitCode 0 -TestDefinitions $sampleDefs -Phase 'Offline' -ArtifactAudit $audit9
+Assert-Condition "Case 9: Audit marked failed" ($audit9.Passed -eq $false) "Expected audit to fail on null report"
+Assert-Condition "Case 9: Overall status strictly FAILURE" ($res9.OverallStatus -eq 'FAILURE') "Expected overall status FAILURE on unparseable artifact report"
+
+# Test Case 10: Artifact audit reported violations (Passed = false) -> strict overall failure
+Write-Host "Case 10: Artifact audit found violations" -ForegroundColor Yellow
+$badReport10 = [PSCustomObject]@{
+    MainJarName = 'ForbiddenMagic-1.21.1-test.jar'
+    Passed = $false
+    Violations = @('Forbidden test/verification class present in release JAR: forbidden/rules/Test.class')
+    TotalEntries = 900
+}
+$audit10 = Evaluate-FmArtifactAudit -ArtifactAuditEnabled $true -ScriptFound $true -ScriptExitCode 1 -ArtifactReport $badReport10
+$res10 = Parse-FmGradleOutput -OutputLines $fixture6 -GradleExitCode 0 -TestDefinitions $sampleDefs -Phase 'Offline' -ArtifactAudit $audit10
+Assert-Condition "Case 10: Audit marked failed" ($audit10.Passed -eq $false) "Expected audit to fail with violations"
+Assert-Condition "Case 10: Overall status strictly FAILURE" ($res10.OverallStatus -eq 'FAILURE') "Expected overall status FAILURE when artifact has violations"
+
+# Test Case 11: Artifact script exited with non-zero code -> strict overall failure
+Write-Host "Case 11: Artifact script non-zero exit code" -ForegroundColor Yellow
+$audit11 = Evaluate-FmArtifactAudit -ArtifactAuditEnabled $true -ScriptFound $true -ScriptExitCode 1 -ArtifactReport $null
+$res11 = Parse-FmGradleOutput -OutputLines $fixture6 -GradleExitCode 0 -TestDefinitions $sampleDefs -Phase 'Offline' -ArtifactAudit $audit11
+Assert-Condition "Case 11: Audit marked failed" ($audit11.Passed -eq $false) "Expected audit to fail on non-zero exit code"
+Assert-Condition "Case 11: Overall status strictly FAILURE" ($res11.OverallStatus -eq 'FAILURE') "Expected overall status FAILURE on non-zero exit code"
+
+# Test Case 12: Artifact verification threw exception -> strict overall failure
+Write-Host "Case 12: Artifact script threw exception" -ForegroundColor Yellow
+$audit12 = Evaluate-FmArtifactAudit -ArtifactAuditEnabled $true -ScriptFound $true -ErrorMessage "I/O error reading ZIP"
+$res12 = Parse-FmGradleOutput -OutputLines $fixture6 -GradleExitCode 0 -TestDefinitions $sampleDefs -Phase 'Offline' -ArtifactAudit $audit12
+Assert-Condition "Case 12: Audit marked failed" ($audit12.Passed -eq $false) "Expected audit to fail on exception"
+Assert-Condition "Case 12: Overall status strictly FAILURE" ($res12.OverallStatus -eq 'FAILURE') "Expected overall status FAILURE on exception"
+
+# Test Case 13: Clean artifact audit passed with 0 violations -> overall OFFLINE_SUCCESS_ACCEPTANCE_BLOCKED
+Write-Host "Case 13: Clean artifact audit passed" -ForegroundColor Yellow
+$goodReport13 = [PSCustomObject]@{
+    MainJarName = 'ForbiddenMagic-1.21.1-0.575.0-alpha.1.jar'
+    Passed = $true
+    Violations = @()
+    TotalEntries = 931
+}
+$audit13 = Evaluate-FmArtifactAudit -ArtifactAuditEnabled $true -ScriptFound $true -ScriptExitCode 0 -ArtifactReport $goodReport13
+$res13 = Parse-FmGradleOutput -OutputLines $fixture6 -GradleExitCode 0 -TestDefinitions $sampleDefs -Phase 'Offline' -ArtifactAudit $audit13
+Assert-Condition "Case 13: Audit marked passed" ($audit13.Passed -eq $true) "Expected audit to pass"
+Assert-Condition "Case 13: Overall status is OFFLINE_SUCCESS_ACCEPTANCE_BLOCKED" ($res13.OverallStatus -eq 'OFFLINE_SUCCESS_ACCEPTANCE_BLOCKED') "Expected OFFLINE_SUCCESS_ACCEPTANCE_BLOCKED"
+
 if (-not $allTestsPassed) {
     Write-Error "One or more regression tests failed!"
     exit 1
 } else {
-    Write-Host "ALL 7 REGRESSION CASES PASSED SUCCESSFULLY." -ForegroundColor Green
+    Write-Host "ALL 13 REGRESSION CASES PASSED SUCCESSFULLY." -ForegroundColor Green
 }

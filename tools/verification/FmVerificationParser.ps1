@@ -3,6 +3,78 @@
     Core parsing and evaluation logic for Forbidden Magic verification suites.
 #>
 
+function Evaluate-FmArtifactAudit {
+    param(
+        [bool]$ArtifactAuditEnabled = $false,
+        [bool]$ScriptFound = $true,
+        [int]$ScriptExitCode = 0,
+        [PSObject]$ArtifactReport = $null,
+        [string]$ErrorMessage = $null
+    )
+
+    if (-not $ArtifactAuditEnabled) {
+        return [PSCustomObject]@{
+            Audited = $false
+            Passed = $true
+            Reason = 'Artifact audit not requested.'
+            Report = $null
+        }
+    }
+
+    if (-not $ScriptFound) {
+        return [PSCustomObject]@{
+            Audited = $true
+            Passed = $false
+            Reason = if ($ErrorMessage) { $ErrorMessage } else { 'Verify-FmArtifacts.ps1 script not found' }
+            Report = $null
+        }
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($ErrorMessage)) {
+        return [PSCustomObject]@{
+            Audited = $true
+            Passed = $false
+            Reason = "Artifact audit encountered error: $ErrorMessage"
+            Report = $null
+        }
+    }
+
+    if ($ScriptExitCode -ne 0) {
+        return [PSCustomObject]@{
+            Audited = $true
+            Passed = $false
+            Reason = "Verify-FmArtifacts.ps1 exited with non-zero exit code $ScriptExitCode"
+            Report = $ArtifactReport
+        }
+    }
+
+    if ($null -eq $ArtifactReport) {
+        return [PSCustomObject]@{
+            Audited = $true
+            Passed = $false
+            Reason = 'Verify-FmArtifacts.ps1 did not produce a parseable JSON report'
+            Report = $null
+        }
+    }
+
+    if (-not $ArtifactReport.Passed) {
+        $vCount = if ($ArtifactReport.Violations) { $ArtifactReport.Violations.Count } else { 0 }
+        return [PSCustomObject]@{
+            Audited = $true
+            Passed = $false
+            Reason = "Artifact audit failed with $vCount violations"
+            Report = $ArtifactReport
+        }
+    }
+
+    return [PSCustomObject]@{
+        Audited = $true
+        Passed = $true
+        Reason = "Artifact audit passed ($($ArtifactReport.TotalEntries) entries verified, zero violations)"
+        Report = $ArtifactReport
+    }
+}
+
 function Parse-FmGradleOutput {
     param(
         [AllowEmptyCollection()]
@@ -18,7 +90,9 @@ function Parse-FmGradleOutput {
 
         [bool]$IncludeAcceptance = $false,
 
-        [string]$ReportRoot = ''
+        [string]$ReportRoot = '',
+
+        [PSObject]$ArtifactAudit = $null
     )
 
     # 1. Slice output lines strictly by task
@@ -215,10 +289,10 @@ function Parse-FmGradleOutput {
     $offlineFailed = @($offlineSuites | Where-Object { $_.Status -eq 'failed' }).Count
     $offlineNotRun = @($offlineSuites | Where-Object { $_.Status -eq 'not_run' }).Count
 
-    # If any offline suite actively failed, offlineStatus is FAILURE
-    # If all offline suites passed, offlineStatus is SUCCESS
-    # If some suites were not run (partial run) and none failed, PARTIAL_SUCCESS
-    $offlineStatus = if ($offlineFailed -gt 0 -or $GradleExitCode -ne 0) {
+    $artifactFailed = ($null -ne $ArtifactAudit -and $ArtifactAudit.Audited -and (-not $ArtifactAudit.Passed))
+
+    # If any offline suite actively failed or Gradle exited non-zero or artifact failed: FAILURE
+    $offlineStatus = if ($offlineFailed -gt 0 -or $GradleExitCode -ne 0 -or $artifactFailed) {
         'FAILURE'
     } elseif ($offlineNotRun -eq 0 -and $passedCount -gt 0) {
         'SUCCESS'
@@ -228,7 +302,9 @@ function Parse-FmGradleOutput {
 
     $acceptanceStatus = if ($blockedCount -gt 0) { 'BLOCKED' } else { 'NOT_RUN' }
 
-    $overallStatus = if ($offlineStatus -eq 'SUCCESS' -and $failedCount -eq 0) {
+    $overallStatus = if ($artifactFailed) {
+        'FAILURE'
+    } elseif ($offlineStatus -eq 'SUCCESS' -and $failedCount -eq 0) {
         if ($Phase -eq 'Offline') {
             'OFFLINE_SUCCESS_ACCEPTANCE_BLOCKED'
         } else {
@@ -250,5 +326,6 @@ function Parse-FmGradleOutput {
         BlockedCount = $blockedCount
         NotRunCount = $notRunCount
         Suites = $results
+        ArtifactAudit = $ArtifactAudit
     }
 }

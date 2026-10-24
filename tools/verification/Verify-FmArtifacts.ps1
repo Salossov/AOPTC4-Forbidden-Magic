@@ -10,7 +10,8 @@
 [CmdletBinding()]
 param(
     [string]$ProjectRoot = '',
-    [switch]$BuildFirst = $false
+    [switch]$BuildFirst = $false,
+    [string]$SpecificJarPath = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -32,19 +33,29 @@ if ($BuildFirst) {
     }
 }
 
-$buildLibsDir = Join-Path $ProjectRoot 'build/libs'
-if (-not (Test-Path $buildLibsDir)) {
-    throw "build/libs directory not found at $buildLibsDir. Build artifacts first."
-}
+$mainJar = $null
+$sourcesJar = $null
 
-$mainJars = Get-ChildItem -Path $buildLibsDir -Filter "ForbiddenMagic-1.21.1-*.jar" | Where-Object { $_.Name -notmatch '-sources\.jar$' }
-if ($mainJars.Count -eq 0) {
-    throw "No main ForbiddenMagic JAR found in $buildLibsDir"
-}
-$mainJar = $mainJars[0]
+if (-not [string]::IsNullOrWhiteSpace($SpecificJarPath)) {
+    if (-not (Test-Path $SpecificJarPath)) {
+        throw "Specific JAR file not found at $SpecificJarPath"
+    }
+    $mainJar = Get-Item $SpecificJarPath
+} else {
+    $buildLibsDir = Join-Path $ProjectRoot 'build/libs'
+    if (-not (Test-Path $buildLibsDir)) {
+        throw "build/libs directory not found at $buildLibsDir. Build artifacts first."
+    }
 
-$sourcesJars = Get-ChildItem -Path $buildLibsDir -Filter "ForbiddenMagic-1.21.1-*-sources.jar"
-$sourcesJar = if ($sourcesJars.Count -gt 0) { $sourcesJars[0] } else { $null }
+    $mainJars = Get-ChildItem -Path $buildLibsDir -Filter "ForbiddenMagic-1.21.1-*.jar" | Where-Object { $_.Name -notmatch '-sources\.jar$' }
+    if ($mainJars.Count -eq 0) {
+        throw "No main ForbiddenMagic JAR found in $buildLibsDir"
+    }
+    $mainJar = $mainJars[0]
+
+    $sourcesJars = Get-ChildItem -Path $buildLibsDir -Filter "ForbiddenMagic-1.21.1-*-sources.jar"
+    $sourcesJar = if ($sourcesJars.Count -gt 0) { $sourcesJars[0] } else { $null }
+}
 
 function Get-FileSha256($filePath) {
     $sha = [System.Security.Cryptography.SHA256]::Create()
@@ -61,8 +72,10 @@ $mainHash = Get-FileSha256 $mainJar.FullName
 $sourcesHash = if ($sourcesJar) { Get-FileSha256 $sourcesJar.FullName } else { 'NONE' }
 
 Write-Host "Verifying Artifact: $($mainJar.Name)" -ForegroundColor Cyan
-Write-Host "  Main JAR SHA-256:    $mainHash" -ForegroundColor Cyan
-Write-Host "  Sources JAR SHA-256: $sourcesHash" -ForegroundColor Cyan
+Write-Host "  Main JAR SHA-256:    $mainHash ($($mainJar.Length) bytes)" -ForegroundColor Cyan
+if ($sourcesJar) {
+    Write-Host "  Sources JAR SHA-256: $sourcesHash ($($sourcesJar.Length) bytes)" -ForegroundColor Cyan
+}
 
 $zip = [System.IO.Compression.ZipFile]::OpenRead($mainJar.FullName)
 $violations = [System.Collections.Generic.List[string]]::new()
@@ -114,6 +127,7 @@ $report = [PSCustomObject]@{
     MainJarSizeBytes = $mainJar.Length
     SourcesJarName = if ($sourcesJar) { $sourcesJar.Name } else { $null }
     SourcesJarSha256 = $sourcesHash
+    SourcesJarSizeBytes = if ($sourcesJar) { $sourcesJar.Length } else { 0 }
     Passed = $passed
     Violations = $violations
     TotalEntries = $entryNames.Count
@@ -124,6 +138,7 @@ if (-not $passed) {
     foreach ($v in $violations) {
         Write-Host "    - $v" -ForegroundColor Red
     }
+    Write-Output ($report | ConvertTo-Json -Compress)
     exit 1
 } else {
     Write-Host "[+] JAR Artifact Verification PASSED ($($entryNames.Count) entries verified, zero violations)." -ForegroundColor Green

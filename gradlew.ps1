@@ -32,7 +32,10 @@ $taskJavaHome = Join-Path $taskCacheRoot 'java-home'
 New-Item -ItemType Directory -Force -Path $env:GRADLE_USER_HOME,$env:TEMP,$taskJavaHome | Out-Null
 Push-Location -LiteralPath $taskRoot
 try {
+    $prevEap = $ErrorActionPreference
+    $ErrorActionPreference = 'Continue'
     & $taskJava '-Xmx2G' "-Duser.home=$taskJavaHome" "-Dorg.gradle.jvmargs=-Xmx2G -Duser.home=$taskJavaHome" '-classpath' (Join-Path $taskRoot 'gradle/wrapper/gradle-wrapper.jar') 'org.gradle.wrapper.GradleWrapperMain' @args
     $taskExit = $LASTEXITCODE
+    $ErrorActionPreference = $prevEap
 } finally { Pop-Location }
 exit $taskExit

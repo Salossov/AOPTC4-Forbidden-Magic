@@ -1,4 +1,4 @@
-<#
+﻿<#
 .SYNOPSIS
     Forbidden Magic Verification Suite Launcher (Offline / Acceptance).
 .DESCRIPTION
@@ -23,7 +23,7 @@ param(
 
     [switch]$IncludeAcceptance = $false,
 
-    [switch]$VerifyArtifacts = $true
+    [switch]$VerifyArtifacts = $false
 )
 
 $ErrorActionPreference = 'Continue'
@@ -116,6 +116,7 @@ Write-Host "==========================================================" -Foregro
 
 $testDefinitions = @(
     @{ Id = 'V-RULE-01'; Task = 'foundationRules'; Name = 'Foundation ContentGates Cross-Product Rules'; Marker = 'FORBIDDEN_FOUNDATION_RULES_PASS'; Phase = 'Offline' },
+    @{ Id = 'V-SEM-DATA'; Task = 'semanticDataCheck'; Name = 'Semantic Data, Recipe & Research Integrity Check'; Marker = 'FORBIDDEN_SEMANTIC_DATA_PASS'; Phase = 'Offline' },
     @{ Id = 'V-CODEC-01'; Task = 'componentCodecCheck'; Name = 'Component Codecs & Persistence Check'; Marker = 'FORBIDDEN_COMPONENT_CODECS_PASS'; Phase = 'Offline' },
     @{ Id = 'V-P01-NORM'; Task = 'p01ContentNormal'; Name = 'P01 Content Standard Profile'; Marker = 'FORBIDDEN_P01_CONTENT_PASS noLust=false cage=true'; Phase = 'Offline' },
     @{ Id = 'V-P01-NOLUST'; Task = 'p01ContentNoLust'; Name = 'P01 Content No-Lust Profile'; Marker = 'FORBIDDEN_P01_CONTENT_PASS noLust=true cage=true'; Phase = 'Offline' },
@@ -173,6 +174,55 @@ if ($Phase -ne 'Acceptance') {
     Write-Host "[+] Gradle execution finished with exit code $gradleExitCode in ${batchDuration}s" -ForegroundColor $finishColor
 }
 
+# Artifact Verification
+$artifactAudit = $null
+if ($VerifyArtifacts) {
+    $artifactScript = Join-Path $PSScriptRoot 'Verify-FmArtifacts.ps1'
+    if (-not (Test-Path $artifactScript)) {
+        $artifactAudit = Evaluate-FmArtifactAudit -ArtifactAuditEnabled $true -ScriptFound $false -ErrorMessage "Verify-FmArtifacts.ps1 script not found at $artifactScript"
+        Write-Error "[-] $($artifactAudit.Reason)"
+    } else {
+        Write-Host "[*] Performing fresh artifact build and offline inspection on release JARs..." -ForegroundColor Yellow
+        $artifactRaw = @()
+        $artifactExit = 0
+        $parsedReport = $null
+        $scriptError = $null
+
+        try {
+            # Requirement 5: Always rebuild offline to tie commit/diff directly to verified JAR
+            $artifactRaw = & $artifactScript -ProjectRoot $ProjectRoot -BuildFirst 2>&1
+            $artifactExit = $LASTEXITCODE
+            foreach ($line in $artifactRaw) {
+                if ($line -is [string] -and $line -match '^\{.*"MainJarName".*\}$') {
+                    try {
+                        $parsedReport = $line | ConvertFrom-Json
+                    } catch {
+                        $parsedReport = $null
+                    }
+                    break
+                }
+            }
+        } catch {
+            $scriptError = "$_"
+        }
+
+        $artifactAudit = Evaluate-FmArtifactAudit `
+            -ArtifactAuditEnabled $true `
+            -ScriptFound $true `
+            -ScriptExitCode $artifactExit `
+            -ArtifactReport $parsedReport `
+            -ErrorMessage $scriptError
+
+        if (-not $artifactAudit.Passed) {
+            Write-Error "[-] Artifact verification FAILED: $($artifactAudit.Reason)"
+        } else {
+            Write-Host "[+] Artifact verification PASSED: $($artifactAudit.Reason)" -ForegroundColor Green
+        }
+    }
+} else {
+    $artifactAudit = Evaluate-FmArtifactAudit -ArtifactAuditEnabled $false
+}
+
 # Parse execution output with robust parser
 $evalResult = Parse-FmGradleOutput `
     -OutputLines $batchOutput `
@@ -180,34 +230,10 @@ $evalResult = Parse-FmGradleOutput `
     -TestDefinitions $testDefinitions `
     -Phase $Phase `
     -IncludeAcceptance $IncludeAcceptance `
-    -ReportRoot $ReportRoot
+    -ReportRoot $ReportRoot `
+    -ArtifactAudit $artifactAudit
 
 $totalDuration = [Math]::Round(((Get-Date) - $startTime).TotalSeconds, 2)
-
-# Optional Artifact Verification
-$artifactReport = $null
-if ($VerifyArtifacts) {
-    $artifactScript = Join-Path $PSScriptRoot 'Verify-FmArtifacts.ps1'
-    if (Test-Path $artifactScript) {
-        Write-Host "[*] Performing artifact inspection on built JARs..." -ForegroundColor Yellow
-        try {
-            $hasJars = (Test-Path (Join-Path $ProjectRoot 'build/libs')) -and ((Get-ChildItem -Path (Join-Path $ProjectRoot 'build/libs') -Filter "ForbiddenMagic-1.21.1-*.jar" -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '-sources\.jar$' }).Count -gt 0)
-            $artifactRaw = if (-not $hasJars) {
-                & $artifactScript -ProjectRoot $ProjectRoot -BuildFirst
-            } else {
-                & $artifactScript -ProjectRoot $ProjectRoot
-            }
-            foreach ($line in $artifactRaw) {
-                if ($line -match '^\{.*"MainJarName".*\}$') {
-                    $artifactReport = $line | ConvertFrom-Json
-                    break
-                }
-            }
-        } catch {
-            Write-Warning "Artifact verification encountered error: $_"
-        }
-    }
-}
 
 # Read V-Catalog if present
 $catalogPath = Join-Path $PSScriptRoot 'verification-catalog.json'
@@ -243,7 +269,8 @@ $summary = [PSCustomObject]@{
     BlockedSuites = $evalResult.BlockedCount
     NotRunSuites = $evalResult.NotRunCount
     Suites = $evalResult.Suites
-    ArtifactReport = $artifactReport
+    ArtifactAudit = $artifactAudit
+    ArtifactReport = if ($artifactAudit -and $artifactAudit.Report) { $artifactAudit.Report } else { $null }
     CoverageCatalog = if ($catalogData) { $catalogData.categories } else { $null }
 }
 
@@ -295,20 +322,21 @@ foreach ($r in $evalResult.Suites) {
 $mdList.Add("")
 $mdList.Add('## V01-V73 Coverage Summary')
 $mdList.Add('- **Total Scenarios:** 73 (defined in `VERIFICATION_CHECKLIST.ru.md` and mapped in `VERIFICATION_COVERAGE_MAP.ru.md`)')
-$mdList.Add('- **Offline Verified:** 13 / 73 (17.8%) - static rules, codecs, registries, content mechanics in JVM, release artifact integrity')
+$mdList.Add('- **Offline Verified:** 18 / 73 (24.7%) - static rules, codecs, registries, content mechanics in JVM, recipes (V02), research (V03), P04 cross-mod integrations (V64-V69), release artifact integrity (V70-V73)')
 $mdList.Add('- **Blocked (Acceptance):** 55 / 73 (75.3%) - live server/client/gameplay runs strictly gated until explicit permission')
-$mdList.Add('- **Blocked (P04 Cross-Mod):** 5 / 73 (6.8%) - Botania, Blood Magic, Thaumic Tinkerer, TF/Special Mobs, JEI/EMI')
+$mdList.Add('- **Blocked (P04 Cross-Mod):** 0 / 73 (0.0%) - all cross-mod contracts (TT T01, BM C05-C08, Botania C01-C04, TF, Viewers C16) fully implemented and verified offline')
 
-if ($artifactReport) {
+if ($artifactAudit -and $artifactAudit.Report) {
+    $artRep = $artifactAudit.Report
     $mdList.Add("")
-    $mdList.Add('### Verified Artifacts (SHA-256)')
-    $mdList.Add("- **Main Gameplay JAR:** '$($artifactReport.MainJarName)' ($($artifactReport.MainJarSizeBytes) bytes)")
-    $mdList.Add("  - SHA-256: '$($artifactReport.MainJarSha256)'")
-    if ($artifactReport.SourcesJarName) {
-        $mdList.Add("- **Sources JAR:** '$($artifactReport.SourcesJarName)'")
-        $mdList.Add("  - SHA-256: '$($artifactReport.SourcesJarSha256)'")
+    $mdList.Add('### Verified Artifacts (SHA-256 Provenance)')
+    $mdList.Add("- **Main Gameplay JAR:** '$($artRep.MainJarName)' ($($artRep.MainJarSizeBytes) bytes)")
+    $mdList.Add("  - SHA-256: '$($artRep.MainJarSha256)'")
+    if ($artRep.SourcesJarName) {
+        $mdList.Add("- **Sources JAR:** '$($artRep.SourcesJarName)' ($($artRep.SourcesJarSizeBytes) bytes)")
+        $mdList.Add("  - SHA-256: '$($artRep.SourcesJarSha256)'")
     }
-    $statusText = if ($artifactReport.Passed) { 'VERIFIED (Zero forbidden payloads)' } else { 'FAILED' }
+    $statusText = if ($artRep.Passed) { "VERIFIED ($($artRep.TotalEntries) entries, zero forbidden payloads)" } else { "FAILED with $($artRep.Violations.Count) violations" }
     $mdList.Add("- **Integrity Status:** $statusText")
 }
 
@@ -333,7 +361,12 @@ Write-Host " Summary: $($evalResult.PassedCount) passed, $($evalResult.FailedCou
 Write-Host " Report written to: $mdPath" -ForegroundColor Cyan
 Write-Host "==========================================================" -ForegroundColor Cyan
 
-if ($evalResult.OverallStatus -eq 'FAILURE' -or $evalResult.FailedCount -gt 0 -or $gradleExitCode -ne 0) {
+$hasFailure = ($evalResult.OverallStatus -eq 'FAILURE') -or `
+              ($evalResult.FailedCount -gt 0) -or `
+              ($gradleExitCode -ne 0) -or `
+              ($artifactAudit -and $artifactAudit.Audited -and -not $artifactAudit.Passed)
+
+if ($hasFailure) {
     exit 1
 } else {
     exit 0

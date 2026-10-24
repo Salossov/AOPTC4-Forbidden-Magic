@@ -1,672 +1,672 @@
-{
-  "version": "1.0.0",
-  "totalScenarios": 73,
-  "categories": {
-    "OfflineStatic": 8,
-    "ServerAcceptance": 33,
-    "ConfigProfiles": 7,
-    "ClientAcceptance": 10,
-    "LifecycleMultiplayer": 3,
-    "IntegrationsP04": 6,
-    "ReleaseAudit": 6
-  },
-  "scenarios": [
-    {
-      "id": "V01",
-      "category": "OfflineStatic",
-      "name": "Полнота регистраций против релиза",
-      "status": "OFFLINE_PASSED",
-      "suite": "p01ContentNormal, p02ToolsCheck, p02WandCheck, p03WrathCageCheck, p03VillagerCheck",
-      "conditions": "23 базовых предмета, 4 BM-предмета, 10 блоков, 1 BE, 7 аспектов, 8 зачарований, 2 улучшения, 10 стержней, 4 посоха, 6 колпачков",
-      "blocker": null
-    },
-    {
-      "id": "V02",
-      "category": "OfflineStatic",
-      "name": "Сверка рецептов с analysis/recipes.json",
-      "status": "OFFLINE_PASSED",
-      "suite": "foundationRules",
-      "conditions": "Совпадение типа, результата, ингредиентов, аспектов, нестабильности, ключей исследований",
-      "blocker": null
-    },
-    {
-      "id": "V03",
-      "category": "OfflineStatic",
-      "name": "Сверка исследований с analysis/research.json",
-      "status": "OFFLINE_PASSED",
-      "suite": "foundationRules",
-      "conditions": "31 уникальный ключ, координаты, parents, hidden parents, flags, warp, triggers",
-      "blocker": null
-    },
-    {
-      "id": "V04",
-      "category": "OfflineStatic",
-      "name": "Аспекты предметов и мобов",
-      "status": "OFFLINE_PASSED",
-      "suite": "foundationRules, p01ContentNormal",
-      "conditions": "Сложение аддона с базовыми аспектами ядра без перезаписи",
-      "blocker": null
-    },
-    {
-      "id": "V05",
-      "category": "OfflineStatic",
-      "name": "Цвета и компоненты 7 аспектов",
-      "status": "OFFLINE_PASSED",
-      "suite": "foundationRules, p01ContentNormal",
-      "conditions": "Цвета, составные рецепты аспектов в Thaumonomicon и столе",
-      "blocker": null
-    },
-    {
-      "id": "V06",
-      "category": "OfflineStatic",
-      "name": "Числовой баланс релиза",
-      "status": "OFFLINE_PASSED",
-      "suite": "p02ToolsCheck, p02WandCheck, p03WrathCageCheck",
-      "conditions": "Емкости жезлов, модификаторы, клетка (5/4, 200..300, 3, 6, 4, 256), Blink 3 perditio, торт 12, ошейник 250 vis",
-      "blocker": null
-    },
-    {
-      "id": "V07",
-      "category": "OfflineStatic",
-      "name": "Побайтовый импорт текстур и ресурсов",
-      "status": "OFFLINE_PASSED",
-      "suite": "Verify-FmArtifacts.ps1, foundationRules",
-      "conditions": "SHA-256 текстур релиза, .mcmeta, 6 языковых файлов без потери ключей, D13",
-      "blocker": null
-    },
-    {
-      "id": "V08",
-      "category": "OfflineStatic",
-      "name": "Сборка JAR и прохождение unit/rules",
-      "status": "OFFLINE_PASSED",
-      "suite": "foundationRules, componentCodecCheck, Verify-FmArtifacts.ps1",
-      "conditions": "build офлайн без ошибок, правила валидации соблюдены",
-      "blocker": null
-    },
-    {
-      "id": "V09",
-      "category": "ServerAcceptance",
-      "name": "Запуск выделенного сервера без опциональных модов",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Чистый старт без неизвестных аспектов/тегов",
-      "blocker": "Gated: Требуется завершение блоков B/C и явное разрешение на запуск сервера"
-    },
-    {
-      "id": "V10",
-      "category": "ServerAcceptance",
-      "name": "Отдельный запуск выпускного JAR на сервере",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Запуск готового jar вне dev-окружения",
-      "blocker": "Gated: Требуется завершение блоков B/C и явное разрешение на запуск сервера"
-    },
-    {
-      "id": "V11",
-      "category": "ServerAcceptance",
-      "name": "Taint-дерево: рост, листва, плоды",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Высота 4..6, опадание листвы, дроп плодов",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V12",
-      "category": "ServerAcceptance",
-      "name": "UmbralBush и распространение InkFlower",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "2 блока, тик и костная мука",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V13",
-      "category": "ServerAcceptance",
-      "name": "Торт порчи: 12 кусочков, тики",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "12 кусочков по Q03, восстановление тиком",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V14",
-      "category": "ServerAcceptance",
-      "name": "StarBlock как основа маяка",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Основа маяка, рецепты самородков и звезд",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V15",
-      "category": "ServerAcceptance",
-      "name": "Черный краситель: покраска овцы",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Покраска обычной овцы, отказ на стриженой",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V16",
-      "category": "ServerAcceptance",
-      "name": "TaintCoal горение в печи (D11)",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Случайный срок 1..2400 тиков при каждом запросе",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V17",
-      "category": "ServerAcceptance",
-      "name": "TaintShovel: очистка flux и скорость",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Очистка 11x9x11, урон min(N,15), дроп taint-осколка",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V18",
-      "category": "ServerAcceptance",
-      "name": "TaintPickaxe: скорость по 4 диапазонам",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "4 диапазона твердости",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V19",
-      "category": "ServerAcceptance",
-      "name": "SkullAxe: головы мобов и игрока",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Шансы голов с учетом Looting",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V20",
-      "category": "ServerAcceptance",
-      "name": "Morph-инструменты: 3 фазы, Impact 3x3, Voidtouched",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Сохранение чар, отказ <= 5, Impact 3x3, Voidtouched раз в 10 тиков",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V21",
-      "category": "ServerAcceptance",
-      "name": "Diabolist Fork: импринт кристалла",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Пустой первый кристалл, режим Cries Havoc, боссы исключены",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V22",
-      "category": "ServerAcceptance",
-      "name": "Кнут: баффы, езда верхом, осколок похоти",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Баффы по типу целей, ПКМ верхом, lust-осколок в Незере",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V23",
-      "category": "ServerAcceptance",
-      "name": "Сборка жезлов и посохов в ядре",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "wand_assembly рецепты, требования исследований",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V24",
-      "category": "ServerAcceptance",
-      "name": "Обновления жезлов: tainted, infernal, profane, creative",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Биом заражения, Незер/огонь, контракт 25000 и превращение",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V25",
-      "category": "ServerAcceptance",
-      "name": "Blink focus: транзакция, Hellfire, Pandemonium",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance (контракт проверен офлайн в P02WandCheck)",
-      "conditions": "6 граней, списание только после успеха перемещения, Hellfire урон/огонь, Pandemonium мобы",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V26",
-      "category": "ServerAcceptance",
-      "name": "Hellfire-триггер без фокуса",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Обсидиан/незерак верхняя грань, Ignis vis, проверка прав",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V27",
-      "category": "ServerAcceptance",
-      "name": "Tooltips: blood, neutronium, profane",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Локализованные строки тултипов",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V28",
-      "category": "ServerAcceptance",
-      "name": "Crystalwell в обычном и легком режимах",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Выдача аспектов, возврат чернильницы, износ",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V29",
-      "category": "ServerAcceptance",
-      "name": "Primewell: бесконечные чернила, возврат жемчужины",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Damage 0, возврат жемчужины",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V30",
-      "category": "ServerAcceptance",
-      "name": "Кольцо еды и ошейник послушания",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Слоты Curios, надевание на другого игрока, vis от урона",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V31",
-      "category": "ServerAcceptance",
-      "name": "Зачарования: применимость и инфузия",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Недоступность на столе, инфузия всех уровней",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V32",
-      "category": "ServerAcceptance",
-      "name": "Механики 8 зачарований",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Cluster, Consuming, Corrupting, Educational, Greedy",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V33",
-      "category": "ServerAcceptance",
-      "name": "События дропа осколков грехов",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Раздел 3.8 трекера: FakePlayer, Незер, Looting",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V34",
-      "category": "ServerAcceptance",
-      "name": "Осколки Gluttony и Envy",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Еда в Незере, свинозомби с осколком зависти",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V35",
-      "category": "ServerAcceptance",
-      "name": "Клетка гнева: кристалл, дроп, сохранение BE",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance (компоненты проверены в componentCodecCheck/p03WrathCageCheck)",
-      "conditions": "Вставка, дроп, сериализация и десериализация",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V36",
-      "category": "ServerAcceptance",
-      "name": "Клетка гнева: всасывание эссенции и F01",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance (логика проверена в p03WrathCageCheck)",
-      "conditions": "Suction 256, емкость 64, защита от переполнения F01",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V37",
-      "category": "ServerAcceptance",
-      "name": "Клетка гнева: оплата циклов",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance (логика проверена в p03WrathCageCheck)",
-      "conditions": "Специальный -> ira -> desidia, +200 тиков, wrathCost=0",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V38",
-      "category": "ServerAcceptance",
-      "name": "Клетка гнева: лимиты и редстоун",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance (логика проверена в p03WrathCageCheck)",
-      "conditions": "Лимит 6 мобов, проверка коллизий, редстоун сигнал",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V39",
-      "category": "ServerAcceptance",
-      "name": "Клетка гнева: спавн мобов каталога",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance (каталог проверен в p03WrathCageCheck)",
-      "conditions": "Маппинг аспектов, Lucrum для неизвестных",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V40",
-      "category": "ServerAcceptance",
-      "name": "Клетка гнева: нагрузка нескольких клеток",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Стабильность TPS при работе нескольких клеток",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V41",
-      "category": "ServerAcceptance",
-      "name": "Житель-еретик: получение профессии и сделки",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance (сделки и POI проверены в p03VillagerCheck)",
-      "conditions": "Рабочий блок heretic_study (D15), 9 сделок, лимит 2, заряженный жезл",
-      "blocker": "Gated: Серверный сценарий, ожидание утверждения D15"
-    },
-    {
-      "id": "V42",
-      "category": "ServerAcceptance",
-      "name": "Исследования: автооткрытие и триггеры",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Stub исследования, скрытые триггеры, начисление warp",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V43",
-      "category": "ServerAcceptance",
-      "name": "Легкий режим исследований ядра",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Страница .1b и альтернативный рецепт Crystalwell",
-      "blocker": "Gated: Серверный сценарий"
-    },
-    {
-      "id": "V44",
-      "category": "ConfigProfiles",
-      "name": "Профиль No Lust = true",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "p01ContentNoLust (JVM пройден), serverAcceptance (живой старт заблокирован)",
-      "conditions": "Отсутствие Luxuria, ошейника, despair вместо lust",
-      "blocker": "Gated: Живой серверный запуск профиля"
-    },
-    {
-      "id": "V45",
-      "category": "ConfigProfiles",
-      "name": "Профиль Gluttony = 1 и = 2",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Gluttony 1: нет RINGFOOD/CAKE; Gluttony 2: тяжелые рецепты",
-      "blocker": "Gated: Живой серверный запуск профиля"
-    },
-    {
-      "id": "V46",
-      "category": "ConfigProfiles",
-      "name": "Профиль Wrath Cage Enabled = false",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "p01ContentNoCage (JVM пройден), serverAcceptance (живой старт заблокирован)",
-      "conditions": "Клетка и BE в реестре, кристалл и вкладка выключены",
-      "blocker": "Gated: Живой серверный запуск профиля"
-    },
-    {
-      "id": "V47",
-      "category": "ConfigProfiles",
-      "name": "Профиль Wrath Cage Fuel Cost = 0",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Бесплатная работа клетки, альтернативные страницы",
-      "blocker": "Gated: Живой серверный запуск профиля"
-    },
-    {
-      "id": "V48",
-      "category": "ConfigProfiles",
-      "name": "Профиль выключения зачарований",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Enchantments = false, Capitalist = false, Bestia для чешуйницы",
-      "blocker": "Gated: Живой серверный запуск профиля"
-    },
-    {
-      "id": "V49",
-      "category": "ConfigProfiles",
-      "name": "Профиль Spork of Doom и Tag Research",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Имя/текстура вилки, теги предметов исследований",
-      "blocker": "Gated: Живой серверный запуск профиля"
-    },
-    {
-      "id": "V50",
-      "category": "ConfigProfiles",
-      "name": "Профиль Cross-Mod = false, Conversion Wands = false",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Отключение кросс-модовых регистраций",
-      "blocker": "Gated: Живой серверный запуск профиля"
-    },
-    {
-      "id": "V51",
-      "category": "ClientAcceptance",
-      "name": "Рендер предметов и блоков в инвентаре/руке/мире",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "clientAcceptance",
-      "conditions": "Отсутствие missing textures, корректная прозрачность",
-      "blocker": "Gated: Клиентский рендер"
-    },
-    {
-      "id": "V52",
-      "category": "ClientAcceptance",
-      "name": "Иконки 7 аспектов: цвет, blend, книга",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "clientAcceptance",
-      "conditions": "Отображение в гоглах и Thaumonomicon",
-      "blocker": "Gated: Клиентский рендер"
-    },
-    {
-      "id": "V53",
-      "category": "ClientAcceptance",
-      "name": "Слои Morph-инструментов, кристалл и орнамент фокуса",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "clientAcceptance",
-      "conditions": "Тонировка второго слоя по фазам, иконки",
-      "blocker": "Gated: Клиентский рендер"
-    },
-    {
-      "id": "V54",
-      "category": "ClientAcceptance",
-      "name": "Листва fancy/fast, случайные бревна, кусочки торта",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "clientAcceptance",
-      "conditions": "Рендер состояний блоков",
-      "blocker": "Gated: Клиентский рендер"
-    },
-    {
-      "id": "V55",
-      "category": "ClientAcceptance",
-      "name": "Рендер моба в клетке гнева",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "clientAcceptance",
-      "conditions": "Вращение, масштаб, частицы, пауза редстоуна",
-      "blocker": "Gated: Клиентский рендер"
-    },
-    {
-      "id": "V56",
-      "category": "ClientAcceptance",
-      "name": "Части жезлов на сборной модели",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "clientAcceptance",
-      "conditions": "Текстуры моделей wand_*, свечение neutronium",
-      "blocker": "Gated: Клиентский рендер"
-    },
-    {
-      "id": "V57",
-      "category": "ClientAcceptance",
-      "name": "Thaumonomicon: иконка, 31 узел, связи, страницы",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "clientAcceptance",
-      "conditions": "Координаты узлов, фон категории, локализация ru/en",
-      "blocker": "Gated: Клиентский рендер"
-    },
-    {
-      "id": "V58",
-      "category": "ClientAcceptance",
-      "name": "Вкладки творческого режима",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "clientAcceptance",
-      "conditions": "Заполнение вкладок",
-      "blocker": "Gated: Клиентский рендер"
-    },
-    {
-      "id": "V59",
-      "category": "ClientAcceptance",
-      "name": "Скин жителя-еретика",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "clientAcceptance",
-      "conditions": "Текстура еретика в игре",
-      "blocker": "Gated: Клиентский рендер"
-    },
-    {
-      "id": "V60",
-      "category": "ClientAcceptance",
-      "name": "Пиксельная палитра и цвета аспектов",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "clientAcceptance",
-      "conditions": "Пиксельная сверка цветов",
-      "blocker": "Gated: Клиентский рендер"
-    },
-    {
-      "id": "V61",
-      "category": "LifecycleMultiplayer",
-      "name": "Синхронизация BE и компонентов по сети",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance + clientAcceptance",
-      "conditions": "Синхронизация клетки, Morph, ошейника",
-      "blocker": "Gated: Мультиплеерный сетевой тест"
-    },
-    {
-      "id": "V62",
-      "category": "LifecycleMultiplayer",
-      "name": "Перезапуск выделенного сервера",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance",
-      "conditions": "Сохранение мира, BE, warp и знаний между запусками",
-      "blocker": "Gated: Серверный перезапуск"
-    },
-    {
-      "id": "V63",
-      "category": "LifecycleMultiplayer",
-      "name": "Сценарий двух игроков (ошейник, сообщения)",
-      "status": "BLOCKED_ACCEPTANCE",
-      "suite": "serverAcceptance + clientAcceptance",
-      "conditions": "Взаимодействие двух реальных игроков",
-      "blocker": "Gated: Мультиплеер 2 игрока"
-    },
-    {
-      "id": "V64",
-      "category": "IntegrationsP04",
-      "name": "Отсутствие опциональных классов",
-      "status": "OFFLINE_PASSED",
-      "suite": "foundationRules",
-      "conditions": "ContentGates изолирует Botania, BM, TT без NoSuchMethod/ClassNotFound",
-      "blocker": null
-    },
-    {
-      "id": "V65",
-      "category": "IntegrationsP04",
-      "name": "Blood Magic интеграция (D8.2)",
-      "status": "BLOCKED_P04",
-      "suite": "P04",
-      "conditions": "Стержни, колпачок, рапира, ритуал, орб, Bloodthorn",
-      "blocker": "P04: Не начата по соглашению передачи; ждет приёмки B"
-    },
-    {
-      "id": "V66",
-      "category": "IntegrationsP04",
-      "name": "Botania интеграция (D8.1 build 456)",
-      "status": "BLOCKED_P04",
-      "suite": "P04",
-      "conditions": "Стержни, колпачки, мана-инфузия, 4 цветка",
-      "blocker": "P04: Не начата по соглашению передачи; ждет приёмки B"
-    },
-    {
-      "id": "V67",
-      "category": "IntegrationsP04",
-      "name": "Thaumic Tinkerer энчантер (T01)",
-      "status": "BLOCKED_P04",
-      "suite": "P04",
-      "conditions": "Стоимость зачарований FM в осматическом энчантере, KAMI",
-      "blocker": "P04: Требует согласования публичного API регистрации в TT"
-    },
-    {
-      "id": "V68",
-      "category": "IntegrationsP04",
-      "name": "Twilight Forest / Special Mobs мобы клетки",
-      "status": "BLOCKED_P04",
-      "suite": "P04",
-      "conditions": "Мобы в клетке и аспекты",
-      "blocker": "P04: Недоступная зависимость / ждет отдельного согласования"
-    },
-    {
-      "id": "V69",
-      "category": "IntegrationsP04",
-      "name": "JEI / EMI интеграция рецептов FM (D14)",
-      "status": "BLOCKED_P04",
-      "suite": "P04",
-      "conditions": "Отображение всех рецептов FM через TC viewers",
-      "blocker": "P04: Не начата"
-    },
-    {
-      "id": "V70",
-      "category": "ReleaseAudit",
-      "name": "Чистота JAR от тестов, логов и ядра",
-      "status": "OFFLINE_PASSED",
-      "suite": "Verify-FmArtifacts.ps1",
-      "conditions": "Отсутствие rules, nativeVerification, thaumcraft.*, runs/, .git",
-      "blocker": null
-    },
-    {
-      "id": "V71",
-      "category": "ReleaseAudit",
-      "name": "Лицензия WTFPL, авторы, README",
-      "status": "OFFLINE_PASSED",
-      "suite": "Verify-FmArtifacts.ps1",
-      "conditions": "LICENSE, NOTICE.md, neoforge.mods.toml",
-      "blocker": null
-    },
-    {
-      "id": "V72",
-      "category": "ReleaseAudit",
-      "name": "Актуальность MIGRATION_STATUS и HANDOFF",
-      "status": "OFFLINE_PASSED",
-      "suite": "Docs review",
-      "conditions": "Честное отражение фактических статусов, отклонений и незакрытых решений",
-      "blocker": null
-    },
-    {
-      "id": "V73",
-      "category": "ReleaseAudit",
-      "name": "Раздельный расчет процентов готовности",
-      "status": "OFFLINE_PASSED",
-      "suite": "PROGRESS.ru.md, MIGRATION_STATUS.md",
-      "conditions": "Отдельно: реализовано в коде / сервер / клиент",
-      "blocker": null
-    }
-  ]
+﻿{
+    "version":  "1.0.0",
+    "totalScenarios":  73,
+    "categories":  {
+                       "OfflineStatic":  8,
+                       "ServerAcceptance":  33,
+                       "ConfigProfiles":  7,
+                       "ClientAcceptance":  10,
+                       "LifecycleMultiplayer":  3,
+                       "IntegrationsP04":  6,
+                       "ReleaseAudit":  6
+                   },
+    "scenarios":  [
+                      {
+                          "id":  "V01",
+                          "category":  "OfflineStatic",
+                          "name":  "Полнота регистраций против релиза",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "p01ContentNormal, p02ToolsCheck, p02WandCheck, p03WrathCageCheck, p03VillagerCheck",
+                          "conditions":  "23 базовых предмета, 4 BM-предмета, 10 блоков, 1 BE, 7 аспектов, 8 зачарований, 2 улучшения, 10 стержней, 4 посоха, 6 колпачков",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V02",
+                          "category":  "OfflineStatic",
+                          "name":  "Сверка рецептов с analysis/recipes.json",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "semanticDataCheck",
+                          "conditions":  "Совпадение типа, результата, ингредиентов, аспектов, нестабильности, ключей исследований",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V03",
+                          "category":  "OfflineStatic",
+                          "name":  "Сверка исследований с analysis/research.json",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "semanticDataCheck",
+                          "conditions":  "31 уникальный ключ, координаты, parents, hidden parents, flags, warp, triggers",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V04",
+                          "category":  "OfflineStatic",
+                          "name":  "Аспекты предметов и мобов",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "foundationRules, p01ContentNormal",
+                          "conditions":  "Сложение аддона с базовыми аспектами ядра без перезаписи",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V05",
+                          "category":  "OfflineStatic",
+                          "name":  "Цвета и компоненты 7 аспектов",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "foundationRules, p01ContentNormal",
+                          "conditions":  "Цвета, составные рецепты аспектов в Thaumonomicon и столе",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V06",
+                          "category":  "OfflineStatic",
+                          "name":  "Числовой баланс релиза",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "p02ToolsCheck, p02WandCheck, p03WrathCageCheck",
+                          "conditions":  "Емкости жезлов, модификаторы, клетка (5/4, 200..300, 3, 6, 4, 256), Blink 3 perditio, торт 12, ошейник 250 vis",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V07",
+                          "category":  "OfflineStatic",
+                          "name":  "Побайтовый импорт текстур и ресурсов",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "Verify-FmArtifacts.ps1, foundationRules",
+                          "conditions":  "SHA-256 текстур релиза, .mcmeta, 6 языковых файлов без потери ключей, D13",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V08",
+                          "category":  "OfflineStatic",
+                          "name":  "Сборка JAR и прохождение unit/rules",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "foundationRules, componentCodecCheck, Verify-FmArtifacts.ps1",
+                          "conditions":  "build офлайн без ошибок, правила валидации соблюдены",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V09",
+                          "category":  "ServerAcceptance",
+                          "name":  "Запуск выделенного сервера без опциональных модов",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Чистый старт без неизвестных аспектов/тегов",
+                          "blocker":  "Gated: Требуется завершение блоков B/C и явное разрешение на запуск сервера"
+                      },
+                      {
+                          "id":  "V10",
+                          "category":  "ServerAcceptance",
+                          "name":  "Отдельный запуск выпускного JAR на сервере",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Запуск готового jar вне dev-окружения",
+                          "blocker":  "Gated: Требуется завершение блоков B/C и явное разрешение на запуск сервера"
+                      },
+                      {
+                          "id":  "V11",
+                          "category":  "ServerAcceptance",
+                          "name":  "Taint-дерево: рост, листва, плоды",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Высота 4..6, опадание листвы, дроп плодов",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V12",
+                          "category":  "ServerAcceptance",
+                          "name":  "UmbralBush и распространение InkFlower",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "2 блока, тик и костная мука",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V13",
+                          "category":  "ServerAcceptance",
+                          "name":  "Торт порчи: 12 кусочков, тики",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "12 кусочков по Q03, восстановление тиком",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V14",
+                          "category":  "ServerAcceptance",
+                          "name":  "StarBlock как основа маяка",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Основа маяка, рецепты самородков и звезд",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V15",
+                          "category":  "ServerAcceptance",
+                          "name":  "Черный краситель: покраска овцы",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Покраска обычной овцы, отказ на стриженой",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V16",
+                          "category":  "ServerAcceptance",
+                          "name":  "TaintCoal горение в печи (D11)",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Случайный срок 1..2400 тиков при каждом запросе",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V17",
+                          "category":  "ServerAcceptance",
+                          "name":  "TaintShovel: очистка flux и скорость",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Очистка 11x9x11, урон min(N,15), дроп taint-осколка",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V18",
+                          "category":  "ServerAcceptance",
+                          "name":  "TaintPickaxe: скорость по 4 диапазонам",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "4 диапазона твердости",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V19",
+                          "category":  "ServerAcceptance",
+                          "name":  "SkullAxe: головы мобов и игрока",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Шансы голов с учетом Looting",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V20",
+                          "category":  "ServerAcceptance",
+                          "name":  "Morph-инструменты: 3 фазы, Impact 3x3, Voidtouched",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Сохранение чар, отказ \u003c= 5, Impact 3x3, Voidtouched раз в 10 тиков",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V21",
+                          "category":  "ServerAcceptance",
+                          "name":  "Diabolist Fork: импринт кристалла",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Пустой первый кристалл, режим Cries Havoc, боссы исключены",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V22",
+                          "category":  "ServerAcceptance",
+                          "name":  "Кнут: баффы, езда верхом, осколок похоти",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Баффы по типу целей, ПКМ верхом, lust-осколок в Незере",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V23",
+                          "category":  "ServerAcceptance",
+                          "name":  "Сборка жезлов и посохов в ядре",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "wand_assembly рецепты, требования исследований",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V24",
+                          "category":  "ServerAcceptance",
+                          "name":  "Обновления жезлов: tainted, infernal, profane, creative",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Биом заражения, Незер/огонь, контракт 25000 и превращение",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V25",
+                          "category":  "ServerAcceptance",
+                          "name":  "Blink focus: транзакция, Hellfire, Pandemonium",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance (контракт проверен офлайн в P02WandCheck)",
+                          "conditions":  "6 граней, списание только после успеха перемещения, Hellfire урон/огонь, Pandemonium мобы",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V26",
+                          "category":  "ServerAcceptance",
+                          "name":  "Hellfire-триггер без фокуса",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Обсидиан/незерак верхняя грань, Ignis vis, проверка прав",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V27",
+                          "category":  "ServerAcceptance",
+                          "name":  "Tooltips: blood, neutronium, profane",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Локализованные строки тултипов",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V28",
+                          "category":  "ServerAcceptance",
+                          "name":  "Crystalwell в обычном и легком режимах",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Выдача аспектов, возврат чернильницы, износ",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V29",
+                          "category":  "ServerAcceptance",
+                          "name":  "Primewell: бесконечные чернила, возврат жемчужины",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Damage 0, возврат жемчужины",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V30",
+                          "category":  "ServerAcceptance",
+                          "name":  "Кольцо еды и ошейник послушания",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Слоты Curios, надевание на другого игрока, vis от урона",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V31",
+                          "category":  "ServerAcceptance",
+                          "name":  "Зачарования: применимость и инфузия",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Недоступность на столе, инфузия всех уровней",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V32",
+                          "category":  "ServerAcceptance",
+                          "name":  "Механики 8 зачарований",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Cluster, Consuming, Corrupting, Educational, Greedy",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V33",
+                          "category":  "ServerAcceptance",
+                          "name":  "События дропа осколков грехов",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Раздел 3.8 трекера: FakePlayer, Незер, Looting",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V34",
+                          "category":  "ServerAcceptance",
+                          "name":  "Осколки Gluttony и Envy",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Еда в Незере, свинозомби с осколком зависти",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V35",
+                          "category":  "ServerAcceptance",
+                          "name":  "Клетка гнева: кристалл, дроп, сохранение BE",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance (компоненты проверены в componentCodecCheck/p03WrathCageCheck)",
+                          "conditions":  "Вставка, дроп, сериализация и десериализация",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V36",
+                          "category":  "ServerAcceptance",
+                          "name":  "Клетка гнева: всасывание эссенции и F01",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance (логика проверена в p03WrathCageCheck)",
+                          "conditions":  "Suction 256, емкость 64, защита от переполнения F01",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V37",
+                          "category":  "ServerAcceptance",
+                          "name":  "Клетка гнева: оплата циклов",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance (логика проверена в p03WrathCageCheck)",
+                          "conditions":  "Специальный -\u003e ira -\u003e desidia, +200 тиков, wrathCost=0",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V38",
+                          "category":  "ServerAcceptance",
+                          "name":  "Клетка гнева: лимиты и редстоун",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance (логика проверена в p03WrathCageCheck)",
+                          "conditions":  "Лимит 6 мобов, проверка коллизий, редстоун сигнал",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V39",
+                          "category":  "ServerAcceptance",
+                          "name":  "Клетка гнева: спавн мобов каталога",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance (каталог проверен в p03WrathCageCheck)",
+                          "conditions":  "Маппинг аспектов, Lucrum для неизвестных",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V40",
+                          "category":  "ServerAcceptance",
+                          "name":  "Клетка гнева: нагрузка нескольких клеток",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Стабильность TPS при работе нескольких клеток",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V41",
+                          "category":  "ServerAcceptance",
+                          "name":  "Житель-еретик: получение профессии и сделки",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance (сделки и POI проверены в p03VillagerCheck)",
+                          "conditions":  "Рабочий блок heretic_study (D15), 9 сделок, лимит 2, заряженный жезл",
+                          "blocker":  "Gated: Серверный сценарий, ожидание утверждения D15"
+                      },
+                      {
+                          "id":  "V42",
+                          "category":  "ServerAcceptance",
+                          "name":  "Исследования: автооткрытие и триггеры",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Stub исследования, скрытые триггеры, начисление warp",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V43",
+                          "category":  "ServerAcceptance",
+                          "name":  "Легкий режим исследований ядра",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Страница .1b и альтернативный рецепт Crystalwell",
+                          "blocker":  "Gated: Серверный сценарий"
+                      },
+                      {
+                          "id":  "V44",
+                          "category":  "ConfigProfiles",
+                          "name":  "Профиль No Lust = true",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "p01ContentNoLust (JVM пройден), serverAcceptance (живой старт заблокирован)",
+                          "conditions":  "Отсутствие Luxuria, ошейника, despair вместо lust",
+                          "blocker":  "Gated: Живой серверный запуск профиля"
+                      },
+                      {
+                          "id":  "V45",
+                          "category":  "ConfigProfiles",
+                          "name":  "Профиль Gluttony = 1 и = 2",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Gluttony 1: нет RINGFOOD/CAKE; Gluttony 2: тяжелые рецепты",
+                          "blocker":  "Gated: Живой серверный запуск профиля"
+                      },
+                      {
+                          "id":  "V46",
+                          "category":  "ConfigProfiles",
+                          "name":  "Профиль Wrath Cage Enabled = false",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "p01ContentNoCage (JVM пройден), serverAcceptance (живой старт заблокирован)",
+                          "conditions":  "Клетка и BE в реестре, кристалл и вкладка выключены",
+                          "blocker":  "Gated: Живой серверный запуск профиля"
+                      },
+                      {
+                          "id":  "V47",
+                          "category":  "ConfigProfiles",
+                          "name":  "Профиль Wrath Cage Fuel Cost = 0",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Бесплатная работа клетки, альтернативные страницы",
+                          "blocker":  "Gated: Живой серверный запуск профиля"
+                      },
+                      {
+                          "id":  "V48",
+                          "category":  "ConfigProfiles",
+                          "name":  "Профиль выключения зачарований",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Enchantments = false, Capitalist = false, Bestia для чешуйницы",
+                          "blocker":  "Gated: Живой серверный запуск профиля"
+                      },
+                      {
+                          "id":  "V49",
+                          "category":  "ConfigProfiles",
+                          "name":  "Профиль Spork of Doom и Tag Research",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Имя/текстура вилки, теги предметов исследований",
+                          "blocker":  "Gated: Живой серверный запуск профиля"
+                      },
+                      {
+                          "id":  "V50",
+                          "category":  "ConfigProfiles",
+                          "name":  "Профиль Cross-Mod = false, Conversion Wands = false",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Отключение кросс-модовых регистраций",
+                          "blocker":  "Gated: Живой серверный запуск профиля"
+                      },
+                      {
+                          "id":  "V51",
+                          "category":  "ClientAcceptance",
+                          "name":  "Рендер предметов и блоков в инвентаре/руке/мире",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "clientAcceptance",
+                          "conditions":  "Отсутствие missing textures, корректная прозрачность",
+                          "blocker":  "Gated: Клиентский рендер"
+                      },
+                      {
+                          "id":  "V52",
+                          "category":  "ClientAcceptance",
+                          "name":  "Иконки 7 аспектов: цвет, blend, книга",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "clientAcceptance",
+                          "conditions":  "Отображение в гоглах и Thaumonomicon",
+                          "blocker":  "Gated: Клиентский рендер"
+                      },
+                      {
+                          "id":  "V53",
+                          "category":  "ClientAcceptance",
+                          "name":  "Слои Morph-инструментов, кристалл и орнамент фокуса",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "clientAcceptance",
+                          "conditions":  "Тонировка второго слоя по фазам, иконки",
+                          "blocker":  "Gated: Клиентский рендер"
+                      },
+                      {
+                          "id":  "V54",
+                          "category":  "ClientAcceptance",
+                          "name":  "Листва fancy/fast, случайные бревна, кусочки торта",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "clientAcceptance",
+                          "conditions":  "Рендер состояний блоков",
+                          "blocker":  "Gated: Клиентский рендер"
+                      },
+                      {
+                          "id":  "V55",
+                          "category":  "ClientAcceptance",
+                          "name":  "Рендер моба в клетке гнева",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "clientAcceptance",
+                          "conditions":  "Вращение, масштаб, частицы, пауза редстоуна",
+                          "blocker":  "Gated: Клиентский рендер"
+                      },
+                      {
+                          "id":  "V56",
+                          "category":  "ClientAcceptance",
+                          "name":  "Части жезлов на сборной модели",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "clientAcceptance",
+                          "conditions":  "Текстуры моделей wand_*, свечение neutronium",
+                          "blocker":  "Gated: Клиентский рендер"
+                      },
+                      {
+                          "id":  "V57",
+                          "category":  "ClientAcceptance",
+                          "name":  "Thaumonomicon: иконка, 31 узел, связи, страницы",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "clientAcceptance",
+                          "conditions":  "Координаты узлов, фон категории, локализация ru/en",
+                          "blocker":  "Gated: Клиентский рендер"
+                      },
+                      {
+                          "id":  "V58",
+                          "category":  "ClientAcceptance",
+                          "name":  "Вкладки творческого режима",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "clientAcceptance",
+                          "conditions":  "Заполнение вкладок",
+                          "blocker":  "Gated: Клиентский рендер"
+                      },
+                      {
+                          "id":  "V59",
+                          "category":  "ClientAcceptance",
+                          "name":  "Скин жителя-еретика",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "clientAcceptance",
+                          "conditions":  "Текстура еретика в игре",
+                          "blocker":  "Gated: Клиентский рендер"
+                      },
+                      {
+                          "id":  "V60",
+                          "category":  "ClientAcceptance",
+                          "name":  "Пиксельная палитра и цвета аспектов",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "clientAcceptance",
+                          "conditions":  "Пиксельная сверка цветов",
+                          "blocker":  "Gated: Клиентский рендер"
+                      },
+                      {
+                          "id":  "V61",
+                          "category":  "LifecycleMultiplayer",
+                          "name":  "Синхронизация BE и компонентов по сети",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance + clientAcceptance",
+                          "conditions":  "Синхронизация клетки, Morph, ошейника",
+                          "blocker":  "Gated: Мультиплеерный сетевой тест"
+                      },
+                      {
+                          "id":  "V62",
+                          "category":  "LifecycleMultiplayer",
+                          "name":  "Перезапуск выделенного сервера",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance",
+                          "conditions":  "Сохранение мира, BE, warp и знаний между запусками",
+                          "blocker":  "Gated: Серверный перезапуск"
+                      },
+                      {
+                          "id":  "V63",
+                          "category":  "LifecycleMultiplayer",
+                          "name":  "Сценарий двух игроков (ошейник, сообщения)",
+                          "status":  "BLOCKED_ACCEPTANCE",
+                          "suite":  "serverAcceptance + clientAcceptance",
+                          "conditions":  "Взаимодействие двух реальных игроков",
+                          "blocker":  "Gated: Мультиплеер 2 игрока"
+                      },
+                      {
+                          "id":  "V64",
+                          "category":  "IntegrationsP04",
+                          "name":  "Отсутствие опциональных классов",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "foundationRules",
+                          "conditions":  "ContentGates изолирует Botania, BM, TT без NoSuchMethod/ClassNotFound",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V65",
+                          "category":  "IntegrationsP04",
+                          "name":  "Blood Magic интеграция (D8.2)",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "p04BloodMagicCheck",
+                          "conditions":  "Стержни, колпачок, рапира, ритуал, орб, Bloodthorn (механики проверены в JVM; live приёмка gated)",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V66",
+                          "category":  "IntegrationsP04",
+                          "name":  "Botania интеграция (D8.1 build 456)",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "p04BotaniaCheck",
+                          "conditions":  "Стержни, колпачки, мана-инфузия, 4 цветка (механики проверены в JVM; live приёмка gated)",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V67",
+                          "category":  "IntegrationsP04",
+                          "name":  "Thaumic Tinkerer энчантер (T01)",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "p04CompatCheck",
+                          "conditions":  "8 стоимостей T01 в каталоге TT EnchanterCatalog, KAMI аспекты (проверено в JVM; live приёмка gated)",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V68",
+                          "category":  "IntegrationsP04",
+                          "name":  "Twilight Forest / Special Mobs мобы клетки",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "p04CompatCheck",
+                          "conditions":  "Twilight Forest мобы и аспекты в клетке гнева (Special Mobs отложен по согласованию)",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V69",
+                          "category":  "IntegrationsP04",
+                          "name":  "JEI / EMI интеграция рецептов FM (D14)",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "p04CompatCheck",
+                          "conditions":  "5 категорий рецептов FM автоматически индексируются TC viewers (ARCANE, ARCANE_SHAPELESS, CRUCIBLE, INFUSION, INFERNAL)",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V70",
+                          "category":  "ReleaseAudit",
+                          "name":  "Чистота JAR от тестов, логов и ядра",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "Verify-FmArtifacts.ps1",
+                          "conditions":  "Отсутствие rules, nativeVerification, thaumcraft.*, runs/, .git",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V71",
+                          "category":  "ReleaseAudit",
+                          "name":  "Лицензия WTFPL, авторы, README",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "Verify-FmArtifacts.ps1",
+                          "conditions":  "LICENSE, NOTICE.md, neoforge.mods.toml",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V72",
+                          "category":  "ReleaseAudit",
+                          "name":  "Актуальность MIGRATION_STATUS и HANDOFF",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "Docs review",
+                          "conditions":  "Честное отражение фактических статусов, отклонений и незакрытых решений",
+                          "blocker":  null
+                      },
+                      {
+                          "id":  "V73",
+                          "category":  "ReleaseAudit",
+                          "name":  "Раздельный расчет процентов готовности",
+                          "status":  "OFFLINE_PASSED",
+                          "suite":  "PROGRESS.ru.md, MIGRATION_STATUS.md",
+                          "conditions":  "Отдельно: реализовано в коде / сервер / клиент",
+                          "blocker":  null
+                      }
+                  ]
 }
