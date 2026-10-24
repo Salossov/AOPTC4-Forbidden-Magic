@@ -236,7 +236,7 @@ foreach ($r in $results) {
     $phaseStr = $r.Phase
     $durStr = $r.DurationSec
     $reasonStr = $r.Reason
-    $mdList.Add("| $idStr | **$nameStr** (``$task``) | $phaseStr | $statusEmoji | ${durStr}s | $reasonStr |")
+    $mdList.Add("| $idStr | **$nameStr** (``$taskStr``) | $phaseStr | $statusEmoji | ${durStr}s | $reasonStr |")
 }
 
 $mdList.Add("")
