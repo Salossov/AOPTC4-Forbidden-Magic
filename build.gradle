@@ -50,7 +50,10 @@ neoForge {
     }
 }
 
-def coreRoot = file('../../../repo')
+def coreRoot = providers.gradleProperty('coreRoot').map { file(it) }.getOrElse {
+    def direct = file('../../../repo')
+    if (direct.isDirectory()) direct else file('../../../../../repo')
+}
 def apiJar = file(providers.gradleProperty('thaumcraftApiJar').getOrElse("${coreRoot}/api/build/libs/thaumcraft-api-${project.thaumcraft_version}.jar"))
 dependencies {
     compileOnly files(apiJar)
