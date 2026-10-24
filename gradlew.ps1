@@ -1,6 +1,12 @@
 $ErrorActionPreference = 'Stop'
 $taskRoot = $PSScriptRoot
 $taskWorkspace = [IO.Path]::GetFullPath((Join-Path $taskRoot '../../..'))
+if (-not (Test-Path -LiteralPath (Join-Path $taskWorkspace '.tools/java21'))) {
+    $taskCandidate = [IO.Path]::GetFullPath((Join-Path $taskRoot '../../../../..'))
+    if (Test-Path -LiteralPath (Join-Path $taskCandidate '.tools/java21')) {
+        $taskWorkspace = $taskCandidate
+    }
+}
 $taskJava = $null
 foreach ($taskJdkRoot in @((Join-Path $taskRoot '.tools/java21'), (Join-Path $taskWorkspace '.tools/java21'))) {
     if (-not (Test-Path -LiteralPath $taskJdkRoot)) { continue }
