@@ -34,6 +34,7 @@ public final class ForbiddenContent {
     public static final Supplier<Block> STAR_BLOCK = block("star_block", () -> new Block(BlockBehaviour.Properties.ofFullCopy(Blocks.IRON_BLOCK).strength(5)));
     public static final Supplier<Block> ARCANE_CAKE = BLOCKS.register("arcane_cake", () -> new ArcaneCakeBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.CAKE).strength(.5F).randomTicks()));
     public static final Supplier<Block> WRATH_CAGE = block("wrath_cage", () -> new WrathCageBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SPAWNER).strength(5, 2000).sound(SoundType.METAL).noOcclusion()));
+    public static final Supplier<Block> HERETIC_STUDY = block("heretic_study", () -> new HereticStudyBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.LECTERN).strength(2.5F).sound(SoundType.WOOD)));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WrathCageEntity>> CAGE_ENTITY = ENTITIES.register("wrath_cage", () -> BlockEntityType.Builder.of(WrathCageEntity::new, WRATH_CAGE.get()).build(null));
     public static final Supplier<Item> TAINT_FRUIT = item("taint_fruit", () -> new TaintFruitItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(.8F).build())));
     public static final Supplier<Item> TAINT_COAL = item("taint_coal", () -> new TaintCoalItem(new Item.Properties()));

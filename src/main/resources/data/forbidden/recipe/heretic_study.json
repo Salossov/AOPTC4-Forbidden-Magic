@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "PPP",
+    " B ",
+    " S "
+  ],
+  "key": {
+    "P": {
+      "item": "forbidden:taint_planks"
+    },
+    "B": {
+      "item": "minecraft:book"
+    },
+    "S": {
+      "item": "forbidden:taint_stone"
+    }
+  },
+  "result": {
+    "id": "forbidden:heretic_study",
+    "count": 1
+  }
+}

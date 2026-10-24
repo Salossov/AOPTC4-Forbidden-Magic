@@ -377,6 +377,8 @@
   "block.forbidden.taint_sapling": "Tainted Sapling",
   "block.forbidden.taint_stone": "Tainted Stone",
   "block.forbidden.taint_bricks": "Tainted Stone Bricks",
+  "block.forbidden.heretic_study": "Heretic's Study",
+  "entity.minecraft.villager.forbidden.heretic": "Heretic",
   "aspect.forbidden.infernus": "Infernus",
   "tc.aspect.forbidden:infernus": "The Nether, Demons, Hellfire",
   "aspect.forbidden.ira": "Ira",

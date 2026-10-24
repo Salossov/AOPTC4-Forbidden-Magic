@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "forbidden:block/heretic_study"
+    },
+    "facing=south": {
+      "model": "forbidden:block/heretic_study",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "forbidden:block/heretic_study",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "forbidden:block/heretic_study",
+      "y": 90
+    }
+  }
+}

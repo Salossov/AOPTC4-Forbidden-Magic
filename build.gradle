@@ -113,7 +113,12 @@ tasks.register('p03WrathCageCheck', JavaExec) {
     classpath = sourceSets.nativeVerification.runtimeClasspath
     mainClass = 'forbidden.verification.P03WrathCageCheck'
 }
-tasks.named('check') { dependsOn 'p02ToolsCheck', 'p02WandCheck', 'p03WrathCageCheck' }
+tasks.register('p03VillagerCheck', JavaExec) {
+    dependsOn 'nativeVerificationClasses'
+    classpath = sourceSets.nativeVerification.runtimeClasspath
+    mainClass = 'forbidden.verification.P03VillagerCheck'
+}
+tasks.named('check') { dependsOn 'p02ToolsCheck', 'p02WandCheck', 'p03WrathCageCheck', 'p03VillagerCheck' }
 ['normal': ['false', 'true'], 'noLust': ['true', 'true'], 'noCage': ['false', 'false']].each { profile, flags ->
     tasks.register("p01Content${profile.capitalize()}", JavaExec) {
         dependsOn 'nativeVerificationClasses'

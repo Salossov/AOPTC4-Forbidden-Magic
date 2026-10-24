@@ -44,7 +44,7 @@ public final class ForbiddenVillagers {
         public static void onRegister(RegisterEvent event) {
             if (event.getRegistryKey().equals(Registries.POINT_OF_INTEREST_TYPE)) {
                 event.register(Registries.POINT_OF_INTEREST_TYPE, HERETIC_ID, () ->
-                    new PoiType(Set.copyOf(Blocks.ENCHANTING_TABLE.getStateDefinition().getPossibleStates()), 1, 1)
+                    new PoiType(Set.copyOf(ForbiddenContent.HERETIC_STUDY.get().getStateDefinition().getPossibleStates()), 1, 1)
                 );
             }
             if (event.getRegistryKey().equals(Registries.VILLAGER_PROFESSION)) {
@@ -72,7 +72,7 @@ public final class ForbiddenVillagers {
                 return;
             }
 
-            var trades = event.getTrades().get(1);
+            var trades = event.getTrades().computeIfAbsent(1, k -> new java.util.ArrayList<>());
 
             // Trade 1: Emerald (1-2) -> Greed Shards (3-4)
             trades.add((entity, random) -> new MerchantOffer(
@@ -140,7 +140,7 @@ public final class ForbiddenVillagers {
             // Trade 9: Emerald (4-8) + Diamond (1) -> Fire Focus (maxUses = 2)
             trades.add((entity, random) -> {
                 var fireFocusItem = BuiltInRegistries.ITEM.get(ResourceLocation.parse("thaumcraft:focus_fire"));
-                ItemStack fireFocus = fireFocusItem != Items.AIR ? new ItemStack(fireFocusItem) : new ItemStack(Items.BLAZE_POWDER);
+                ItemStack fireFocus = new ItemStack(fireFocusItem);
                 return new MerchantOffer(
                     new ItemCost(Items.EMERALD, 4 + random.nextInt(5)),
                     Optional.of(new ItemCost(Items.DIAMOND, 1)),
