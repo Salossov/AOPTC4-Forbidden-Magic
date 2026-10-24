@@ -18,7 +18,9 @@ import thaumcraft.api.wands.WandApi;
 /**
  * FocusBehavior implementation for BlinkFocus (B21):
  * Teleports player towards look direction / clicked block face up to 128 blocks.
- * Deducts vis ONLY upon successful teleportation.
+ * Deducts vis strictly after confirmed physical relocation.
+ * Guarantees atomic transaction: failure/cancellation does not consume vis or apply effects;
+ * payment failure rolls back player relocation.
  */
 public class BlinkFocusBehavior implements FocusBehavior {
     private final BlinkFocusItem focusItem;
@@ -35,12 +37,11 @@ public class BlinkFocusBehavior implements FocusBehavior {
     @Override
     public boolean cast(ServerPlayer player, ItemStack wand, ItemStack focus) {
         var costs = focusItem.getVisCost(focus);
-        // Verify affordability before executing action
+        // 1. Preflight affordability check: verify wand can pay before attempting any actions
         if (!WandApi.consume(wand, player, costs, false)) {
             return false;
         }
 
-        int potency = focusItem.getUpgradeLevel(focus, FocusUpgradeType.potency);
         double maxDistance = 128.0;
 
         Vec3 eyePos = player.getEyePosition();
@@ -50,6 +51,7 @@ public class BlinkFocusBehavior implements FocusBehavior {
                 eyePos, targetVec, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, player
         ));
 
+        // 2. Target check: must hit a block
         if (hit.getType() != HitResult.Type.BLOCK) {
             return false;
         }
@@ -67,6 +69,7 @@ public class BlinkFocusBehavior implements FocusBehavior {
             case EAST -> ex += 0.5;
         }
 
+        // 3. Collision check
         AABB targetBox = player.getDimensions(player.getPose()).makeBoundingBox(ex, wy, zee);
         if (!player.level().noCollision(player, targetBox)) {
             if (player.level().noCollision(player, targetBox.move(0, 0.5, 0))) {
@@ -76,21 +79,44 @@ public class BlinkFocusBehavior implements FocusBehavior {
             }
         }
 
+        // 4. Interaction permission check
         if (!player.level().mayInteract(player, hit.getBlockPos())) {
             return false;
         }
 
-        // Commit vis payment only upon successful verification
-        if (!WandApi.consume(wand, player, costs, true)) {
+        // 5. Fire NeoForge teleport event so cancellation hooks / claims can veto
+        var teleportEvent = new net.neoforged.neoforge.event.entity.EntityTeleportEvent(player, ex, wy, zee);
+        if (net.neoforged.neoforge.common.NeoForge.EVENT_BUS.post(teleportEvent).isCanceled()) {
             return false;
         }
+        ex = teleportEvent.getTargetX();
+        wy = teleportEvent.getTargetY();
+        zee = teleportEvent.getTargetZ();
 
         double prevX = player.getX();
         double prevY = player.getY();
         double prevZ = player.getZ();
 
-        // Departure sound and smoke
-        player.serverLevel().levelEvent(1009, player.blockPosition(), 0);
+        // 6. Execute physical player relocation
+        player.teleportTo(ex, wy, zee);
+
+        // 7. Verify that player was physically relocated (not blocked by internal server listeners)
+        boolean moved = Math.abs(player.getX() - ex) < 0.05 &&
+                        Math.abs(player.getY() - wy) < 0.05 &&
+                        Math.abs(player.getZ() - zee) < 0.05;
+        if (!moved) {
+            return false;
+        }
+
+        // 8. Commit vis payment strictly after confirmed relocation
+        if (!WandApi.consume(wand, player, costs, true)) {
+            // Atomic rollback: payment failed on boundary, restore player position
+            player.teleportTo(prevX, prevY, prevZ);
+            return false;
+        }
+
+        // 9. Both movement and payment confirmed: apply departure effects, upgrades, arrival effects
+        player.serverLevel().levelEvent(1009, net.minecraft.core.BlockPos.containing(prevX, prevY, prevZ), 0);
         for (int k = 0; k < 8; k++) {
             double px = prevX + (player.getRandom().nextDouble() - 0.5) * player.getBbWidth();
             double py = prevY + player.getRandom().nextDouble() * player.getBbHeight() - 0.25;
@@ -102,6 +128,7 @@ public class BlinkFocusBehavior implements FocusBehavior {
         int enlarge = focusItem.getUpgradeLevel(focus, FocusUpgradeType.enlarge);
         double aoe = 3.0 + 1.5 * enlarge;
         AABB aoeBox = new AABB(ex - aoe, wy - aoe, zee - aoe, ex + aoe, wy + aoe, zee + aoe);
+        int potency = focusItem.getUpgradeLevel(focus, FocusUpgradeType.potency);
 
         ForbiddenFoci.registerUpgrades();
         if (focusItem.isUpgradedWith(focus, ForbiddenFoci.HELLFIRE)) {
@@ -131,9 +158,6 @@ public class BlinkFocusBehavior implements FocusBehavior {
                 }
             }
         }
-
-        // Teleport player
-        player.teleportTo(ex, wy, zee);
 
         // Arrival sound and flame
         player.serverLevel().levelEvent(1009, player.blockPosition(), 0);

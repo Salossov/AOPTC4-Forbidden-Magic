@@ -154,6 +154,17 @@ public final class P02WandCheck {
         var pandemoniumCost = blinkItem.getVisCost(pandemoniumStack);
         check(pandemoniumCost.get(Aspect.getAspect("perditio")) == 300 && pandemoniumCost.get(Aspect.getAspect("ordo")) == 100, "pandemonium cost: 300 perditio + 100 ordo");
 
+        // Ranks 3-5 upgrades verification
+        var rank3Base = blinkItem.getPossibleUpgradesByRank(new ItemStack(blinkItem), 3);
+        check(rank3Base.contains(FocusUpgradeType.frugal) && rank3Base.size() == 1, "base blink rank 3 is frugal only");
+        var rank4Hellfire = blinkItem.getPossibleUpgradesByRank(focusStack, 4);
+        check(rank4Hellfire.contains(FocusUpgradeType.potency) && rank4Hellfire.contains(FocusUpgradeType.enlarge), "hellfire rank 4 potency + enlarge");
+        var rank3Pandemonium = blinkItem.getPossibleUpgradesByRank(pandemoniumStack, 3);
+        check(!rank3Pandemonium.contains(FocusUpgradeType.potency) && rank3Pandemonium.contains(FocusUpgradeType.enlarge), "pandemonium rank 3 enlarge without potency");
+
+        // Activation cooldown
+        check(blinkItem.getActivationCooldown(focusStack) == 333, "blink activation cooldown is 333ms");
+
         System.out.println("FORBIDDEN_P02_WAND_PASS checks=" + checks);
     }
 }
