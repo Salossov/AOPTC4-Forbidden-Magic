@@ -1,0 +1,36 @@
+{
+  "kind": "research",
+  "key": "forbidden:rod_profane",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:nethershards"
+  ],
+  "hidden_parents": [],
+  "aspects": {},
+  "complexity": 0,
+  "auto_unlock": false,
+  "concealed": false,
+  "column": -9,
+  "row": -8,
+  "text_pages": [
+    "forbidden.research_page.ROD_profane.1"
+  ],
+  "recipe_pages": [],
+  "page_order": [
+    "forbidden.research_page.ROD_profane.1"
+  ],
+  "icon": "forbidden:wand_rod_profane",
+  "virtual": false,
+  "round": true,
+  "stub": true,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

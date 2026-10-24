@@ -1,176 +1,959 @@
 [
   {
     "mob": "minecraft:zombie",
-    "aspect": "corpus"
+    "aspect": "corpus",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:skeleton",
-    "aspect": "mortuus"
+    "aspect": "mortuus",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:creeper",
-    "aspect": "ignis"
+    "aspect": "ignis",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:horse",
-    "aspect": "bestia"
+    "aspect": "bestia",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:pig",
-    "aspect": "bestia"
+    "aspect": "bestia",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:sheep",
-    "aspect": "pannus"
+    "aspect": "pannus",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:cow",
-    "aspect": "bestia"
+    "aspect": "bestia",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:mooshroom",
-    "aspect": "herba"
+    "aspect": "herba",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:ocelot",
-    "aspect": "bestia"
+    "aspect": "bestia",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:chicken",
-    "aspect": "volatus"
+    "aspect": "volatus",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:squid",
-    "aspect": "sensus"
+    "aspect": "sensus",
+    "condition": "water"
   },
   {
     "mob": "minecraft:wolf",
-    "aspect": "bestia"
+    "aspect": "bestia",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:bat",
-    "aspect": "volatus"
+    "aspect": "volatus",
+    "condition": "air"
   },
   {
     "mob": "minecraft:spider",
-    "aspect": "pannus"
+    "aspect": "pannus",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:slime",
-    "aspect": "limus"
+    "aspect": "limus",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:ghast",
-    "aspect": "forbidden:infernus"
+    "aspect": "forbidden:infernus",
+    "condition": "air"
   },
   {
     "mob": "minecraft:zombified_piglin",
-    "aspect": "lucrum"
+    "aspect": "lucrum",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:enderman",
-    "aspect": "alienis"
+    "aspect": "alienis",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:cave_spider",
-    "aspect": "venenum"
+    "aspect": "venenum",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:silverfish",
     "aspect": "lucrum",
-    "silverfishEmeralds": true
+    "silverfishEmeralds": true,
+    "condition": "ground"
   },
   {
     "mob": "minecraft:silverfish",
     "aspect": "bestia",
-    "silverfishEmeralds": false
+    "silverfishEmeralds": false,
+    "condition": "ground"
   },
   {
     "mob": "minecraft:blaze",
-    "aspect": "ignis"
+    "aspect": "ignis",
+    "condition": "air"
   },
   {
     "mob": "minecraft:magma_cube",
-    "aspect": "ignis"
+    "aspect": "ignis",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:witch",
-    "aspect": "praecantatio"
+    "aspect": "praecantatio",
+    "condition": "ground"
   },
   {
     "mob": "minecraft:villager",
-    "aspect": "lucrum"
+    "aspect": "lucrum",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:firebat",
-    "aspect": "ignis"
+    "aspect": "ignis",
+    "condition": "air"
   },
   {
     "mob": "thaumcraft:wisp",
-    "aspect": "auram"
+    "aspect": "auram",
+    "condition": "air"
   },
   {
     "mob": "thaumcraft:thaumic_slime",
-    "aspect": "vitium"
+    "aspect": "vitium",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:brainy_zombie",
-    "aspect": "cognitio"
+    "aspect": "cognitio",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:giant_brainy_zombie",
-    "aspect": "cognitio"
+    "aspect": "cognitio",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:taint_spider",
-    "aspect": "vitium"
+    "aspect": "vitium",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:taint_swarm",
-    "aspect": "vitium"
+    "aspect": "vitium",
+    "condition": "air"
   },
   {
     "mob": "thaumcraft:taint_pig",
-    "aspect": "vitium"
+    "aspect": "vitium",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:taint_sheep",
-    "aspect": "vitium"
+    "aspect": "vitium",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:taint_cow",
-    "aspect": "vitium"
+    "aspect": "vitium",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:taint_chicken",
-    "aspect": "vitium"
+    "aspect": "vitium",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:taint_villager",
-    "aspect": "vitium"
+    "aspect": "vitium",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:cultist_knight",
-    "aspect": "alienis"
+    "aspect": "alienis",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:cultist_cleric",
-    "aspect": "alienis"
+    "aspect": "alienis",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:eldritch_crab",
-    "aspect": "alienis"
+    "aspect": "alienis",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:inhabited_zombie",
-    "aspect": "alienis"
+    "aspect": "alienis",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:pech",
-    "aspect": "lucrum"
+    "aspect": "lucrum",
+    "condition": "ground"
   },
   {
     "mob": "thaumcraft:eldritch_guardian",
-    "aspect": "alienis"
+    "aspect": "alienis",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:wild_boar",
+    "aspect": "bestia",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:bighorn_sheep",
+    "aspect": "pannus",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:deer",
+    "aspect": "bestia",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:redcap",
+    "aspect": "metallum",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:swarm_spider",
+    "aspect": "pannus",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:skeleton_druid",
+    "aspect": "mortuus",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:hostile_wolf",
+    "aspect": "bestia",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:wraith",
+    "aspect": "exanimis",
+    "config": "twilightForest",
+    "condition": "air"
+  },
+  {
+    "mob": "twilightforest:hedge_spider",
+    "aspect": "pannus",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:penguin",
+    "aspect": "volatus",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:tiny_bird",
+    "aspect": "volatus",
+    "config": "twilightForest",
+    "condition": "air"
+  },
+  {
+    "mob": "twilightforest:squirrel",
+    "aspect": "bestia",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:bunny",
+    "aspect": "bestia",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:raven",
+    "aspect": "volatus",
+    "config": "twilightForest",
+    "condition": "air"
+  },
+  {
+    "mob": "twilightforest:kobold",
+    "aspect": "lucrum",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:mosquito_swarm",
+    "aspect": "forbidden:gula",
+    "config": "twilightForest",
+    "condition": "air"
+  },
+  {
+    "mob": "twilightforest:death_tome",
+    "aspect": "cognitio",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:minotaur",
+    "aspect": "bestia",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:minoshroom",
+    "aspect": "herba",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:fire_beetle",
+    "aspect": "ignis",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:slime_beetle",
+    "aspect": "limus",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:pinch_beetle",
+    "aspect": "forbidden:luxuria",
+    "noLust": false,
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:pinch_beetle",
+    "aspect": "bestia",
+    "noLust": true,
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:maze_slime",
+    "aspect": "limus",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:mist_wolf",
+    "aspect": "bestia",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:king_spider",
+    "aspect": "forbidden:superbia",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:mini_ghast",
+    "aspect": "forbidden:infernus",
+    "config": "twilightForest",
+    "condition": "air"
+  },
+  {
+    "mob": "twilightforest:tower_ghast",
+    "aspect": "forbidden:infernus",
+    "config": "twilightForest",
+    "condition": "air"
+  },
+  {
+    "mob": "twilightforest:tower_golem",
+    "aspect": "metallum",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:tower_termite",
+    "aspect": "praecantatio",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:upper_goblin_knight",
+    "aspect": "metallum",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:lower_goblin_knight",
+    "aspect": "metallum",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:helmet_crab",
+    "aspect": "metallum",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:knight_phantom",
+    "aspect": "metallum",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:yeti",
+    "aspect": "gelum",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "twilightforest:winter_wolf",
+    "aspect": "gelum",
+    "config": "twilightForest",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:special_cave_spider",
+    "aspect": "venenum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:baby_cave_spider",
+    "aspect": "venenum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:flying_cave_spider",
+    "aspect": "venenum",
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:mother_cave_spider",
+    "aspect": "venenum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:tough_cave_spider",
+    "aspect": "venenum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:web_cave_spider",
+    "aspect": "venenum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:witch_cave_spider",
+    "aspect": "venenum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:special_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:armor_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:dark_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:death_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:dirt_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:doom_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:drowning_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:ender_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:fire_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:jumping_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:lightning_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:mini_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:splitting_creeper",
+    "aspect": "ignis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:special_enderman",
+    "aspect": "alienis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:blinding_enderman",
+    "aspect": "alienis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:cursed_enderman",
+    "aspect": "alienis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:icy_enderman",
+    "aspect": "alienis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:lightning_enderman",
+    "aspect": "alienis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:mini_enderman",
+    "aspect": "alienis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:mirage_enderman",
+    "aspect": "alienis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:thief_enderman",
+    "aspect": "alienis",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:special_ghast",
+    "aspect": "forbidden:infernus",
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:baby_ghast",
+    "aspect": "forbidden:infernus",
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:faint_ghast",
+    "aspect": "forbidden:infernus",
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:fighter_ghast",
+    "aspect": "forbidden:infernus",
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:king_ghast",
+    "aspect": "forbidden:infernus",
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:mini_ghast",
+    "aspect": "forbidden:infernus",
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:queen_ghast",
+    "aspect": "forbidden:infernus",
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:unholy_ghast",
+    "aspect": "forbidden:infernus",
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:special_pig_zombie",
+    "aspect": "lucrum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:brutish_pig_zombie",
+    "aspect": "lucrum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:fishing_pig_zombie",
+    "aspect": "lucrum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:giant_pig_zombie",
+    "aspect": "lucrum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:hungry_pig_zombie",
+    "aspect": "lucrum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:plague_pig_zombie",
+    "aspect": "lucrum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:vampire_pig_zombie",
+    "aspect": "lucrum",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:special_silverfish",
+    "aspect": "lucrum",
+    "silverfishEmeralds": true,
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:special_silverfish",
+    "aspect": "bestia",
+    "silverfishEmeralds": false,
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:blinding_silverfish",
+    "aspect": "lucrum",
+    "silverfishEmeralds": true,
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:blinding_silverfish",
+    "aspect": "bestia",
+    "silverfishEmeralds": false,
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:fishing_silverfish",
+    "aspect": "lucrum",
+    "silverfishEmeralds": true,
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:fishing_silverfish",
+    "aspect": "bestia",
+    "silverfishEmeralds": false,
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:flying_silverfish",
+    "aspect": "lucrum",
+    "silverfishEmeralds": true,
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:flying_silverfish",
+    "aspect": "bestia",
+    "silverfishEmeralds": false,
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:poison_silverfish",
+    "aspect": "lucrum",
+    "silverfishEmeralds": true,
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:poison_silverfish",
+    "aspect": "bestia",
+    "silverfishEmeralds": false,
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:tough_silverfish",
+    "aspect": "lucrum",
+    "silverfishEmeralds": true,
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:tough_silverfish",
+    "aspect": "bestia",
+    "silverfishEmeralds": false,
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:special_skeleton",
+    "aspect": "mortuus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:brutish_skeleton",
+    "aspect": "mortuus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:fire_skeleton",
+    "aspect": "mortuus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:gatling_skeleton",
+    "aspect": "mortuus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:giant_skeleton",
+    "aspect": "mortuus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:poison_skeleton",
+    "aspect": "mortuus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:sniper_skeleton",
+    "aspect": "mortuus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:spitfire_skeleton",
+    "aspect": "mortuus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:thief_skeleton",
+    "aspect": "mortuus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:special_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:baby_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:desert_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:flying_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "air"
+  },
+  {
+    "mob": "specialmobs:ghost_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:giant_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:hungry_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:mother_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:pale_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:poison_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:small_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:tough_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:web_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:witch_spider",
+    "aspect": "pannus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:special_zombie",
+    "aspect": "corpus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:brutish_zombie",
+    "aspect": "corpus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:fire_zombie",
+    "aspect": "corpus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:fishing_zombie",
+    "aspect": "corpus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:giant_zombie",
+    "aspect": "corpus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:hungry_zombie",
+    "aspect": "corpus",
+    "config": "specialMobs",
+    "condition": "ground"
+  },
+  {
+    "mob": "specialmobs:plague_zombie",
+    "aspect": "corpus",
+    "config": "specialMobs",
+    "condition": "ground"
   }
 ]

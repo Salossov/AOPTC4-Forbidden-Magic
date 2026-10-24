@@ -1,0 +1,31 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:skullaxe",
+  "input": {
+    "item": "thaumcraft:thaumium_axe"
+  },
+  "components": [
+    {
+      "item": "forbidden:wrath_shard"
+    },
+    {
+      "item": "forbidden:wrath_shard"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "minecraft:diamond"
+    }
+  ],
+  "aspects": {
+    "forbidden:ira": 8,
+    "telum": 8,
+    "forbidden:infernus": 8
+  },
+  "instability": 1,
+  "result": {
+    "id": "forbidden:skull_axe",
+    "count": 1
+  }
+}

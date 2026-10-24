@@ -1,0 +1,47 @@
+{
+  "kind": "research",
+  "key": "forbidden:rod_infernal",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "ROD_silverwood",
+    "INFUSION",
+    "forbidden:nethershards"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "infernus": 4,
+    "ignis": 3,
+    "instrumentum": 1
+  },
+  "complexity": 3,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -11,
+  "row": -4,
+  "text_pages": [
+    "forbidden.research_page.ROD_infernal.1",
+    "forbidden.research_page.ROD_infernal.2"
+  ],
+  "recipe_pages": [
+    "WandRodInfernal"
+  ],
+  "page_order": [
+    "forbidden.research_page.ROD_infernal.1",
+    "forbidden.research_page.ROD_infernal.2",
+    "WandRodInfernal"
+  ],
+  "icon": "forbidden:wand_rod_infernal",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 2,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

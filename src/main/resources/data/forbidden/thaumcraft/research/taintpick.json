@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:taintpick",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:taintshovel"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "instrumentum": 2,
+    "vitium": 4,
+    "perditio": 3
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -10,
+  "row": 1,
+  "text_pages": [
+    "forbidden.research_page.TAINTPICK.1"
+  ],
+  "recipe_pages": [
+    "TaintPick"
+  ],
+  "page_order": [
+    "forbidden.research_page.TAINTPICK.1",
+    "TaintPick"
+  ],
+  "icon": "forbidden:taint_pickaxe",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

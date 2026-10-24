@@ -1,0 +1,47 @@
+{
+  "kind": "research",
+  "key": "forbidden:taintstone",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "THAUMIUM",
+    "INFUSION",
+    "ETHEREALBLOOM"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "terra": 4,
+    "vitium": 6,
+    "ordo": 2
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -10,
+  "row": 3,
+  "text_pages": [
+    "forbidden.research_page.TAINTSTONE.1"
+  ],
+  "recipe_pages": [
+    "TaintStone",
+    "TaintBrick"
+  ],
+  "page_order": [
+    "forbidden.research_page.TAINTSTONE.1",
+    "TaintStone",
+    "TaintBrick"
+  ],
+  "icon": "forbidden:taint_stone",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

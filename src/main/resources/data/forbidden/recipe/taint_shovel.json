@@ -1,0 +1,31 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:taintshovel",
+  "input": {
+    "item": "thaumcraft:thaumium_shovel"
+  },
+  "components": [
+    {
+      "item": "thaumcraft:order_shard"
+    },
+    {
+      "item": "forbidden:taint_shard"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "thaumcraft:silverwood_log"
+    }
+  ],
+  "aspects": {
+    "sano": 8,
+    "vitreus": 24,
+    "perfodio": 12
+  },
+  "instability": 5,
+  "result": {
+    "id": "forbidden:taint_shovel",
+    "count": 1
+  }
+}

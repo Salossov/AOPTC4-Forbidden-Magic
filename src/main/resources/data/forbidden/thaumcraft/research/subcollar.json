@@ -1,0 +1,47 @@
+{
+  "kind": "research",
+  "key": "forbidden:subcollar",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:nethershards",
+    "VISAMULET",
+    "INFUSION"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "auram": 3,
+    "luxuria": 8,
+    "praecantatio": 3,
+    "vinculum": 6,
+    "corpus": 4
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": false,
+  "column": -11,
+  "row": -5,
+  "text_pages": [
+    "forbidden.research_page.SUBCOLLAR.1"
+  ],
+  "recipe_pages": [
+    "SubCollar"
+  ],
+  "page_order": [
+    "forbidden.research_page.SUBCOLLAR.1",
+    "SubCollar"
+  ],
+  "icon": "forbidden:sub_collar",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

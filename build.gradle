@@ -94,6 +94,22 @@ tasks.register('componentCodecCheck', JavaExec) {
     mainClass = 'forbidden.verification.ComponentCodecCheck'
 }
 tasks.named('check') { dependsOn 'foundationRules', 'componentCodecCheck', 'clientClasses' }
+tasks.register('p02ToolsCheck', JavaExec) {
+    dependsOn 'nativeVerificationClasses'
+    classpath = sourceSets.nativeVerification.runtimeClasspath
+    mainClass = 'forbidden.verification.P02ToolsCheck'
+}
+tasks.register('p02WandCheck', JavaExec) {
+    dependsOn 'nativeVerificationClasses'
+    classpath = sourceSets.nativeVerification.runtimeClasspath
+    mainClass = 'forbidden.verification.P02WandCheck'
+}
+tasks.register('p03WrathCageCheck', JavaExec) {
+    dependsOn 'nativeVerificationClasses'
+    classpath = sourceSets.nativeVerification.runtimeClasspath
+    mainClass = 'forbidden.verification.P03WrathCageCheck'
+}
+tasks.named('check') { dependsOn 'p02ToolsCheck', 'p02WandCheck', 'p03WrathCageCheck' }
 ['normal': ['false', 'true'], 'noLust': ['true', 'true'], 'noCage': ['false', 'false']].each { profile, flags ->
     tasks.register("p01Content${profile.capitalize()}", JavaExec) {
         dependsOn 'nativeVerificationClasses'

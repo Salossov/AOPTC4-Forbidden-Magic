@@ -37,6 +37,7 @@ public final class ForbiddenContent {
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<WrathCageEntity>> CAGE_ENTITY = ENTITIES.register("wrath_cage", () -> BlockEntityType.Builder.of(WrathCageEntity::new, WRATH_CAGE.get()).build(null));
     public static final Supplier<Item> TAINT_FRUIT = item("taint_fruit", () -> new TaintFruitItem(new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(.8F).build())));
     public static final Supplier<Item> TAINT_COAL = item("taint_coal", () -> new TaintCoalItem(new Item.Properties()));
+    public static final Supplier<Item> BLINK_FOCUS = item("blink_focus", () -> new forbidden.content.focus.BlinkFocusItem());
     public static Supplier<Item> MOB_CRYSTAL;
 
     private static Supplier<Block> block(String id, Supplier<Block> factory) {
@@ -72,6 +73,10 @@ public final class ForbiddenContent {
                     var crystal=new ItemStack(MOB_CRYSTAL.get());crystal.set(forbidden.component.ForbiddenComponents.MOB.get(),id);output.accept(crystal);
                 }
             }).build());
+        bus.addListener((net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent event) -> {
+            event.registerBlockEntity(thaumcraft.api.aspects.EssentiaCapabilities.TRANSPORT, CAGE_ENTITY.get(), (be, side) -> be);
+            event.registerBlockEntity(thaumcraft.api.aspects.EssentiaCapabilities.CONTAINER, CAGE_ENTITY.get(), (be, side) -> be);
+        });
         BLOCKS.register(bus); ITEMS.register(bus); ENTITIES.register(bus); TABS.register(bus);
     }
     private ForbiddenContent() { }

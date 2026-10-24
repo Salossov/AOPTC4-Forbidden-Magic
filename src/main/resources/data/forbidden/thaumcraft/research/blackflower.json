@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:blackflower",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [],
+  "hidden_parents": [],
+  "aspects": {
+    "herba": 3,
+    "sensus": 2,
+    "tenebrae": 4
+  },
+  "complexity": 1,
+  "auto_unlock": false,
+  "concealed": false,
+  "column": -2,
+  "row": -6,
+  "text_pages": [
+    "forbidden.research_page.BLACKFLOWER.1"
+  ],
+  "recipe_pages": [
+    "BlackFlower",
+    "BlackInk"
+  ],
+  "page_order": [
+    "forbidden.research_page.BLACKFLOWER.1",
+    "BlackFlower",
+    "BlackInk"
+  ],
+  "icon": "forbidden:black_flower",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "research",
+  "key": "forbidden:taintshovel",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "THAUMIUM",
+    "INFUSION",
+    "ETHEREALBLOOM"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "vitreus": 3,
+    "vitium": 2,
+    "instrumentum": 1
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -8,
+  "row": 1,
+  "text_pages": [
+    "forbidden.research_page.TAINTSHOVEL.1",
+    "forbidden.research_page.TAINTSHOVEL.2"
+  ],
+  "recipe_pages": [
+    "TaintShovel"
+  ],
+  "page_order": [
+    "forbidden.research_page.TAINTSHOVEL.1",
+    "forbidden.research_page.TAINTSHOVEL.2",
+    "TaintShovel"
+  ],
+  "icon": "forbidden:taint_shovel",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

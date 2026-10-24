@@ -1,0 +1,37 @@
+{
+  "kind": "research",
+  "key": "forbidden:ridingcrop",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [],
+  "hidden_parents": [],
+  "aspects": {},
+  "complexity": 0,
+  "auto_unlock": true,
+  "concealed": false,
+  "column": 0,
+  "row": -8,
+  "text_pages": [
+    "forbidden.research_page.RIDINGCROP.1"
+  ],
+  "recipe_pages": [
+    "RidingCrop"
+  ],
+  "page_order": [
+    "forbidden.research_page.RIDINGCROP.1",
+    "RidingCrop"
+  ],
+  "icon": "forbidden:riding_crop",
+  "virtual": false,
+  "round": true,
+  "stub": true,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

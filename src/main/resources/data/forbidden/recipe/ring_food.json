@@ -1,0 +1,25 @@
+{
+  "type": "thaumcraft:arcane",
+  "research": "forbidden:ringfood",
+  "pattern": [
+    " F ",
+    "FRF",
+    " F "
+  ],
+  "key": {
+    "F": {
+      "item": "minecraft:golden_carrot"
+    },
+    "R": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "vis": {
+    "aqua": 10,
+    "terra": 10
+  },
+  "result": {
+    "id": "forbidden:ring_nutrition",
+    "count": 1
+  }
+}

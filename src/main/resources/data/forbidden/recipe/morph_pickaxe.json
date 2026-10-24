@@ -1,0 +1,34 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:morphtools",
+  "input": {
+    "item": "thaumcraft:elemental_pickaxe"
+  },
+  "components": [
+    {
+      "item": "forbidden:sloth_shard"
+    },
+    {
+      "item": "forbidden:sloth_shard"
+    },
+    {
+      "item": "thaumcraft:order_shard"
+    },
+    {
+      "item": "thaumcraft:entropy_shard"
+    },
+    {
+      "item": "minecraft:quartz"
+    }
+  ],
+  "aspects": {
+    "permutatio": 16,
+    "instrumentum": 8,
+    "perfodio": 8
+  },
+  "instability": 2,
+  "result": {
+    "id": "forbidden:morph_pickaxe",
+    "count": 1
+  }
+}

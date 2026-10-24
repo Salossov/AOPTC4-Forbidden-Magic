@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:transemerald",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "TRANSGOLD"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "vitreus": 2,
+    "permutatio": 5,
+    "lucrum": 4
+  },
+  "complexity": 3,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": 0,
+  "row": -6,
+  "text_pages": [
+    "forbidden.research_page.TRANSEMERALD.1"
+  ],
+  "recipe_pages": [
+    "TransEmerald"
+  ],
+  "page_order": [
+    "forbidden.research_page.TRANSEMERALD.1",
+    "TransEmerald"
+  ],
+  "icon": "minecraft:emerald",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

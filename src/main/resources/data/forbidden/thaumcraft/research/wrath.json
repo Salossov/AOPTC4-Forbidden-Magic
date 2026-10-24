@@ -1,0 +1,44 @@
+{
+  "kind": "research",
+  "key": "forbidden:wrath",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:nethershards",
+    "INFUSIONENCHANTMENT"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "ira": 16,
+    "telum": 20,
+    "praecantatio": 10
+  },
+  "complexity": 4,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -6,
+  "row": -3,
+  "text_pages": [
+    "forbidden.research_page.WRATH.1"
+  ],
+  "recipe_pages": [
+    "Wrath"
+  ],
+  "page_order": [
+    "forbidden.research_page.WRATH.1",
+    "Wrath"
+  ],
+  "icon": "forbidden:textures/misc/wrath.png",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 3,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

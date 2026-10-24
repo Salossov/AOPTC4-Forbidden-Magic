@@ -1,0 +1,34 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:subcollar",
+  "input": {
+    "item": "thaumcraft:amulet_vis"
+  },
+  "components": [
+    {
+      "item": "forbidden:lust_shard"
+    },
+    {
+      "item": "forbidden:lust_shard"
+    },
+    {
+      "item": "minecraft:lead"
+    },
+    {
+      "item": "minecraft:leather"
+    },
+    {
+      "item": "minecraft:iron_bars"
+    }
+  ],
+  "aspects": {
+    "forbidden:luxuria": 16,
+    "vinculum": 16,
+    "auram": 8
+  },
+  "instability": 2,
+  "result": {
+    "id": "forbidden:sub_collar",
+    "count": 1
+  }
+}

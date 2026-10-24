@@ -1,0 +1,45 @@
+{
+  "kind": "research",
+  "key": "forbidden:rod_tainted",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "ROD_silverwood",
+    "forbidden:taintshovel",
+    "INFUSION"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "praecantatio": 4,
+    "vitium": 5,
+    "instrumentum": 2
+  },
+  "complexity": 3,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -8,
+  "row": 3,
+  "text_pages": [
+    "forbidden.research_page.ROD_tainted.1"
+  ],
+  "recipe_pages": [
+    "WandRodTainted"
+  ],
+  "page_order": [
+    "forbidden.research_page.ROD_tainted.1",
+    "WandRodTainted"
+  ],
+  "icon": "forbidden:wand_rod_tainted",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 2,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

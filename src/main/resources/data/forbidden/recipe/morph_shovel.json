@@ -1,0 +1,34 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:morphtools",
+  "input": {
+    "item": "thaumcraft:elemental_shovel"
+  },
+  "components": [
+    {
+      "item": "forbidden:sloth_shard"
+    },
+    {
+      "item": "forbidden:sloth_shard"
+    },
+    {
+      "item": "thaumcraft:earth_shard"
+    },
+    {
+      "item": "thaumcraft:water_shard"
+    },
+    {
+      "item": "minecraft:quartz"
+    }
+  ],
+  "aspects": {
+    "permutatio": 16,
+    "instrumentum": 8,
+    "terra": 8
+  },
+  "instability": 2,
+  "result": {
+    "id": "forbidden:morph_shovel",
+    "count": 1
+  }
+}

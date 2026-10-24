@@ -1,0 +1,31 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:taintpick",
+  "input": {
+    "item": "thaumcraft:thaumium_pickaxe"
+  },
+  "components": [
+    {
+      "item": "thaumcraft:entropy_shard"
+    },
+    {
+      "item": "forbidden:taint_shard"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "thaumcraft:greatwood_log"
+    }
+  ],
+  "aspects": {
+    "perditio": 8,
+    "perfodio": 8,
+    "vitium": 12
+  },
+  "instability": 1,
+  "result": {
+    "id": "forbidden:taint_pickaxe",
+    "count": 1
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "kind": "research",
+  "key": "forbidden:voidtouched",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:morphtools",
+    "VOIDMETAL"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "alienis": 16,
+    "instrumentum": 10,
+    "fabrico": 8,
+    "invidia": 32
+  },
+  "complexity": 4,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -8,
+  "row": -1,
+  "text_pages": [
+    "forbidden.research_page.VOIDTOUCHED.1"
+  ],
+  "recipe_pages": [
+    "Voidtouched"
+  ],
+  "page_order": [
+    "forbidden.research_page.VOIDTOUCHED.1",
+    "Voidtouched"
+  ],
+  "icon": "forbidden:textures/misc/voidtouched.png",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 3,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

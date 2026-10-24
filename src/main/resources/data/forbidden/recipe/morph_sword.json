@@ -1,0 +1,34 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:morphtools",
+  "input": {
+    "item": "thaumcraft:elemental_sword"
+  },
+  "components": [
+    {
+      "item": "forbidden:sloth_shard"
+    },
+    {
+      "item": "forbidden:sloth_shard"
+    },
+    {
+      "item": "forbidden:wrath_shard"
+    },
+    {
+      "item": "thaumcraft:entropy_shard"
+    },
+    {
+      "item": "minecraft:quartz"
+    }
+  ],
+  "aspects": {
+    "permutatio": 16,
+    "instrumentum": 8,
+    "telum": 8
+  },
+  "instability": 2,
+  "result": {
+    "id": "forbidden:morph_sword",
+    "count": 1
+  }
+}

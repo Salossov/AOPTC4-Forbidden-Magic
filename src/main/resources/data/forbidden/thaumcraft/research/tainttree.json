@@ -1,0 +1,48 @@
+{
+  "kind": "research",
+  "key": "forbidden:tainttree",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "THAUMIUM",
+    "INFUSION",
+    "ETHEREALBLOOM"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "arbor": 4,
+    "vitium": 6,
+    "venenum": 2,
+    "herba": 3
+  },
+  "complexity": 3,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -11,
+  "row": 3,
+  "text_pages": [
+    "forbidden.research_page.TAINTTREE.1"
+  ],
+  "recipe_pages": [
+    "TaintTree",
+    "TaintPlank"
+  ],
+  "page_order": [
+    "forbidden.research_page.TAINTTREE.1",
+    "TaintTree",
+    "TaintPlank"
+  ],
+  "icon": "forbidden:taint_sapling",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 1,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

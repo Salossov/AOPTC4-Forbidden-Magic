@@ -3,11 +3,13 @@ package forbidden;
 import forbidden.component.ForbiddenComponents;
 import forbidden.config.ForbiddenConfig;
 import forbidden.content.ForbiddenContent;
+import forbidden.content.ForbiddenTools;
 import forbidden.content.StartupPacks;
 import forbidden.content.ForbiddenAspects;
 import forbidden.content.ForbiddenWands;
 import forbidden.content.ContentCondition;
 import forbidden.content.ForbiddenWandVisuals;
+import forbidden.content.wands.ForbiddenWandMechanics;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
@@ -22,12 +24,14 @@ public final class ForbiddenMagic {
         container.registerConfig(ModConfig.Type.STARTUP, ForbiddenConfig.SPEC);
         ForbiddenComponents.register(bus);
         ForbiddenContent.register(bus);
+        ForbiddenTools.register(bus);
         ContentCondition.register(bus);
         bus.addListener(StartupPacks::add);
         bus.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) -> event.enqueueWork(() -> {
             ForbiddenAspects.register();
             ForbiddenWands.register();
             ForbiddenWandVisuals.register();
+            ForbiddenWandMechanics.registerAll();
         }));
     }
 }

@@ -1,0 +1,52 @@
+{
+  "kind": "research",
+  "key": "forbidden:morphtools",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:nethershards"
+  ],
+  "hidden_parents": [
+    "THAUMIUM",
+    "INFUSIONENCHANTMENT"
+  ],
+  "aspects": {
+    "instrumentum": 2,
+    "invidia": 3,
+    "permutatio": 2
+  },
+  "complexity": 4,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -9,
+  "row": -3,
+  "text_pages": [
+    "forbidden.research_page.MORPHTOOLS.1"
+  ],
+  "recipe_pages": [
+    "MorphPick",
+    "MorphSword",
+    "MorphShovel",
+    "MorphAxe"
+  ],
+  "page_order": [
+    "forbidden.research_page.MORPHTOOLS.1",
+    "MorphPick",
+    "MorphSword",
+    "MorphShovel",
+    "MorphAxe"
+  ],
+  "icon": "forbidden:morph_shovel",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 4,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

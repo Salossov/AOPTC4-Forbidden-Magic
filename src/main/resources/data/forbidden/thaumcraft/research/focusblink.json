@@ -1,0 +1,45 @@
+{
+  "kind": "research",
+  "key": "forbidden:focusblink",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:nethershards",
+    "INFUSION"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "iter": 3,
+    "perditio": 3,
+    "infernus": 3,
+    "desidia": 6
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -11,
+  "row": -3,
+  "text_pages": [
+    "forbidden.research_page.FOCUSBLINK.1"
+  ],
+  "recipe_pages": [
+    "FocusBlink"
+  ],
+  "page_order": [
+    "forbidden.research_page.FOCUSBLINK.1",
+    "FocusBlink"
+  ],
+  "icon": "forbidden:focus_blink",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

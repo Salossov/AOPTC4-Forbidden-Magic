@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:primewell",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "PRIMPEARL"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "cognitio": 3,
+    "alienis": 6,
+    "fabrico": 1
+  },
+  "complexity": 1,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": 2,
+  "row": -8,
+  "text_pages": [
+    "forbidden.research_page.PRIMEWELL.1"
+  ],
+  "recipe_pages": [
+    "Primewell"
+  ],
+  "page_order": [
+    "forbidden.research_page.PRIMEWELL.1",
+    "Primewell"
+  ],
+  "icon": "forbidden:primewell",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

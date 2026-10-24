@@ -1,0 +1,45 @@
+{
+  "kind": "research",
+  "key": "forbidden:skullaxe",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:nethershards",
+    "THAUMIUM",
+    "INFUSION"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "telum": 3,
+    "ira": 4,
+    "infernus": 1
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -11,
+  "row": -7,
+  "text_pages": [
+    "forbidden.research_page.SKULLAXE.1"
+  ],
+  "recipe_pages": [
+    "SkullAxe"
+  ],
+  "page_order": [
+    "forbidden.research_page.SKULLAXE.1",
+    "SkullAxe"
+  ],
+  "icon": "forbidden:skull_axe",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 1,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

@@ -1,0 +1,40 @@
+{
+  "kind": "research",
+  "key": "forbidden:hellfire",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "forbidden:nethershards"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "ignis": 3,
+    "infernus": 4,
+    "iter": 2
+  },
+  "complexity": 1,
+  "auto_unlock": false,
+  "concealed": false,
+  "column": -8,
+  "row": -8,
+  "text_pages": [
+    "forbidden.research_page.HELLFIRE.1"
+  ],
+  "recipe_pages": [],
+  "page_order": [
+    "forbidden.research_page.HELLFIRE.1"
+  ],
+  "icon": "forbidden:textures/misc/hellfire.png",
+  "virtual": false,
+  "round": true,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

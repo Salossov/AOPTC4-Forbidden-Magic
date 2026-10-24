@@ -1,0 +1,31 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:fork",
+  "input": {
+    "item": "minecraft:iron_bars"
+  },
+  "components": [
+    {
+      "item": "forbidden:wrath_shard"
+    },
+    {
+      "item": "forbidden:wrath_shard"
+    },
+    {
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "minecraft:quartz"
+    }
+  ],
+  "aspects": {
+    "forbidden:ira": 16,
+    "telum": 16,
+    "spiritus": 8
+  },
+  "instability": 3,
+  "result": {
+    "id": "forbidden:diabolist_fork",
+    "count": 1
+  }
+}

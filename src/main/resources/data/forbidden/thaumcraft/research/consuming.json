@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:consuming",
+  "category": "forbidden:FORBIDDEN",
+  "parents": [
+    "INFUSIONENCHANTMENT"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "vacuos": 4,
+    "perditio": 3,
+    "praecantatio": 2
+  },
+  "complexity": 1,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -4,
+  "row": -8,
+  "text_pages": [
+    "forbidden.research_page.CONSUMING.1"
+  ],
+  "recipe_pages": [
+    "Consuming"
+  ],
+  "page_order": [
+    "forbidden.research_page.CONSUMING.1",
+    "Consuming"
+  ],
+  "icon": "forbidden:textures/misc/consuming.png",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

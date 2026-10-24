@@ -1,0 +1,34 @@
+{
+  "type": "thaumcraft:infusion",
+  "research": "forbidden:morphtools",
+  "input": {
+    "item": "thaumcraft:elemental_axe"
+  },
+  "components": [
+    {
+      "item": "forbidden:sloth_shard"
+    },
+    {
+      "item": "forbidden:sloth_shard"
+    },
+    {
+      "item": "thaumcraft:fire_shard"
+    },
+    {
+      "item": "thaumcraft:air_shard"
+    },
+    {
+      "item": "minecraft:quartz"
+    }
+  ],
+  "aspects": {
+    "permutatio": 16,
+    "instrumentum": 8,
+    "arbor": 8
+  },
+  "instability": 2,
+  "result": {
+    "id": "forbidden:morph_axe",
+    "count": 1
+  }
+}

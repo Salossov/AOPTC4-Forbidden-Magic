@@ -1,0 +1,9 @@
+{
+  "kind": "book_category",
+  "id": "forbidden:FORBIDDEN",
+  "name": "tc.research_category.FORBIDDEN",
+  "icon": "forbidden:textures/misc/forbidden.png",
+  "background": "forbidden:textures/misc/runecircle.png",
+  "order": 7,
+  "required_research": ""
+}
