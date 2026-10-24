@@ -18,6 +18,10 @@ import net.minecraft.world.entity.EntityType;
  */
 public class WrathCageRenderer implements BlockEntityRenderer<WrathCageEntity> {
     private final EntityRenderDispatcher entityRenderer;
+    private Entity cachedEntity;
+    private EntityType<?> cachedType;
+    private net.minecraft.world.level.Level cachedLevel;
+    private net.minecraft.resources.ResourceLocation cachedMobId;
 
     public WrathCageRenderer(BlockEntityRendererProvider.Context context) {
         this.entityRenderer = context.getEntityRenderer();
@@ -36,8 +40,13 @@ public class WrathCageRenderer implements BlockEntityRenderer<WrathCageEntity> {
         var level = cage.getLevel();
         if (level == null) return;
 
-        Entity entity = type.create(level);
-        if (entity == null) return;
+        if (cachedEntity == null || cachedType != type || cachedLevel != level || !mobId.equals(cachedMobId)) {
+            cachedEntity = type.create(level);
+            cachedType = type;
+            cachedLevel = level;
+            cachedMobId = mobId;
+        }
+        if (cachedEntity == null) return;
 
         poseStack.pushPose();
         poseStack.translate(0.5D, 0.0D, 0.5D);
@@ -56,16 +65,16 @@ public class WrathCageRenderer implements BlockEntityRenderer<WrathCageEntity> {
         // Pause rotation if powered by redstone
         boolean powered = level.hasNeighborSignal(cage.getBlockPos());
         if (!powered) {
-            float rot = (level.getGameTime() + partialTick) * 10.0F;
+            float rot = (float) (logic.prevSpin + (logic.spin - logic.prevSpin) * (double) partialTick) * 10.0F;
             poseStack.mulPose(Axis.YP.rotationDegrees(rot));
         }
         poseStack.mulPose(Axis.XP.rotationDegrees(-30.0F));
         poseStack.translate(0.0D, -0.4D, 0.0D);
         poseStack.scale(scale, scale, scale);
 
-        entity.setYRot(0.0F);
-        entity.setXRot(0.0F);
-        entityRenderer.render(entity, 0.0D, 0.0D, 0.0D, 0.0F, partialTick, poseStack, buffer, packedLight);
+        cachedEntity.setYRot(0.0F);
+        cachedEntity.setXRot(0.0F);
+        entityRenderer.render(cachedEntity, 0.0D, 0.0D, 0.0D, 0.0F, partialTick, poseStack, buffer, packedLight);
 
         poseStack.popPose();
     }

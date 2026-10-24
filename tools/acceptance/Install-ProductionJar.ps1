@@ -46,6 +46,41 @@ if ($mainJars -and $mainJars.Count -gt 0) {
     Write-Warning "Main JAR not found in $buildLibs. Run build first."
 }
 
+# 1b. First-Wave and Cross-Mod Dependencies Copying
+$workspaceRootCandidates = @(
+    (Resolve-Path (Join-Path $ProjectRoot '../../..') -ErrorAction SilentlyContinue),
+    (Resolve-Path (Join-Path $ProjectRoot '../../../../..') -ErrorAction SilentlyContinue)
+) | Where-Object { $_ -ne $null } | ForEach-Object { $_.Path }
+
+$workspaceRoot = $workspaceRootCandidates | Where-Object { Test-Path (Join-Path $_ 'repo/api') } | Select-Object -First 1
+
+$depCandidates = @()
+if ($workspaceRoot) {
+    $depCandidates += (Join-Path $workspaceRoot 'repo/mod/build/libs')
+    $depCandidates += (Join-Path $workspaceRoot 'repo/api/build/libs')
+    $depCandidates += (Join-Path $workspaceRoot 'port_addons/Thaumic_Tinkerer/repo/build/libs')
+    $depCandidates += (Join-Path $workspaceRoot 'port_addons/Thaumic_Tinkerer/analysis/compat_reference')
+}
+
+$copiedCount = 0
+foreach ($dir in $depCandidates) {
+    if (Test-Path $dir) {
+        $jars = Get-ChildItem -Path $dir -Recurse -Filter "*.jar" -ErrorAction SilentlyContinue | Where-Object {
+            $_.Name -notmatch '-sources\.jar$' -and
+            ($_.Name -match 'thaumcraft' -or $_.Name -match 'ThaumicTinkerer' -or $_.Name -match 'curios' -or $_.Name -match 'botania' -or $_.Name -match 'bloodmagic')
+        }
+        foreach ($j in $jars) {
+            $targetPath = Join-Path $modsDir $j.Name
+            if (-not (Test-Path $targetPath)) {
+                Copy-Item -Path $j.FullName -Destination $targetPath -Force
+                Write-Host "[+] Copied dependency JAR: $($j.Name)" -ForegroundColor Green
+                $copiedCount++
+            }
+        }
+    }
+}
+Write-Host "[*] Total dependency JARs staged: $copiedCount" -ForegroundColor Cyan
+
 # 2. Strict EULA enforcement: eula=false
 $eulaFile = Join-Path $InstallDir 'eula.txt'
 $eulaContent = @(
@@ -68,7 +103,7 @@ $propsContent = @(
 )
 [System.IO.File]::WriteAllLines($serverPropsFile, $propsContent, [System.Text.Encoding]::UTF8)
 
-# 4. Generate runner script with manual confirmation
+# 4. Generate runner script with NeoForge bootstrap detection and manual confirmation
 $runnerFile = Join-Path $InstallDir 'run-server.ps1'
 $runnerContent = @(
     "# Dedicated Server Runner for Production Acceptance",
@@ -77,10 +112,19 @@ $runnerContent = @(
     "    Write-Host '[-] EULA is not accepted. Edit eula.txt manually if you agree to the Minecraft EULA.' -ForegroundColor Red",
     "    exit 1",
     "}",
-    "Write-Host '[*] Starting NeoForge Dedicated Server in production mode...' -ForegroundColor Yellow",
-    "java -Xmx4G -jar server.jar nogui"
+    "if (Test-Path 'run.ps1') {",
+    "    Write-Host '[*] Launching NeoForge Dedicated Server via official run.ps1 bootstrap...' -ForegroundColor Yellow",
+    "    & .\run.ps1 `$args",
+    "} elseif (Test-Path 'run.bat') {",
+    "    Write-Host '[*] Launching NeoForge Dedicated Server via official run.bat bootstrap...' -ForegroundColor Yellow",
+    "    & .\run.bat `$args",
+    "} else {",
+    "    Write-Host '[-] Official NeoForge runtime bootstrap (run.ps1 / run.bat) not detected in this folder.' -ForegroundColor Yellow",
+    "    Write-Host '[*] To complete standalone server installation: run the official NeoForge 1.21.1 installer with --installServer into this folder.' -ForegroundColor Cyan",
+    "    exit 1",
+    "}"
 )
 [System.IO.File]::WriteAllLines($runnerFile, $runnerContent, [System.Text.Encoding]::UTF8)
-Write-Host "[+] Generated run-server.ps1 runner script with safety gates" -ForegroundColor Green
+Write-Host "[+] Generated run-server.ps1 runner script with safety gates and NeoForge bootstrap detection" -ForegroundColor Green
 
 Write-Host "Production deployment structure prepared at $InstallDir." -ForegroundColor Cyan
