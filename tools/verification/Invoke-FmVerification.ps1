@@ -189,8 +189,11 @@ if ($VerifyArtifacts) {
         Write-Host "[*] Performing artifact inspection on built JARs..." -ForegroundColor Yellow
         try {
             $hasJars = (Test-Path (Join-Path $ProjectRoot 'build/libs')) -and ((Get-ChildItem -Path (Join-Path $ProjectRoot 'build/libs') -Filter "ForbiddenMagic-1.21.1-*.jar" -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '-sources\.jar$' }).Count -gt 0)
-            $buildFirstArg = if (-not $hasJars) { @('-BuildFirst') } else { @() }
-            $artifactRaw = & $artifactScript -ProjectRoot $ProjectRoot @buildFirstArg
+            $artifactRaw = if (-not $hasJars) {
+                & $artifactScript -ProjectRoot $ProjectRoot -BuildFirst
+            } else {
+                & $artifactScript -ProjectRoot $ProjectRoot
+            }
             foreach ($line in $artifactRaw) {
                 if ($line -match '^\{.*"MainJarName".*\}$') {
                     $artifactReport = $line | ConvertFrom-Json
