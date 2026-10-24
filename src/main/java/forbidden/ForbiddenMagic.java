@@ -1,5 +1,6 @@
 package forbidden;
 
+import forbidden.compat.Compat;
 import forbidden.component.ForbiddenComponents;
 import forbidden.config.ForbiddenConfig;
 import forbidden.content.ForbiddenContent;
@@ -27,6 +28,8 @@ public final class ForbiddenMagic {
         ForbiddenTools.register(bus);
         ContentCondition.register(bus);
         bus.addListener(StartupPacks::add);
+        bus.addListener(Compat::onCommonSetup);
+        bus.addListener(Compat::onEnqueueIMC);
         bus.addListener((net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent event) -> event.enqueueWork(() -> {
             ForbiddenAspects.register();
             ForbiddenWands.register();

@@ -1,0 +1,87 @@
+[
+  {
+    "id": "forbidden:wrath",
+    "max_level": 5,
+    "base_aspects": {
+      "perditio": 6,
+      "ignis": 6
+    },
+    "texture": "forbidden:textures/misc/wrath.png",
+    "research": "WRATH"
+  },
+  {
+    "id": "forbidden:cluster",
+    "max_level": 4,
+    "base_aspects": {
+      "ignis": 5,
+      "terra": 5,
+      "ordo": 5
+    },
+    "texture": "forbidden:textures/misc/lucrative.png",
+    "research": "CLUSTER"
+  },
+  {
+    "id": "forbidden:greedy",
+    "max_level": 1,
+    "base_aspects": {
+      "perditio": 50,
+      "terra": 30,
+      "ordo": 20
+    },
+    "texture": "forbidden:textures/misc/greedy.png",
+    "research": "GREEDY"
+  },
+  {
+    "id": "forbidden:educational",
+    "max_level": 5,
+    "base_aspects": {
+      "aer": 10,
+      "ignis": 10,
+      "aqua": 10,
+      "terra": 10,
+      "ordo": 15,
+      "perditio": 15
+    },
+    "texture": "forbidden:textures/misc/educational.png",
+    "research": "EDUCATIONAL"
+  },
+  {
+    "id": "forbidden:consuming",
+    "max_level": 1,
+    "base_aspects": {
+      "perditio": 10
+    },
+    "texture": "forbidden:textures/misc/consuming.png",
+    "research": "CONSUMING"
+  },
+  {
+    "id": "forbidden:corrupting",
+    "max_level": 1,
+    "base_aspects": {
+      "perditio": 20,
+      "ignis": 15,
+      "terra": 10
+    },
+    "texture": "forbidden:textures/misc/corrupting.png",
+    "research": "CORRUPTING"
+  },
+  {
+    "id": "forbidden:voidtouched",
+    "max_level": 1,
+    "base_aspects": {
+      "perditio": 70
+    },
+    "texture": "forbidden:textures/misc/voidtouched.png",
+    "research": "VOIDTOUCHED"
+  },
+  {
+    "id": "forbidden:impact",
+    "max_level": 1,
+    "base_aspects": {
+      "perditio": 30,
+      "terra": 30
+    },
+    "texture": "forbidden:textures/misc/impact.png",
+    "research": "IMPACT"
+  }
+]

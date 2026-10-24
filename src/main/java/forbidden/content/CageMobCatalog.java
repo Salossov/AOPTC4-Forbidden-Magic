@@ -30,6 +30,21 @@ public final class CageMobCatalog {
     }
 
     private static final List<JsonObject> RECORDS = load();
+    private static final Map<ResourceLocation, Aspect> DYNAMIC_ENTRIES = new LinkedHashMap<>();
+    private static final Map<ResourceLocation, SpawnCondition> DYNAMIC_CONDITIONS = new LinkedHashMap<>();
+
+    public static synchronized void registerMob(ResourceLocation mob, Aspect aspect, SpawnCondition condition) {
+        if (mob != null && aspect != null) {
+            DYNAMIC_ENTRIES.put(mob, aspect);
+            if (condition != null) {
+                DYNAMIC_CONDITIONS.put(mob, condition);
+            }
+        }
+    }
+
+    public static synchronized void registerMob(ResourceLocation mob, Aspect aspect) {
+        registerMob(mob, aspect, SpawnCondition.GROUND);
+    }
 
     private static List<JsonObject> load() {
         try (var input = CageMobCatalog.class.getResourceAsStream("/data/forbidden/cage_mobs.json")) {
@@ -62,6 +77,9 @@ public final class CageMobCatalog {
             if (aspect == null) continue;
             result.put(ResourceLocation.parse(row.get("mob").getAsString()), aspect);
         }
+        synchronized (CageMobCatalog.class) {
+            result.putAll(DYNAMIC_ENTRIES);
+        }
         return Collections.unmodifiableMap(result);
     }
 
@@ -78,6 +96,11 @@ public final class CageMobCatalog {
 
     public static SpawnCondition getSpawnCondition(ResourceLocation mob) {
         if (mob == null) return SpawnCondition.GROUND;
+        synchronized (CageMobCatalog.class) {
+            if (DYNAMIC_CONDITIONS.containsKey(mob)) {
+                return DYNAMIC_CONDITIONS.get(mob);
+            }
+        }
         String mobStr = mob.toString();
         for (var row : RECORDS) {
             if (mobStr.equals(row.get("mob").getAsString())) {

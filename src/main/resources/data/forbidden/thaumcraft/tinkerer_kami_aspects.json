@@ -1,0 +1,16 @@
+{
+  "kind": "item_aspect_additions",
+  "required_mods": ["thaumictinkerer"],
+  "entries": {
+    "thaumictinkerer:nether_shard": {
+      "forbidden:infernus": 2,
+      "praecantatio": 1,
+      "vitreus": 1
+    },
+    "thaumictinkerer:ender_shard": {
+      "alienis": 2,
+      "praecantatio": 1,
+      "vitreus": 1
+    }
+  }
+}
