@@ -127,5 +127,6 @@ if (-not $passed) {
     exit 1
 } else {
     Write-Host "[+] JAR Artifact Verification PASSED ($($entryNames.Count) entries verified, zero violations)." -ForegroundColor Green
-    return $report
+    Write-Output ($report | ConvertTo-Json -Compress)
+    exit 0
 }

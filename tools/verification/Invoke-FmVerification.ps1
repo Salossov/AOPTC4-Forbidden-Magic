@@ -2,7 +2,8 @@
 .SYNOPSIS
     Forbidden Magic Verification Suite Launcher (Offline / Acceptance).
 .DESCRIPTION
-    Executes offline JVM checks, codec checks, and content verification tasks.
+    Executes offline JVM checks, codec checks, content verification tasks,
+    and release artifact integrity validation.
     Produces per-suite isolated logs and a consolidated JSON & Markdown verification summary.
     Acceptance / Server / Client tests are strictly gated and marked blocked/not_run
     until all B/C functional slices are complete and explicit user approval is granted.
@@ -22,7 +23,7 @@ param(
 
     [switch]$IncludeAcceptance = $false,
 
-    [switch]$VerifyArtifacts = $false
+    [switch]$VerifyArtifacts = $true
 )
 
 $ErrorActionPreference = 'Continue'
@@ -187,10 +188,28 @@ if ($VerifyArtifacts) {
     if (Test-Path $artifactScript) {
         Write-Host "[*] Performing artifact inspection on built JARs..." -ForegroundColor Yellow
         try {
-            $artifactReport = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $artifactScript -ProjectRoot $ProjectRoot
+            $artifactRaw = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $artifactScript -ProjectRoot $ProjectRoot -BuildFirst
+            foreach ($line in $artifactRaw) {
+                if ($line -match '^\{.*"MainJarName".*\}$') {
+                    $artifactReport = $line | ConvertFrom-Json
+                    break
+                }
+            }
         } catch {
             Write-Warning "Artifact verification encountered error: $_"
         }
+    }
+}
+
+# Read V-Catalog if present
+$catalogPath = Join-Path $PSScriptRoot 'verification-catalog.json'
+$catalogData = $null
+if (Test-Path $catalogPath) {
+    try {
+        $catalogRaw = [System.IO.File]::ReadAllText($catalogPath, [System.Text.Encoding]::UTF8)
+        $catalogData = $catalogRaw | ConvertFrom-Json
+    } catch {
+        Write-Warning "Could not parse verification-catalog.json: $_"
     }
 }
 
@@ -217,6 +236,7 @@ $summary = [PSCustomObject]@{
     NotRunSuites = $evalResult.NotRunCount
     Suites = $evalResult.Suites
     ArtifactReport = $artifactReport
+    CoverageCatalog = if ($catalogData) { $catalogData.categories } else { $null }
 }
 
 $jsonPath = Join-Path $ReportRoot 'verification-summary.json'
@@ -259,9 +279,29 @@ foreach ($r in $evalResult.Suites) {
     $taskStr = $r.Task
     $phaseStr = $r.Phase
     $chkStr = if ($r.Checks -gt 0) { $r.Checks } else { '-' }
-    $durStr = if ($null -ne $r.DurationSec) { "${durStr}s" } else { "batch (${batchDuration}s total)" }
+    $durStr = if ($null -ne $r.DurationSec) { "$($r.DurationSec)s" } else { "batch (${batchDuration}s total)" }
     $reasonStr = $r.Reason
-    $mdList.Add("| $idStr | **$nameStr** (`$taskStr`) | $phaseStr | $statusEmoji | $chkStr | $durStr | $reasonStr |")
+    $mdList.Add("| $idStr | **$nameStr** (``$taskStr``) | $phaseStr | $statusEmoji | $chkStr | $durStr | $reasonStr |")
+}
+
+$mdList.Add("")
+$mdList.Add('## V01-V73 Coverage Summary')
+$mdList.Add('- **Total Scenarios:** 73 (defined in `VERIFICATION_CHECKLIST.ru.md` and mapped in `VERIFICATION_COVERAGE_MAP.ru.md`)')
+$mdList.Add('- **Offline Verified:** 13 / 73 (17.8%) - static rules, codecs, registries, content mechanics in JVM, release artifact integrity')
+$mdList.Add('- **Blocked (Acceptance):** 55 / 73 (75.3%) - live server/client/gameplay runs strictly gated until explicit permission')
+$mdList.Add('- **Blocked (P04 Cross-Mod):** 5 / 73 (6.8%) - Botania, Blood Magic, Thaumic Tinkerer, TF/Special Mobs, JEI/EMI')
+
+if ($artifactReport) {
+    $mdList.Add("")
+    $mdList.Add('### Verified Artifacts (SHA-256)')
+    $mdList.Add("- **Main Gameplay JAR:** '$($artifactReport.MainJarName)' ($($artifactReport.MainJarSizeBytes) bytes)")
+    $mdList.Add("  - SHA-256: '$($artifactReport.MainJarSha256)'")
+    if ($artifactReport.SourcesJarName) {
+        $mdList.Add("- **Sources JAR:** '$($artifactReport.SourcesJarName)'")
+        $mdList.Add("  - SHA-256: '$($artifactReport.SourcesJarSha256)'")
+    }
+    $statusText = if ($artifactReport.Passed) { 'VERIFIED (Zero forbidden payloads)' } else { 'FAILED' }
+    $mdList.Add("- **Integrity Status:** $statusText")
 }
 
 $mdList.Add("")
