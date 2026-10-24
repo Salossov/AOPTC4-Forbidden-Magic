@@ -2,6 +2,7 @@ package forbidden.client;
 
 import forbidden.component.ForbiddenComponents;
 import forbidden.content.ForbiddenContent;
+import forbidden.content.ForbiddenTools;
 import java.util.*;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.*;
@@ -16,7 +17,9 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.ModelEvent;
+import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import net.neoforged.neoforge.client.model.data.*;
 
@@ -24,11 +27,53 @@ import net.neoforged.neoforge.client.model.data.*;
 public final class P01Models {
     private static final ModelProperty<BlockPos> POSITION=new ModelProperty<>();
     private static ResourceLocation id(String path){return ResourceLocation.fromNamespaceAndPath("forbidden",path);}
-    @SubscribeEvent public static void client(FMLClientSetupEvent event){event.enqueueWork(()->{
-        if(ForbiddenContent.MOB_CRYSTAL!=null)net.minecraft.client.renderer.item.ItemProperties.register(ForbiddenContent.MOB_CRYSTAL.get(),id("filled"),(stack,level,entity,seed)->stack.has(ForbiddenComponents.MOB.get())?1:0);
-    });}
-    @SubscribeEvent public static void additional(ModelEvent.RegisterAdditional event){for(var skin:List.of("gross","gross2"))event.register(ModelResourceLocation.standalone(id("block/taint_log_"+skin)));}
-    @SubscribeEvent public static void bake(ModelEvent.ModifyBakingResult event){
+
+    @SubscribeEvent
+    public static void client(FMLClientSetupEvent event){
+        event.enqueueWork(()->{
+            if(ForbiddenContent.MOB_CRYSTAL!=null) {
+                net.minecraft.client.renderer.item.ItemProperties.register(
+                    ForbiddenContent.MOB_CRYSTAL.get(),
+                    id("filled"),
+                    (stack,level,entity,seed)->stack.has(ForbiddenComponents.MOB.get())?1:0
+                );
+            }
+        });
+    }
+
+    @SubscribeEvent
+    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+        if (ForbiddenContent.CAGE_ENTITY != null) {
+            event.registerBlockEntityRenderer(ForbiddenContent.CAGE_ENTITY.get(), WrathCageRenderer::new);
+        }
+    }
+
+    @SubscribeEvent
+    public static void registerItemColors(RegisterColorHandlersEvent.Item event) {
+        // Morph tools second-layer (tintIndex 1) phase colors: 0=0x980000 (red), 1=0x0010CC (blue), 2=0xE5DA00 (yellow)
+        event.register((stack, tintIndex) -> {
+            if (tintIndex != 1) return -1;
+            var morph = stack.get(ForbiddenComponents.MORPH.get());
+            int phase = morph != null ? morph.phase() : 0;
+            return switch (phase) {
+                case 1 -> 0x0010CC;
+                case 2 -> 0xE5DA00;
+                default -> 0x980000;
+            };
+        },
+        ForbiddenTools.MORPH_PICKAXE.get(),
+        ForbiddenTools.MORPH_SWORD.get(),
+        ForbiddenTools.MORPH_SHOVEL.get(),
+        ForbiddenTools.MORPH_AXE.get());
+    }
+
+    @SubscribeEvent
+    public static void additional(ModelEvent.RegisterAdditional event){
+        for(var skin:List.of("gross","gross2"))event.register(ModelResourceLocation.standalone(id("block/taint_log_"+skin)));
+    }
+
+    @SubscribeEvent
+    public static void bake(ModelEvent.ModifyBakingResult event){
         var models=event.getModels();var sprites=new ArrayList<TextureAtlasSprite>();
         for(var skin:List.of("gross","gross2")){
             var model=models.get(ModelResourceLocation.standalone(id("block/taint_log_"+skin)));
@@ -50,6 +95,7 @@ public final class P01Models {
             });
         }
     }
+
     private static BakedQuad retexture(BakedQuad quad,TextureAtlasSprite sprite){
         var old=quad.getSprite();int[] vertices=quad.getVertices().clone();
         for(int i=0;i<vertices.length;i+=8){float u=Float.intBitsToFloat(vertices[i+4]),v=Float.intBitsToFloat(vertices[i+5]);
@@ -58,5 +104,6 @@ public final class P01Models {
         }
         return new BakedQuad(vertices,quad.getTintIndex(),quad.getDirection(),sprite,quad.isShade(),quad.hasAmbientOcclusion());
     }
+
     private P01Models(){}
 }

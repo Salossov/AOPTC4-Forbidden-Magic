@@ -1,6 +1,7 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "forbidden:items/chameleonpick"
+    "layer0": "forbidden:items/chameleonpick",
+    "layer1": "forbidden:items/eyepick"
   }
 }
