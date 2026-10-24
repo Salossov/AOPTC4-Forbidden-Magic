@@ -82,7 +82,7 @@ public final class P04CompatCheck {
         check(wrath.maxLevel() == 5, "wrath max level 5");
         check(wrath.getBaseCost("perditio") == 6, "wrath perditio base 6");
         check(wrath.getBaseCost("ignis") == 6, "wrath ignis base 6");
-        check(wrath.research().equals("WRATH"), "wrath research WRATH");
+        check(wrath.research().equals("forbidden:wrath"), "wrath research forbidden:wrath");
         // cost at lvl 1 = (int)(6 * (1 * 1.2)) = 7
         AspectList wrathL1 = wrath.cost(1);
         check(wrathL1.getAmount(Aspect.getAspect("perditio")) == 7, "wrath lvl 1 perditio cost");
@@ -99,7 +99,7 @@ public final class P04CompatCheck {
         check(cluster.getBaseCost("ignis") == 5, "cluster ignis base 5");
         check(cluster.getBaseCost("terra") == 5, "cluster terra base 5");
         check(cluster.getBaseCost("ordo") == 5, "cluster ordo base 5");
-        check(cluster.research().equals("CLUSTER"), "cluster research CLUSTER");
+        check(cluster.research().equals("forbidden:cluster"), "cluster research forbidden:cluster");
 
         // 3. Greedy (max 1: perditio 50, terra 30, ordo 20)
         OsmoticCostEntry greedy = TinkererEnchantmentRegistry.find(ResourceLocation.parse("forbidden:greedy"));
@@ -179,6 +179,14 @@ public final class P04CompatCheck {
                 check(receiverEntry != null, "receiver catalog contains " + entry.id());
                 int maxLvl = (int) receiverEntry.getClass().getMethod("maxLevel").invoke(receiverEntry);
                 check(maxLvl == entry.maxLevel(), "receiver maxLevel matches for " + entry.id());
+                String resKey = (String) receiverEntry.getClass().getMethod("research").invoke(receiverEntry);
+                check(resKey != null && resKey.equals(entry.research()), "receiver research matches: " + resKey + " == " + entry.research());
+                check(resKey.startsWith("forbidden:"), "receiver research is namespaced: " + resKey);
+                // Verify corresponding research JSON definition exists in FM
+                String jsonPath = "/data/forbidden/thaumcraft/research/" + entry.id().getPath() + ".json";
+                try (var resStream = P04CompatCheck.class.getResourceAsStream(jsonPath)) {
+                    check(resStream != null, "research definition exists for " + entry.id() + " at " + jsonPath);
+                }
             }
         } catch (ClassNotFoundException e) {
             // Standalone without TT JAR

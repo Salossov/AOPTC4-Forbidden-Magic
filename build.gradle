@@ -56,16 +56,21 @@ if (!file("${defaultCoreRoot}/api").isDirectory()) {
 }
 def coreRoot = providers.gradleProperty('coreRoot').isPresent() ? file(providers.gradleProperty('coreRoot').get()) : defaultCoreRoot
 def apiJar = file(providers.gradleProperty('thaumcraftApiJar').getOrElse("${coreRoot}/api/build/libs/thaumcraft-api-${project.thaumcraft_version}.jar"))
-def defaultCompatRoot = file('../../../../Thaumic_Tinkerer/analysis/compat_reference')
-if (!defaultCompatRoot.isDirectory()) {
-    defaultCompatRoot = file('../../Thaumic_Tinkerer/analysis/compat_reference')
-}
+def compatCandidates = [
+    file("${projectDir}/../../Thaumic_Tinkerer/analysis/compat_reference"),
+    file("${projectDir}/../../../../Thaumic_Tinkerer/analysis/compat_reference")
+]
+def defaultCompatRoot = compatCandidates.find { it.isDirectory() } ?: compatCandidates[0]
 def botaniaJar = file("${defaultCompatRoot}/botania/botania-neoforge-1.21.1-456-20260912.043547-15.jar")
 def bloodMagicJar = file("${defaultCompatRoot}/bloodmagic/bloodmagic-3.4.0-46-alpha.jar")
 def modopediaJar = file("${defaultCompatRoot}/bloodmagic/modopedia-neoforge-1.21.1-1.1.5.jar")
-def ttWorktreeJar = file('../../../../Thaumic_Tinkerer/repo/.worktree/f01-tt-enchanter-api/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar')
-def ttRepoJar = file('../../Thaumic_Tinkerer/repo/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar')
-def tinkererJar = ttWorktreeJar.isFile() ? ttWorktreeJar : ttRepoJar
+def ttJarCandidates = [
+    file("${projectDir}/../../Thaumic_Tinkerer/repo/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar"),
+    file("${projectDir}/../../../../Thaumic_Tinkerer/repo/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar"),
+    file("${projectDir}/../../Thaumic_Tinkerer/repo/.worktree/f01-tt-enchanter-api/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar"),
+    file("${projectDir}/../../../../Thaumic_Tinkerer/repo/.worktree/f01-tt-enchanter-api/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar")
+]
+def tinkererJar = ttJarCandidates.find { it.isFile() } ?: ttJarCandidates[0]
 dependencies {
     compileOnly files(apiJar)
     nativeVerificationRuntimeOnly files(apiJar)

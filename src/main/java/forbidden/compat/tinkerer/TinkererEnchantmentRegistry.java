@@ -12,7 +12,7 @@ public final class TinkererEnchantmentRegistry {
             5,
             Map.of("perditio", 6, "ignis", 6),
             "forbidden:textures/misc/wrath.png",
-            "WRATH"
+            "forbidden:wrath"
     );
 
     public static final OsmoticCostEntry CLUSTER = new OsmoticCostEntry(
@@ -20,7 +20,7 @@ public final class TinkererEnchantmentRegistry {
             4,
             Map.of("ignis", 5, "terra", 5, "ordo", 5),
             "forbidden:textures/misc/lucrative.png",
-            "CLUSTER"
+            "forbidden:cluster"
     );
 
     public static final OsmoticCostEntry GREEDY = new OsmoticCostEntry(
@@ -28,7 +28,7 @@ public final class TinkererEnchantmentRegistry {
             1,
             Map.of("perditio", 50, "terra", 30, "ordo", 20),
             "forbidden:textures/misc/greedy.png",
-            "GREEDY"
+            "forbidden:greedy"
     );
 
     public static final OsmoticCostEntry EDUCATIONAL = new OsmoticCostEntry(
@@ -36,7 +36,7 @@ public final class TinkererEnchantmentRegistry {
             5,
             Map.of("aer", 10, "ignis", 10, "aqua", 10, "terra", 10, "ordo", 15, "perditio", 15),
             "forbidden:textures/misc/educational.png",
-            "EDUCATIONAL"
+            "forbidden:educational"
     );
 
     public static final OsmoticCostEntry CONSUMING = new OsmoticCostEntry(
@@ -44,7 +44,7 @@ public final class TinkererEnchantmentRegistry {
             1,
             Map.of("perditio", 10),
             "forbidden:textures/misc/consuming.png",
-            "CONSUMING"
+            "forbidden:consuming"
     );
 
     public static final OsmoticCostEntry CORRUPTING = new OsmoticCostEntry(
@@ -52,7 +52,7 @@ public final class TinkererEnchantmentRegistry {
             1,
             Map.of("perditio", 20, "ignis", 15, "terra", 10),
             "forbidden:textures/misc/corrupting.png",
-            "CORRUPTING"
+            "forbidden:corrupting"
     );
 
     public static final OsmoticCostEntry VOIDTOUCHED = new OsmoticCostEntry(
@@ -60,7 +60,7 @@ public final class TinkererEnchantmentRegistry {
             1,
             Map.of("perditio", 70),
             "forbidden:textures/misc/voidtouched.png",
-            "VOIDTOUCHED"
+            "forbidden:voidtouched"
     );
 
     public static final OsmoticCostEntry IMPACT = new OsmoticCostEntry(
@@ -68,7 +68,7 @@ public final class TinkererEnchantmentRegistry {
             1,
             Map.of("perditio", 30, "terra", 30),
             "forbidden:textures/misc/impact.png",
-            "IMPACT"
+            "forbidden:impact"
     );
 
     public static final List<OsmoticCostEntry> ENTRIES = List.of(
