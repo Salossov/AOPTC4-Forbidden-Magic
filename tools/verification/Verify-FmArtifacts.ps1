@@ -26,7 +26,7 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 if ($BuildFirst) {
     Write-Host "[*] Building jar and sourcesJar offline..." -ForegroundColor Yellow
     $gradlew = Join-Path $ProjectRoot 'gradlew.ps1'
-    & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $gradlew jar sourcesJar --offline
+    & $gradlew jar sourcesJar --offline
     if ($LASTEXITCODE -ne 0) {
         throw "Failed to build JARs via Gradle (exit code $LASTEXITCODE)"
     }

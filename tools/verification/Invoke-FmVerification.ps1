@@ -155,7 +155,7 @@ if ($Phase -ne 'Acceptance') {
 
     Push-Location $ProjectRoot
     try {
-        $batchOutput = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $gradlew @gradleArgs 2>&1
+        $batchOutput = & $gradlew @gradleArgs 2>&1
         $gradleExitCode = $LASTEXITCODE
         [System.IO.File]::WriteAllLines($batchLogFile, [string[]]$batchOutput, [System.Text.Encoding]::UTF8)
         foreach ($line in $batchOutput) {
@@ -190,7 +190,7 @@ if ($VerifyArtifacts) {
         try {
             $hasJars = (Test-Path (Join-Path $ProjectRoot 'build/libs')) -and ((Get-ChildItem -Path (Join-Path $ProjectRoot 'build/libs') -Filter "ForbiddenMagic-1.21.1-*.jar" -ErrorAction SilentlyContinue | Where-Object { $_.Name -notmatch '-sources\.jar$' }).Count -gt 0)
             $buildFirstArg = if (-not $hasJars) { @('-BuildFirst') } else { @() }
-            $artifactRaw = & powershell.exe -NoProfile -ExecutionPolicy Bypass -File $artifactScript -ProjectRoot $ProjectRoot @buildFirstArg
+            $artifactRaw = & $artifactScript -ProjectRoot $ProjectRoot @buildFirstArg
             foreach ($line in $artifactRaw) {
                 if ($line -match '^\{.*"MainJarName".*\}$') {
                     $artifactReport = $line | ConvertFrom-Json
