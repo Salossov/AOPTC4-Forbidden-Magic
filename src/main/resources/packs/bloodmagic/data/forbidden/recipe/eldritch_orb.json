@@ -5,7 +5,7 @@
     "item": "bloodmagic:archmagebloodorb"
   },
   "components": [
-    { "item": "thaumcraft:primordial_pearl" },
+    { "item": "thaumcraft:primal_pearl" },
     { "item": "thaumcraft:void_seed" },
     { "item": "minecraft:nether_star" },
     { "item": "forbidden:taint_coal" }

@@ -7,9 +7,11 @@ import java.util.*;
 
 /**
  * Dedicated semantic data verification suite for V02 (Recipes) and V03 (Research).
- * Performs direct offline validation of all 33 recipe JSON definitions and all 31 research JSON definitions
- * against the 0.575 reference model (ingredients, aspect costs, instability, coordinates, parents, flags, warp).
- * Includes negative regression fixtures verifying that corrupt data is strictly rejected.
+ * Performs comprehensive offline validation of all 67 recipes and 49 researches
+ * across base and integration datapacks (Botania, Blood Magic, Enchanting).
+ * Verifies exact types, results, counts, inputs, components, aspect costs, vis costs,
+ * coordinates, complexity, warp, parents, hidden parents, recipe pages, and text pages.
+ * Includes extensive negative mutation regressions for all key semantic properties.
  */
 public final class SemanticDataCheck {
     private static int checks = 0;
@@ -21,148 +23,275 @@ public final class SemanticDataCheck {
         }
     }
 
+    public record RecipeSpec(
+            String type,
+            String research,
+            String resultId,
+            int resultCount,
+            int instability,
+            String centralInput,
+            List<String> components,
+            Map<String, Integer> aspects,
+            Map<String, Integer> vis
+    ) {}
+
+    public record ResearchSpec(
+            String key,
+            int col,
+            int row,
+            int comp,
+            int warp,
+            List<String> parents,
+            List<String> hiddenParents,
+            List<String> recipePages,
+            int textPagesCount,
+            Map<String, Integer> aspects,
+            boolean autoUnlock,
+            boolean stub
+    ) {}
+
     private static final List<String> RECIPE_FILES = List.of(
-            "arcane_cake_hardcore.json",
-            "arcane_cake_normal.json",
-            "black_ink.json",
-            "crystalwell.json",
-            "emerald.json",
-            "emerald_nuggets.json",
-            "emerald_transmutation.json",
-            "focus_blink.json",
-            "fork.json",
-            "heretic_study.json",
-            "mob_crystal.json",
-            "morph_axe.json",
-            "morph_pickaxe.json",
-            "morph_shovel.json",
-            "morph_sword.json",
-            "nether_stars.json",
-            "primewell.json",
-            "riding_crop.json",
-            "ring_food.json",
-            "skull_axe.json",
-            "star_block.json",
-            "sub_collar.json",
-            "taint_bricks.json",
-            "taint_coal.json",
-            "taint_pick.json",
-            "taint_planks.json",
-            "taint_sapling.json",
-            "taint_shovel.json",
-            "taint_stone.json",
-            "umbral_bush.json",
-            "wand_rod_infernal.json",
-            "wand_rod_tainted.json",
-            "wrath_cage.json"
+            "/data/forbidden/recipe/arcane_cake_hardcore.json",
+            "/data/forbidden/recipe/arcane_cake_normal.json",
+            "/data/forbidden/recipe/black_ink.json",
+            "/data/forbidden/recipe/crystalwell.json",
+            "/data/forbidden/recipe/emerald.json",
+            "/data/forbidden/recipe/emerald_nuggets.json",
+            "/data/forbidden/recipe/emerald_transmutation.json",
+            "/data/forbidden/recipe/focus_blink.json",
+            "/data/forbidden/recipe/fork.json",
+            "/data/forbidden/recipe/heretic_study.json",
+            "/data/forbidden/recipe/mob_crystal.json",
+            "/data/forbidden/recipe/morph_axe.json",
+            "/data/forbidden/recipe/morph_pickaxe.json",
+            "/data/forbidden/recipe/morph_shovel.json",
+            "/data/forbidden/recipe/morph_sword.json",
+            "/data/forbidden/recipe/nether_stars.json",
+            "/data/forbidden/recipe/primewell.json",
+            "/data/forbidden/recipe/riding_crop.json",
+            "/data/forbidden/recipe/ring_food.json",
+            "/data/forbidden/recipe/skull_axe.json",
+            "/data/forbidden/recipe/star_block.json",
+            "/data/forbidden/recipe/sub_collar.json",
+            "/data/forbidden/recipe/taint_bricks.json",
+            "/data/forbidden/recipe/taint_coal.json",
+            "/data/forbidden/recipe/taint_pick.json",
+            "/data/forbidden/recipe/taint_planks.json",
+            "/data/forbidden/recipe/taint_sapling.json",
+            "/data/forbidden/recipe/taint_shovel.json",
+            "/data/forbidden/recipe/taint_stone.json",
+            "/data/forbidden/recipe/umbral_bush.json",
+            "/data/forbidden/recipe/wand_rod_infernal.json",
+            "/data/forbidden/recipe/wand_rod_tainted.json",
+            "/data/forbidden/recipe/wrath_cage.json",
+            "/packs/bloodmagic/data/forbidden/recipe/altar_wand_rod_blood.json",
+            "/packs/bloodmagic/data/forbidden/recipe/blood_rapier.json",
+            "/packs/bloodmagic/data/forbidden/recipe/bloodthorn.json",
+            "/packs/bloodmagic/data/forbidden/recipe/bloodwell.json",
+            "/packs/bloodmagic/data/forbidden/recipe/boundwell.json",
+            "/packs/bloodmagic/data/forbidden/recipe/eldritch_orb.json",
+            "/packs/bloodmagic/data/forbidden/recipe/wand_cap_alchemical.json",
+            "/packs/bloodmagic/data/forbidden/recipe/wand_rod_blood.json",
+            "/packs/bloodmagic/data/forbidden/recipe/wand_rod_blood_inert.json",
+            "/packs/bloodmagic/data/forbidden/recipe/wand_rod_blood_staff.json",
+            "/packs/botania/data/forbidden/recipe/botanist_emblem.json",
+            "/packs/botania/data/forbidden/recipe/euclidaisy.json",
+            "/packs/botania/data/forbidden/recipe/mana_infusion_wand_cap_manasteel.json",
+            "/packs/botania/data/forbidden/recipe/mana_infusion_wand_rod_dreamwood.json",
+            "/packs/botania/data/forbidden/recipe/mana_infusion_wand_rod_livingwood.json",
+            "/packs/botania/data/forbidden/recipe/tainthistle.json",
+            "/packs/botania/data/forbidden/recipe/wand_cap_elementium.json",
+            "/packs/botania/data/forbidden/recipe/wand_cap_elementium_inert.json",
+            "/packs/botania/data/forbidden/recipe/wand_cap_manasteel_inert.json",
+            "/packs/botania/data/forbidden/recipe/wand_cap_terrasteel.json",
+            "/packs/botania/data/forbidden/recipe/wand_rod_dreamwood.json",
+            "/packs/botania/data/forbidden/recipe/wand_rod_dreamwood_inert.json",
+            "/packs/botania/data/forbidden/recipe/wand_rod_dreamwood_staff.json",
+            "/packs/botania/data/forbidden/recipe/wand_rod_livingwood.json",
+            "/packs/botania/data/forbidden/recipe/wand_rod_livingwood_inert.json",
+            "/packs/botania/data/forbidden/recipe/whisperweed.json",
+            "/packs/enchanting/data/forbidden/recipe/enchant_cluster.json",
+            "/packs/enchanting/data/forbidden/recipe/enchant_consuming.json",
+            "/packs/enchanting/data/forbidden/recipe/enchant_corrupting.json",
+            "/packs/enchanting/data/forbidden/recipe/enchant_educational.json",
+            "/packs/enchanting/data/forbidden/recipe/enchant_greedy.json",
+            "/packs/enchanting/data/forbidden/recipe/enchant_impact.json",
+            "/packs/enchanting/data/forbidden/recipe/enchant_voidtouched.json",
+            "/packs/enchanting/data/forbidden/recipe/enchant_wrath.json"
     );
 
     private static final List<String> RESEARCH_FILES = List.of(
-            "arcanecake.json",
-            "blackflower.json",
-            "cluster.json",
-            "consuming.json",
-            "corrupting.json",
-            "crystalwell.json",
-            "educational.json",
-            "focusblink.json",
-            "fork.json",
-            "greedy.json",
-            "hellfire.json",
-            "impact.json",
-            "morphtools.json",
-            "nethershards.json",
-            "primewell.json",
-            "ridingcrop.json",
-            "ringfood.json",
-            "rod_infernal.json",
-            "rod_profane.json",
-            "rod_tainted.json",
-            "schools.json",
-            "skullaxe.json",
-            "subcollar.json",
-            "taintpick.json",
-            "taintshovel.json",
-            "taintstone.json",
-            "tainttree.json",
-            "transemerald.json",
-            "voidtouched.json",
-            "wrath.json",
-            "wrathcage.json"
+            "/data/forbidden/thaumcraft/research/arcanecake.json",
+            "/data/forbidden/thaumcraft/research/blackflower.json",
+            "/data/forbidden/thaumcraft/research/cluster.json",
+            "/data/forbidden/thaumcraft/research/consuming.json",
+            "/data/forbidden/thaumcraft/research/corrupting.json",
+            "/data/forbidden/thaumcraft/research/crystalwell.json",
+            "/data/forbidden/thaumcraft/research/educational.json",
+            "/data/forbidden/thaumcraft/research/focusblink.json",
+            "/data/forbidden/thaumcraft/research/fork.json",
+            "/data/forbidden/thaumcraft/research/greedy.json",
+            "/data/forbidden/thaumcraft/research/hellfire.json",
+            "/data/forbidden/thaumcraft/research/impact.json",
+            "/data/forbidden/thaumcraft/research/morphtools.json",
+            "/data/forbidden/thaumcraft/research/nethershards.json",
+            "/data/forbidden/thaumcraft/research/primewell.json",
+            "/data/forbidden/thaumcraft/research/ridingcrop.json",
+            "/data/forbidden/thaumcraft/research/ringfood.json",
+            "/data/forbidden/thaumcraft/research/rod_infernal.json",
+            "/data/forbidden/thaumcraft/research/rod_profane.json",
+            "/data/forbidden/thaumcraft/research/rod_tainted.json",
+            "/data/forbidden/thaumcraft/research/schools.json",
+            "/data/forbidden/thaumcraft/research/skullaxe.json",
+            "/data/forbidden/thaumcraft/research/subcollar.json",
+            "/data/forbidden/thaumcraft/research/taintpick.json",
+            "/data/forbidden/thaumcraft/research/taintshovel.json",
+            "/data/forbidden/thaumcraft/research/taintstone.json",
+            "/data/forbidden/thaumcraft/research/tainttree.json",
+            "/data/forbidden/thaumcraft/research/transemerald.json",
+            "/data/forbidden/thaumcraft/research/voidtouched.json",
+            "/data/forbidden/thaumcraft/research/wrath.json",
+            "/data/forbidden/thaumcraft/research/wrathcage.json",
+            "/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodmagic.json",
+            "/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodrapier.json",
+            "/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodthorn.json",
+            "/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodwell.json",
+            "/packs/bloodmagic/data/forbidden/thaumcraft/research/cap_alchemical.json",
+            "/packs/bloodmagic/data/forbidden/thaumcraft/research/eldritch_orb.json",
+            "/packs/bloodmagic/data/forbidden/thaumcraft/research/rod_blood.json",
+            "/packs/bloodmagic/data/forbidden/thaumcraft/research/rod_blood_staff.json",
+            "/packs/botania/data/forbidden/thaumcraft/research/botany.json",
+            "/packs/botania/data/forbidden/thaumcraft/research/cap_elementium.json",
+            "/packs/botania/data/forbidden/thaumcraft/research/cap_manasteel.json",
+            "/packs/botania/data/forbidden/thaumcraft/research/cap_terrasteel.json",
+            "/packs/botania/data/forbidden/thaumcraft/research/euclidaisy.json",
+            "/packs/botania/data/forbidden/thaumcraft/research/rod_dreamwood.json",
+            "/packs/botania/data/forbidden/thaumcraft/research/rod_dreamwood_staff.json",
+            "/packs/botania/data/forbidden/thaumcraft/research/rod_livingwood.json",
+            "/packs/botania/data/forbidden/thaumcraft/research/tainthistle.json",
+            "/packs/botania/data/forbidden/thaumcraft/research/whisperweed.json"
     );
 
-    record RecipeSpec(String type, String research, String resultId, int instability) {}
-
-    record ResearchSpec(String key, int col, int row, int comp, int warp, List<String> parents, List<String> recipePages) {}
-
     private static final Map<String, RecipeSpec> RECIPE_SPECS = Map.ofEntries(
-            Map.entry("arcane_cake_hardcore.json", new RecipeSpec("thaumcraft:infusion", "forbidden:arcanecake", "forbidden:arcane_cake", 3)),
-            Map.entry("arcane_cake_normal.json", new RecipeSpec("thaumcraft:infusion", "forbidden:arcanecake", "forbidden:arcane_cake", 3)),
-            Map.entry("black_ink.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:black_dye", 0)),
-            Map.entry("crystalwell.json", new RecipeSpec("thaumcraft:arcane_shapeless", "forbidden:crystalwell", "forbidden:crystalwell", 0)),
-            Map.entry("emerald.json", new RecipeSpec("minecraft:crafting_shaped", null, "minecraft:emerald", 0)),
-            Map.entry("emerald_nuggets.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:emerald_nugget", 0)),
-            Map.entry("emerald_transmutation.json", new RecipeSpec("thaumcraft:crucible", "forbidden:transemerald", "forbidden:emerald_nugget", 0)),
-            Map.entry("focus_blink.json", new RecipeSpec("thaumcraft:infusion", "forbidden:focusblink", "forbidden:focus_blink", 3)),
-            Map.entry("fork.json", new RecipeSpec("thaumcraft:infusion", "forbidden:fork", "forbidden:diabolist_fork", 3)),
-            Map.entry("heretic_study.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:heretic_study", 0)),
-            Map.entry("mob_crystal.json", new RecipeSpec("thaumcraft:crucible", "forbidden:wrathcage", "forbidden:mob_crystal", 0)),
-            Map.entry("morph_axe.json", new RecipeSpec("thaumcraft:infusion", "forbidden:morphtools", "forbidden:morph_axe", 2)),
-            Map.entry("morph_pickaxe.json", new RecipeSpec("thaumcraft:infusion", "forbidden:morphtools", "forbidden:morph_pickaxe", 2)),
-            Map.entry("morph_shovel.json", new RecipeSpec("thaumcraft:infusion", "forbidden:morphtools", "forbidden:morph_shovel", 2)),
-            Map.entry("morph_sword.json", new RecipeSpec("thaumcraft:infusion", "forbidden:morphtools", "forbidden:morph_sword", 2)),
-            Map.entry("nether_stars.json", new RecipeSpec("minecraft:crafting_shaped", null, "minecraft:nether_star", 0)),
-            Map.entry("primewell.json", new RecipeSpec("thaumcraft:arcane_shapeless", "forbidden:primewell", "forbidden:primewell", 0)),
-            Map.entry("riding_crop.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:riding_crop", 0)),
-            Map.entry("ring_food.json", new RecipeSpec("thaumcraft:arcane", "forbidden:ringfood", "forbidden:ring_nutrition", 0)),
-            Map.entry("skull_axe.json", new RecipeSpec("thaumcraft:infusion", "forbidden:skullaxe", "forbidden:skull_axe", 1)),
-            Map.entry("star_block.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:star_block", 0)),
-            Map.entry("sub_collar.json", new RecipeSpec("thaumcraft:infusion", "forbidden:subcollar", "forbidden:sub_collar", 2)),
-            Map.entry("taint_bricks.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:taint_bricks", 0)),
-            Map.entry("taint_coal.json", new RecipeSpec("minecraft:smelting", null, "forbidden:taint_coal", 0)),
-            Map.entry("taint_pick.json", new RecipeSpec("thaumcraft:infusion", "forbidden:taintpick", "forbidden:taint_pickaxe", 1)),
-            Map.entry("taint_planks.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:taint_planks", 0)),
-            Map.entry("taint_sapling.json", new RecipeSpec("thaumcraft:crucible", "forbidden:tainttree", "forbidden:taint_sapling", 0)),
-            Map.entry("taint_shovel.json", new RecipeSpec("thaumcraft:infusion", "forbidden:taintshovel", "forbidden:taint_shovel", 5)),
-            Map.entry("taint_stone.json", new RecipeSpec("thaumcraft:arcane", "forbidden:taintstone", "forbidden:taint_stone", 0)),
-            Map.entry("umbral_bush.json", new RecipeSpec("thaumcraft:crucible", "forbidden:blackflower", "forbidden:umbral_bush", 0)),
-            Map.entry("wand_rod_infernal.json", new RecipeSpec("thaumcraft:infusion", "forbidden:rod_infernal", "forbidden:wand_rod_infernal", 5)),
-            Map.entry("wand_rod_tainted.json", new RecipeSpec("thaumcraft:infusion", "forbidden:rod_tainted", "forbidden:wand_rod_tainted", 5)),
-            Map.entry("wrath_cage.json", new RecipeSpec("thaumcraft:infusion", "forbidden:wrathcage", "forbidden:wrath_cage", 10))
+            Map.entry("/data/forbidden/recipe/arcane_cake_hardcore.json", new RecipeSpec("thaumcraft:infusion", "forbidden:arcanecake", "forbidden:arcane_cake", 1, 3, "minecraft:cake", List.of("thaumcraft:salis_mundus", "forbidden:star_block", "forbidden:star_block", "minecraft:egg", "forbidden:gluttony_shard", "forbidden:gluttony_shard"), Map.ofEntries(Map.entry("forbidden:gula", 12), Map.entry("fames", 24), Map.entry("fabrico", 24)), Map.of())),
+            Map.entry("/data/forbidden/recipe/arcane_cake_normal.json", new RecipeSpec("thaumcraft:infusion", "forbidden:arcanecake", "forbidden:arcane_cake", 1, 3, "minecraft:cake", List.of("thaumcraft:salis_mundus", "minecraft:egg", "minecraft:milk_bucket", "minecraft:egg", "forbidden:gluttony_shard", "forbidden:gluttony_shard"), Map.ofEntries(Map.entry("forbidden:gula", 12), Map.entry("fames", 24), Map.entry("fabrico", 24)), Map.of())),
+            Map.entry("/data/forbidden/recipe/black_ink.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:black_dye", 2, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/data/forbidden/recipe/crystalwell.json", new RecipeSpec("thaumcraft:arcane_shapeless", "forbidden:crystalwell", "forbidden:crystalwell", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aqua", 1), Map.entry("ordo", 1)))),
+            Map.entry("/data/forbidden/recipe/emerald.json", new RecipeSpec("minecraft:crafting_shaped", null, "minecraft:emerald", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/data/forbidden/recipe/emerald_nuggets.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:emerald_nugget", 9, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/data/forbidden/recipe/emerald_transmutation.json", new RecipeSpec("thaumcraft:crucible", "forbidden:transemerald", "forbidden:emerald_nugget", 4, 0, "#c:nuggets/emerald", List.of(), Map.ofEntries(Map.entry("vitreus", 2), Map.entry("lucrum", 2)), Map.of())),
+            Map.entry("/data/forbidden/recipe/focus_blink.json", new RecipeSpec("thaumcraft:infusion", "forbidden:focusblink", "forbidden:focus_blink", 1, 3, "thaumcraft:focus_warding", List.of("minecraft:ender_eye", "minecraft:ender_pearl", "minecraft:ender_pearl", "forbidden:sloth_shard"), Map.ofEntries(Map.entry("iter", 16), Map.entry("motus", 16), Map.entry("praecantatio", 8)), Map.of())),
+            Map.entry("/data/forbidden/recipe/fork.json", new RecipeSpec("thaumcraft:infusion", "forbidden:fork", "forbidden:diabolist_fork", 1, 3, "minecraft:iron_bars", List.of("forbidden:wrath_shard", "forbidden:wrath_shard", "minecraft:quartz", "minecraft:quartz"), Map.ofEntries(Map.entry("forbidden:ira", 16), Map.entry("telum", 16), Map.entry("spiritus", 8)), Map.of())),
+            Map.entry("/data/forbidden/recipe/heretic_study.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:heretic_study", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/data/forbidden/recipe/mob_crystal.json", new RecipeSpec("thaumcraft:crucible", "forbidden:wrathcage", "forbidden:mob_crystal", 1, 0, "minecraft:diamond", List.of(), Map.ofEntries(Map.entry("cognitio", 10), Map.entry("potentia", 10)), Map.of())),
+            Map.entry("/data/forbidden/recipe/morph_axe.json", new RecipeSpec("thaumcraft:infusion", "forbidden:morphtools", "forbidden:morph_axe", 1, 2, "thaumcraft:elemental_axe", List.of("forbidden:sloth_shard", "forbidden:sloth_shard", "thaumcraft:fire_shard", "thaumcraft:air_shard", "minecraft:quartz"), Map.ofEntries(Map.entry("permutatio", 16), Map.entry("instrumentum", 8), Map.entry("arbor", 8)), Map.of())),
+            Map.entry("/data/forbidden/recipe/morph_pickaxe.json", new RecipeSpec("thaumcraft:infusion", "forbidden:morphtools", "forbidden:morph_pickaxe", 1, 2, "thaumcraft:elemental_pickaxe", List.of("forbidden:sloth_shard", "forbidden:sloth_shard", "thaumcraft:order_shard", "thaumcraft:entropy_shard", "minecraft:quartz"), Map.ofEntries(Map.entry("permutatio", 16), Map.entry("instrumentum", 8), Map.entry("perfodio", 8)), Map.of())),
+            Map.entry("/data/forbidden/recipe/morph_shovel.json", new RecipeSpec("thaumcraft:infusion", "forbidden:morphtools", "forbidden:morph_shovel", 1, 2, "thaumcraft:elemental_shovel", List.of("forbidden:sloth_shard", "forbidden:sloth_shard", "thaumcraft:earth_shard", "thaumcraft:water_shard", "minecraft:quartz"), Map.ofEntries(Map.entry("permutatio", 16), Map.entry("instrumentum", 8), Map.entry("terra", 8)), Map.of())),
+            Map.entry("/data/forbidden/recipe/morph_sword.json", new RecipeSpec("thaumcraft:infusion", "forbidden:morphtools", "forbidden:morph_sword", 1, 2, "thaumcraft:elemental_sword", List.of("forbidden:sloth_shard", "forbidden:sloth_shard", "forbidden:wrath_shard", "thaumcraft:entropy_shard", "minecraft:quartz"), Map.ofEntries(Map.entry("permutatio", 16), Map.entry("instrumentum", 8), Map.entry("telum", 8)), Map.of())),
+            Map.entry("/data/forbidden/recipe/nether_stars.json", new RecipeSpec("minecraft:crafting_shaped", null, "minecraft:nether_star", 9, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/data/forbidden/recipe/primewell.json", new RecipeSpec("thaumcraft:arcane_shapeless", "forbidden:primewell", "forbidden:primewell", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aer", 50), Map.entry("ignis", 50), Map.entry("terra", 50), Map.entry("aqua", 50), Map.entry("ordo", 50), Map.entry("perditio", 50)))),
+            Map.entry("/data/forbidden/recipe/riding_crop.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:riding_crop", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/data/forbidden/recipe/ring_food.json", new RecipeSpec("thaumcraft:arcane", "forbidden:ringfood", "forbidden:ring_nutrition", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aqua", 10), Map.entry("terra", 10)))),
+            Map.entry("/data/forbidden/recipe/skull_axe.json", new RecipeSpec("thaumcraft:infusion", "forbidden:skullaxe", "forbidden:skull_axe", 1, 1, "thaumcraft:thaumium_axe", List.of("forbidden:wrath_shard", "forbidden:wrath_shard", "minecraft:diamond", "minecraft:diamond"), Map.ofEntries(Map.entry("forbidden:ira", 8), Map.entry("telum", 8), Map.entry("forbidden:infernus", 8)), Map.of())),
+            Map.entry("/data/forbidden/recipe/star_block.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:star_block", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/data/forbidden/recipe/sub_collar.json", new RecipeSpec("thaumcraft:infusion", "forbidden:subcollar", "forbidden:sub_collar", 1, 2, "thaumcraft:amulet_vis", List.of("forbidden:lust_shard", "forbidden:lust_shard", "minecraft:lead", "minecraft:leather", "minecraft:iron_bars"), Map.ofEntries(Map.entry("forbidden:luxuria", 16), Map.entry("vinculum", 16), Map.entry("auram", 8)), Map.of())),
+            Map.entry("/data/forbidden/recipe/taint_bricks.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:taint_bricks", 4, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/data/forbidden/recipe/taint_coal.json", new RecipeSpec("minecraft:smelting", null, "forbidden:taint_coal", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/data/forbidden/recipe/taint_pick.json", new RecipeSpec("thaumcraft:infusion", "forbidden:taintpick", "forbidden:taint_pickaxe", 1, 1, "thaumcraft:thaumium_pickaxe", List.of("thaumcraft:entropy_shard", "forbidden:taint_shard", "minecraft:diamond", "thaumcraft:greatwood_log"), Map.ofEntries(Map.entry("perditio", 8), Map.entry("perfodio", 8), Map.entry("vitium", 12)), Map.of())),
+            Map.entry("/data/forbidden/recipe/taint_planks.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:taint_planks", 4, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/data/forbidden/recipe/taint_sapling.json", new RecipeSpec("thaumcraft:crucible", "forbidden:tainttree", "forbidden:taint_sapling", 1, 0, "minecraft:oak_sapling", List.of(), Map.ofEntries(Map.entry("vitium", 10), Map.entry("venenum", 4)), Map.of())),
+            Map.entry("/data/forbidden/recipe/taint_shovel.json", new RecipeSpec("thaumcraft:infusion", "forbidden:taintshovel", "forbidden:taint_shovel", 1, 5, "thaumcraft:thaumium_shovel", List.of("thaumcraft:order_shard", "forbidden:taint_shard", "minecraft:diamond", "thaumcraft:silverwood_log"), Map.ofEntries(Map.entry("sano", 8), Map.entry("vitreus", 24), Map.entry("perfodio", 12)), Map.of())),
+            Map.entry("/data/forbidden/recipe/taint_stone.json", new RecipeSpec("thaumcraft:arcane", "forbidden:taintstone", "forbidden:taint_stone", 9, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("perditio", 2), Map.entry("ordo", 1)))),
+            Map.entry("/data/forbidden/recipe/umbral_bush.json", new RecipeSpec("thaumcraft:crucible", "forbidden:blackflower", "forbidden:umbral_bush", 1, 0, "minecraft:rose_bush", List.of(), Map.ofEntries(Map.entry("tenebrae", 8), Map.entry("victus", 5)), Map.of())),
+            Map.entry("/data/forbidden/recipe/wand_rod_infernal.json", new RecipeSpec("thaumcraft:infusion", "forbidden:rod_infernal", "forbidden:wand_rod_infernal", 1, 5, "minecraft:blaze_rod", List.of("thaumcraft:salis_mundus", "forbidden:pride_shard", "forbidden:pride_shard", "minecraft:soul_sand", "minecraft:wither_skeleton_skull", "minecraft:quartz", "minecraft:blaze_powder"), Map.ofEntries(Map.entry("forbidden:infernus", 32), Map.entry("praecantatio", 12), Map.entry("forbidden:superbia", 12)), Map.of())),
+            Map.entry("/data/forbidden/recipe/wand_rod_tainted.json", new RecipeSpec("thaumcraft:infusion", "forbidden:rod_tainted", "forbidden:wand_rod_tainted", 1, 5, "thaumcraft:taint_tendril", List.of("thaumcraft:salis_mundus", "forbidden:taint_shard", "forbidden:taint_shard", "forbidden:taint_shard", "forbidden:taint_shard", "forbidden:taint_shard", "forbidden:taint_shard"), Map.ofEntries(Map.entry("vitium", 24), Map.entry("praecantatio", 12), Map.entry("perditio", 12)), Map.of())),
+            Map.entry("/data/forbidden/recipe/wrath_cage.json", new RecipeSpec("thaumcraft:infusion", "forbidden:wrathcage", "forbidden:wrath_cage", 1, 10, "thaumcraft:thaumium_block", List.of("forbidden:wrath_shard", "forbidden:wrath_shard", "forbidden:wrath_shard", "forbidden:wrath_shard", "minecraft:diamond", "minecraft:diamond", "minecraft:diamond", "minecraft:diamond", "thaumcraft:warded_jar", "thaumcraft:warded_jar", "thaumcraft:warded_jar"), Map.ofEntries(Map.entry("forbidden:ira", 32), Map.entry("praecantatio", 32), Map.entry("bestia", 32), Map.entry("machina", 16)), Map.of())),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/altar_wand_rod_blood.json", new RecipeSpec("bloodmagic:altar", null, "forbidden:wand_rod_blood", 1, 0, "forbidden:wand_rod_blood_inert", List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/blood_rapier.json", new RecipeSpec("thaumcraft:infusion", "forbidden:bloodrapier", "forbidden:blood_rapier", 1, 8, "thaumcraft:void_sword", List.of("thaumcraft:void_seed", "forbidden:wrath_shard", "forbidden:gluttony_shard", "minecraft:feather", "thaumcraft:quicksilver"), Map.ofEntries(Map.entry("victus", 18), Map.entry("fames", 32), Map.entry("telum", 8)), Map.of())),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/bloodthorn.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:bloodthorn", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/bloodwell.json", new RecipeSpec("thaumcraft:arcane_shapeless", "forbidden:bloodwell", "forbidden:bloodwell", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aqua", 10), Map.entry("terra", 10)))),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/boundwell.json", new RecipeSpec("minecraft:crafting_shapeless", null, "forbidden:boundwell", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/eldritch_orb.json", new RecipeSpec("thaumcraft:infusion", "forbidden:eldritch_orb", "forbidden:eldritch_orb", 1, 2, "bloodmagic:archmagebloodorb", List.of("thaumcraft:primal_pearl", "thaumcraft:void_seed", "minecraft:nether_star", "forbidden:taint_coal"), Map.ofEntries(Map.entry("victus", 64), Map.entry("alienis", 48), Map.entry("tenebrae", 32), Map.entry("vacuos", 64)), Map.of())),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/wand_cap_alchemical.json", new RecipeSpec("thaumcraft:infusion", "forbidden:cap_alchemical", "forbidden:wand_cap_alchemical", 1, 3, "thaumcraft:iron_wand_cap", List.of("bloodmagic:reagentbinding", "bloodmagic:reagentbinding", "bloodmagic:reagentbinding"), Map.ofEntries(Map.entry("victus", 12), Map.entry("aqua", 6)), Map.of())),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/wand_rod_blood.json", new RecipeSpec("thaumcraft:infusion", "forbidden:rod_blood", "forbidden:wand_rod_blood", 1, 2, "bloodmagic:masterbloodorb", List.of("bloodmagic:reagentbinding", "bloodmagic:infusedslate", "bloodmagic:infusedslate", "bloodmagic:reagentvoid", "bloodmagic:reagentbloodlight", "bloodmagic:reagentwater", "bloodmagic:reagentlava", "bloodmagic:reagentgrowth", "bloodmagic:reagentair"), Map.ofEntries(Map.entry("victus", 32), Map.entry("praecantatio", 12), Map.entry("aqua", 16)), Map.of())),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/wand_rod_blood_inert.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:wand_rod_blood_inert", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/wand_rod_blood_staff.json", new RecipeSpec("thaumcraft:arcane", "forbidden:rod_blood_staff", "forbidden:wand_rod_blood_staff", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aer", 26), Map.entry("terra", 26), Map.entry("ignis", 26), Map.entry("aqua", 26), Map.entry("ordo", 26), Map.entry("perditio", 26)))),
+            Map.entry("/packs/botania/data/forbidden/recipe/botanist_emblem.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:botanist_emblem", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/euclidaisy.json", new RecipeSpec("thaumcraft:infusion", "forbidden:euclidaisy", "forbidden:euclidaisy", 1, 8, "botania:cyan_mystical_flower", List.of("thaumcraft:salis_mundus", "botania:mana_pearl", "botania:mana_diamond", "botania:cyan_mystical_petal", "botania:cyan_mystical_petal", "botania:rune_of_autumn", "botania:rune_of_winter"), Map.ofEntries(Map.entry("auram", 8), Map.entry("alienis", 10), Map.entry("praecantatio", 8)), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/mana_infusion_wand_cap_manasteel.json", new RecipeSpec("botania:mana_infusion", null, "forbidden:wand_cap_manasteel", 1, 0, "forbidden:wand_cap_manasteel_inert", List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/mana_infusion_wand_rod_dreamwood.json", new RecipeSpec("botania:mana_infusion", null, "forbidden:wand_rod_dreamwood", 1, 0, "forbidden:wand_rod_dreamwood_inert", List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/mana_infusion_wand_rod_livingwood.json", new RecipeSpec("botania:mana_infusion", null, "forbidden:wand_rod_livingwood", 1, 0, "forbidden:wand_rod_livingwood_inert", List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/tainthistle.json", new RecipeSpec("thaumcraft:infusion", "forbidden:tainthistle", "forbidden:tainthistle", 1, 4, "forbidden:taint_stone", List.of("botania:purple_mystical_petal", "botania:purple_mystical_petal", "botania:purple_mystical_petal", "botania:rune_of_wrath", "botania:rune_of_spring"), Map.ofEntries(Map.entry("vitium", 8), Map.entry("fames", 4), Map.entry("aer", 4), Map.entry("aqua", 4)), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/wand_cap_elementium.json", new RecipeSpec("thaumcraft:infusion", "forbidden:cap_elementium", "forbidden:wand_cap_elementium", 1, 1, "forbidden:wand_cap_elementium_inert", List.of("botania:pixie_dust", "botania:rune_of_water", "botania:rune_of_fire", "botania:rune_of_earth", "botania:rune_of_air"), Map.ofEntries(Map.entry("terra", 18), Map.entry("ignis", 18), Map.entry("aqua", 18), Map.entry("aer", 18)), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/wand_cap_elementium_inert.json", new RecipeSpec("thaumcraft:arcane", "forbidden:cap_elementium", "forbidden:wand_cap_elementium_inert", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aer", 27), Map.entry("terra", 27), Map.entry("ignis", 27), Map.entry("aqua", 27), Map.entry("ordo", 27), Map.entry("perditio", 27)))),
+            Map.entry("/packs/botania/data/forbidden/recipe/wand_cap_manasteel_inert.json", new RecipeSpec("thaumcraft:arcane", "forbidden:cap_manasteel", "forbidden:wand_cap_manasteel_inert", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aer", 6), Map.entry("terra", 6), Map.entry("ignis", 6), Map.entry("aqua", 6), Map.entry("ordo", 6), Map.entry("perditio", 6)))),
+            Map.entry("/packs/botania/data/forbidden/recipe/wand_cap_terrasteel.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:wand_cap_terrasteel", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/wand_rod_dreamwood.json", new RecipeSpec("thaumcraft:infusion", "forbidden:rod_dreamwood_staff", "forbidden:wand_rod_dreamwood", 1, 3, "botania:dreamwood_log", List.of("botania:mana_diamond", "botania:rune_of_mana", "botania:rune_of_water", "botania:rune_of_fire", "botania:rune_of_earth", "botania:rune_of_air", "botania:rune_of_spring", "botania:rune_of_summer", "botania:rune_of_autumn", "botania:rune_of_winter"), Map.ofEntries(Map.entry("praecantatio", 16), Map.entry("arbor", 32), Map.entry("victus", 16), Map.entry("sensus", 8), Map.entry("herba", 8)), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/wand_rod_dreamwood_inert.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:wand_rod_dreamwood_inert", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/wand_rod_dreamwood_staff.json", new RecipeSpec("thaumcraft:arcane", "forbidden:rod_dreamwood_staff", "forbidden:wand_rod_dreamwood_staff", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aer", 26), Map.entry("terra", 26), Map.entry("ignis", 26), Map.entry("aqua", 26), Map.entry("ordo", 26), Map.entry("perditio", 26)))),
+            Map.entry("/packs/botania/data/forbidden/recipe/wand_rod_livingwood.json", new RecipeSpec("thaumcraft:infusion", "forbidden:rod_livingwood", "forbidden:wand_rod_livingwood", 1, 3, "botania:livingwood_log", List.of("botania:mana_diamond", "botania:rune_of_mana", "botania:rune_of_water", "botania:rune_of_fire", "botania:rune_of_earth", "botania:rune_of_air", "botania:rune_of_spring", "botania:rune_of_summer", "botania:rune_of_autumn", "botania:rune_of_winter"), Map.ofEntries(Map.entry("praecantatio", 16), Map.entry("arbor", 32), Map.entry("victus", 16), Map.entry("sensus", 8), Map.entry("herba", 8)), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/wand_rod_livingwood_inert.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:wand_rod_livingwood_inert", 1, 0, null, List.of(), Map.of(), Map.of())),
+            Map.entry("/packs/botania/data/forbidden/recipe/whisperweed.json", new RecipeSpec("thaumcraft:arcane_shapeless", "forbidden:whisperweed", "forbidden:whisperweed", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aer", 10), Map.entry("terra", 10), Map.entry("ignis", 10), Map.entry("aqua", 10), Map.entry("ordo", 10), Map.entry("perditio", 10)))),
+            Map.entry("/packs/enchanting/data/forbidden/recipe/enchant_cluster.json", new RecipeSpec("thaumcraft:infusion_enchantment", "forbidden:cluster", "", 1, 3, null, List.of("thaumcraft:elemental_pickaxe", "thaumcraft:salis_mundus"), Map.ofEntries(Map.entry("ignis", 4), Map.entry("metallum", 4), Map.entry("lucrum", 4)), Map.of())),
+            Map.entry("/packs/enchanting/data/forbidden/recipe/enchant_consuming.json", new RecipeSpec("thaumcraft:infusion_enchantment", "forbidden:consuming", "", 1, 3, null, List.of("minecraft:iron_pickaxe", "minecraft:lava_bucket", "thaumcraft:salis_mundus"), Map.ofEntries(Map.entry("vacuos", 8), Map.entry("instrumentum", 8), Map.entry("fames", 8)), Map.of())),
+            Map.entry("/packs/enchanting/data/forbidden/recipe/enchant_corrupting.json", new RecipeSpec("thaumcraft:infusion_enchantment", "forbidden:corrupting", "", 1, 4, null, List.of("minecraft:nether_wart", "minecraft:soul_sand", "thaumcraft:salis_mundus"), Map.ofEntries(Map.entry("forbidden:infernus", 16), Map.entry("permutatio", 16), Map.entry("vitreus", 8)), Map.of())),
+            Map.entry("/packs/enchanting/data/forbidden/recipe/enchant_educational.json", new RecipeSpec("thaumcraft:infusion_enchantment", "forbidden:educational", "", 1, 3, null, List.of("thaumcraft:zombie_brain", "minecraft:book", "thaumcraft:salis_mundus"), Map.ofEntries(Map.entry("praecantatio", 4), Map.entry("telum", 4), Map.entry("cognitio", 8)), Map.of())),
+            Map.entry("/packs/enchanting/data/forbidden/recipe/enchant_greedy.json", new RecipeSpec("thaumcraft:infusion_enchantment", "forbidden:greedy", "", 1, 4, null, List.of("minecraft:golden_sword", "minecraft:diamond", "forbidden:greed_shard", "forbidden:greed_shard", "thaumcraft:salis_mundus"), Map.ofEntries(Map.entry("forbidden:infernus", 16), Map.entry("telum", 8), Map.entry("lucrum", 16)), Map.of())),
+            Map.entry("/packs/enchanting/data/forbidden/recipe/enchant_impact.json", new RecipeSpec("thaumcraft:infusion_enchantment", "forbidden:impact", "", 1, 4, null, List.of("thaumcraft:salis_mundus", "forbidden:envy_shard", "forbidden:envy_shard", "thaumcraft:elemental_shovel"), Map.ofEntries(Map.entry("perditio", 16), Map.entry("perfodio", 16)), Map.of())),
+            Map.entry("/packs/enchanting/data/forbidden/recipe/enchant_voidtouched.json", new RecipeSpec("thaumcraft:infusion_enchantment", "forbidden:voidtouched", "", 1, 8, null, List.of("thaumcraft:salis_mundus", "thaumcraft:void_ingot", "thaumcraft:void_ingot", "thaumcraft:void_ingot", "forbidden:envy_shard", "forbidden:envy_shard", "forbidden:envy_shard"), Map.ofEntries(Map.entry("vacuos", 16), Map.entry("tenebrae", 16), Map.entry("forbidden:invidia", 24), Map.entry("alienis", 16)), Map.of())),
+            Map.entry("/packs/enchanting/data/forbidden/recipe/enchant_wrath.json", new RecipeSpec("thaumcraft:infusion_enchantment", "forbidden:wrath", "", 1, 8, null, List.of("thaumcraft:salis_mundus", "minecraft:diamond_sword", "forbidden:wrath_shard", "forbidden:wrath_shard", "forbidden:wrath_shard"), Map.ofEntries(Map.entry("forbidden:ira", 16), Map.entry("telum", 16), Map.entry("forbidden:infernus", 8)), Map.of()))
     );
 
     private static final Map<String, ResearchSpec> RESEARCH_SPECS = Map.ofEntries(
-            Map.entry("arcanecake.json", new ResearchSpec("forbidden:arcanecake", -12, -6, 2, 0, List.of("forbidden:nethershards", "INFUSION"), List.of("ArcaneCake"))),
-            Map.entry("blackflower.json", new ResearchSpec("forbidden:blackflower", -2, -6, 1, 0, List.of(), List.of("BlackFlower", "BlackInk"))),
-            Map.entry("cluster.json", new ResearchSpec("forbidden:cluster", -10, -1, 3, 0, List.of("forbidden:morphtools", "ELEMENTALPICK"), List.of("Cluster"))),
-            Map.entry("consuming.json", new ResearchSpec("forbidden:consuming", -4, -8, 1, 0, List.of("INFUSIONENCHANTMENT"), List.of("Consuming"))),
-            Map.entry("corrupting.json", new ResearchSpec("forbidden:corrupting", -6, -4, 1, 0, List.of("forbidden:nethershards", "INFUSIONENCHANTMENT"), List.of("Corrupting"))),
-            Map.entry("crystalwell.json", new ResearchSpec("forbidden:crystalwell", -2, -8, 1, 0, List.of("RESEARCH"), List.of("Crystalwell"))),
-            Map.entry("educational.json", new ResearchSpec("forbidden:educational", -4, -7, 2, 0, List.of("INFUSIONENCHANTMENT"), List.of("Educational"))),
-            Map.entry("focusblink.json", new ResearchSpec("forbidden:focusblink", -11, -3, 2, 0, List.of("forbidden:nethershards", "INFUSION"), List.of("FocusBlink"))),
-            Map.entry("fork.json", new ResearchSpec("forbidden:fork", -6, -7, 0, 0, List.of("INFUSION", "forbidden:nethershards", "THAUMIUM"), List.of("Fork"))),
-            Map.entry("greedy.json", new ResearchSpec("forbidden:greedy", -6, -5, 2, 0, List.of("forbidden:nethershards", "INFUSIONENCHANTMENT"), List.of("Greedy"))),
-            Map.entry("hellfire.json", new ResearchSpec("forbidden:hellfire", -8, -8, 1, 0, List.of("forbidden:nethershards"), List.of())),
-            Map.entry("impact.json", new ResearchSpec("forbidden:impact", -9, -1, 3, 0, List.of("forbidden:morphtools", "ELEMENTALSHOVEL"), List.of("Impact"))),
-            Map.entry("morphtools.json", new ResearchSpec("forbidden:morphtools", -9, -3, 4, 4, List.of("forbidden:nethershards"), List.of("MorphPick", "MorphSword", "MorphShovel", "MorphAxe"))),
-            Map.entry("nethershards.json", new ResearchSpec("forbidden:nethershards", -8, -5, 0, 0, List.of(), List.of())),
-            Map.entry("primewell.json", new ResearchSpec("forbidden:primewell", 2, -8, 1, 0, List.of("PRIMPEARL"), List.of("Primewell"))),
-            Map.entry("ridingcrop.json", new ResearchSpec("forbidden:ridingcrop", 0, -8, 0, 0, List.of(), List.of("RidingCrop"))),
-            Map.entry("ringfood.json", new ResearchSpec("forbidden:ringfood", -11, -6, 2, 0, List.of("forbidden:nethershards"), List.of("RingFood"))),
-            Map.entry("rod_infernal.json", new ResearchSpec("forbidden:rod_infernal", -11, -4, 3, 2, List.of("ROD_silverwood", "INFUSION", "forbidden:nethershards"), List.of("WandRodInfernal"))),
-            Map.entry("rod_profane.json", new ResearchSpec("forbidden:rod_profane", -9, -8, 0, 0, List.of("forbidden:nethershards"), List.of())),
-            Map.entry("rod_tainted.json", new ResearchSpec("forbidden:rod_tainted", -8, 3, 3, 2, List.of("ROD_silverwood", "forbidden:taintshovel", "INFUSION"), List.of("WandRodTainted"))),
-            Map.entry("schools.json", new ResearchSpec("forbidden:schools", -1, 1, 0, 0, List.of(), List.of())),
-            Map.entry("skullaxe.json", new ResearchSpec("forbidden:skullaxe", -11, -7, 2, 1, List.of("forbidden:nethershards", "THAUMIUM", "INFUSION"), List.of("SkullAxe"))),
-            Map.entry("subcollar.json", new ResearchSpec("forbidden:subcollar", -11, -5, 2, 0, List.of("forbidden:nethershards", "VISAMULET", "INFUSION"), List.of("SubCollar"))),
-            Map.entry("taintpick.json", new ResearchSpec("forbidden:taintpick", -10, 1, 2, 0, List.of("forbidden:taintshovel"), List.of("TaintPick"))),
-            Map.entry("taintshovel.json", new ResearchSpec("forbidden:taintshovel", -8, 1, 2, 0, List.of("THAUMIUM", "INFUSION", "ETHEREALBLOOM"), List.of("TaintShovel"))),
-            Map.entry("taintstone.json", new ResearchSpec("forbidden:taintstone", -10, 3, 2, 0, List.of("THAUMIUM", "INFUSION", "ETHEREALBLOOM"), List.of("TaintStone", "TaintBrick"))),
-            Map.entry("tainttree.json", new ResearchSpec("forbidden:tainttree", -11, 3, 3, 1, List.of("THAUMIUM", "INFUSION", "ETHEREALBLOOM"), List.of("TaintTree", "TaintPlank"))),
-            Map.entry("transemerald.json", new ResearchSpec("forbidden:transemerald", 0, -6, 3, 0, List.of("TRANSGOLD"), List.of("TransEmerald"))),
-            Map.entry("voidtouched.json", new ResearchSpec("forbidden:voidtouched", -8, -1, 4, 3, List.of("forbidden:morphtools", "VOIDMETAL"), List.of("Voidtouched"))),
-            Map.entry("wrath.json", new ResearchSpec("forbidden:wrath", -6, -3, 4, 3, List.of("forbidden:nethershards", "INFUSIONENCHANTMENT"), List.of("Wrath"))),
-            Map.entry("wrathcage.json", new ResearchSpec("forbidden:wrathcage", -6, -9, 4, 3, List.of("forbidden:fork"), List.of("WrathCage", "MobCrystal")))
+            Map.entry("/data/forbidden/thaumcraft/research/arcanecake.json", new ResearchSpec("forbidden:arcanecake", -12, -6, 2, 0, List.of("forbidden:nethershards", "INFUSION"), List.of(), List.of("ArcaneCake"), 1, Map.ofEntries(Map.entry("gula", 6), Map.entry("fames", 3), Map.entry("fabrico", 2)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/blackflower.json", new ResearchSpec("forbidden:blackflower", -2, -6, 1, 0, List.of(), List.of(), List.of("BlackFlower", "BlackInk"), 1, Map.ofEntries(Map.entry("herba", 3), Map.entry("sensus", 2), Map.entry("tenebrae", 4)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/cluster.json", new ResearchSpec("forbidden:cluster", -10, -1, 3, 0, List.of("forbidden:morphtools", "ELEMENTALPICK"), List.of(), List.of("Cluster"), 1, Map.ofEntries(Map.entry("metallum", 1), Map.entry("ignis", 4), Map.entry("invidia", 3)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/consuming.json", new ResearchSpec("forbidden:consuming", -4, -8, 1, 0, List.of("INFUSIONENCHANTMENT"), List.of(), List.of("Consuming"), 1, Map.ofEntries(Map.entry("vacuos", 4), Map.entry("perditio", 3), Map.entry("praecantatio", 2)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/corrupting.json", new ResearchSpec("forbidden:corrupting", -6, -4, 1, 0, List.of("forbidden:nethershards", "INFUSIONENCHANTMENT"), List.of(), List.of("Corrupting"), 1, Map.ofEntries(Map.entry("infernus", 5), Map.entry("vitreus", 2), Map.entry("permutatio", 1)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/crystalwell.json", new ResearchSpec("forbidden:crystalwell", -2, -8, 1, 0, List.of("RESEARCH"), List.of(), List.of("Crystalwell"), 1, Map.ofEntries(Map.entry("cognitio", 3), Map.entry("vitreus", 2), Map.entry("praecantatio", 1)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/educational.json", new ResearchSpec("forbidden:educational", -4, -7, 2, 0, List.of("INFUSIONENCHANTMENT"), List.of(), List.of("Educational"), 1, Map.ofEntries(Map.entry("cognitio", 5), Map.entry("telum", 1), Map.entry("praecantatio", 3)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/focusblink.json", new ResearchSpec("forbidden:focusblink", -11, -3, 2, 0, List.of("forbidden:nethershards", "INFUSION"), List.of(), List.of("FocusBlink"), 1, Map.ofEntries(Map.entry("iter", 3), Map.entry("perditio", 3), Map.entry("infernus", 3), Map.entry("desidia", 6)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/fork.json", new ResearchSpec("forbidden:fork", -6, -7, 0, 0, List.of("INFUSION", "forbidden:nethershards", "THAUMIUM"), List.of(), List.of("Fork"), 2, Map.ofEntries(Map.entry("infernus", 3), Map.entry("machina", 1), Map.entry("instrumentum", 1)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/greedy.json", new ResearchSpec("forbidden:greedy", -6, -5, 2, 0, List.of("forbidden:nethershards", "INFUSIONENCHANTMENT"), List.of(), List.of("Greedy"), 1, Map.ofEntries(Map.entry("praecantatio", 2), Map.entry("telum", 1), Map.entry("lucrum", 3)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/hellfire.json", new ResearchSpec("forbidden:hellfire", -8, -8, 1, 0, List.of("forbidden:nethershards"), List.of(), List.of(), 1, Map.ofEntries(Map.entry("ignis", 3), Map.entry("infernus", 4), Map.entry("iter", 2)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/impact.json", new ResearchSpec("forbidden:impact", -9, -1, 3, 0, List.of("forbidden:morphtools", "ELEMENTALSHOVEL"), List.of(), List.of("Impact"), 1, Map.ofEntries(Map.entry("perditio", 8), Map.entry("instrumentum", 10), Map.entry("perfodio", 16), Map.entry("invidia", 10)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/morphtools.json", new ResearchSpec("forbidden:morphtools", -9, -3, 4, 4, List.of("forbidden:nethershards"), List.of("THAUMIUM", "INFUSIONENCHANTMENT"), List.of("MorphPick", "MorphSword", "MorphShovel", "MorphAxe"), 1, Map.ofEntries(Map.entry("instrumentum", 2), Map.entry("invidia", 3), Map.entry("permutatio", 2)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/nethershards.json", new ResearchSpec("forbidden:nethershards", -8, -5, 0, 0, List.of(), List.of(), List.of(), 3, Map.of(), true, true)),
+            Map.entry("/data/forbidden/thaumcraft/research/primewell.json", new ResearchSpec("forbidden:primewell", 2, -8, 1, 0, List.of("PRIMPEARL"), List.of(), List.of("Primewell"), 1, Map.ofEntries(Map.entry("cognitio", 3), Map.entry("alienis", 6), Map.entry("fabrico", 1)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/ridingcrop.json", new ResearchSpec("forbidden:ridingcrop", 0, -8, 0, 0, List.of(), List.of(), List.of("RidingCrop"), 1, Map.of(), true, true)),
+            Map.entry("/data/forbidden/thaumcraft/research/ringfood.json", new ResearchSpec("forbidden:ringfood", -11, -6, 2, 0, List.of("forbidden:nethershards"), List.of(), List.of("RingFood"), 1, Map.ofEntries(Map.entry("gula", 4), Map.entry("fames", 3), Map.entry("victus", 2)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/rod_infernal.json", new ResearchSpec("forbidden:rod_infernal", -11, -4, 3, 2, List.of("ROD_silverwood", "INFUSION", "forbidden:nethershards"), List.of(), List.of("WandRodInfernal"), 2, Map.ofEntries(Map.entry("infernus", 4), Map.entry("ignis", 3), Map.entry("instrumentum", 1)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/rod_profane.json", new ResearchSpec("forbidden:rod_profane", -9, -8, 0, 0, List.of("forbidden:nethershards"), List.of(), List.of(), 1, Map.of(), false, true)),
+            Map.entry("/data/forbidden/thaumcraft/research/rod_tainted.json", new ResearchSpec("forbidden:rod_tainted", -8, 3, 3, 2, List.of("ROD_silverwood", "forbidden:taintshovel", "INFUSION"), List.of(), List.of("WandRodTainted"), 1, Map.ofEntries(Map.entry("praecantatio", 4), Map.entry("vitium", 5), Map.entry("instrumentum", 2)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/schools.json", new ResearchSpec("forbidden:schools", -1, 1, 0, 0, List.of(), List.of(), List.of(), 1, Map.of(), true, true)),
+            Map.entry("/data/forbidden/thaumcraft/research/skullaxe.json", new ResearchSpec("forbidden:skullaxe", -11, -7, 2, 1, List.of("forbidden:nethershards", "THAUMIUM", "INFUSION"), List.of(), List.of("SkullAxe"), 1, Map.ofEntries(Map.entry("telum", 3), Map.entry("ira", 4), Map.entry("infernus", 1)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/subcollar.json", new ResearchSpec("forbidden:subcollar", -11, -5, 2, 0, List.of("forbidden:nethershards", "VISAMULET", "INFUSION"), List.of(), List.of("SubCollar"), 1, Map.ofEntries(Map.entry("auram", 3), Map.entry("luxuria", 8), Map.entry("praecantatio", 3), Map.entry("vinculum", 6), Map.entry("corpus", 4)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/taintpick.json", new ResearchSpec("forbidden:taintpick", -10, 1, 2, 0, List.of("forbidden:taintshovel"), List.of(), List.of("TaintPick"), 1, Map.ofEntries(Map.entry("instrumentum", 2), Map.entry("vitium", 4), Map.entry("perditio", 3)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/taintshovel.json", new ResearchSpec("forbidden:taintshovel", -8, 1, 2, 0, List.of("THAUMIUM", "INFUSION", "ETHEREALBLOOM"), List.of(), List.of("TaintShovel"), 2, Map.ofEntries(Map.entry("vitreus", 3), Map.entry("vitium", 2), Map.entry("instrumentum", 1)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/taintstone.json", new ResearchSpec("forbidden:taintstone", -10, 3, 2, 0, List.of("THAUMIUM", "INFUSION", "ETHEREALBLOOM"), List.of(), List.of("TaintStone", "TaintBrick"), 1, Map.ofEntries(Map.entry("terra", 4), Map.entry("vitium", 6), Map.entry("ordo", 2)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/tainttree.json", new ResearchSpec("forbidden:tainttree", -11, 3, 3, 1, List.of("THAUMIUM", "INFUSION", "ETHEREALBLOOM"), List.of(), List.of("TaintTree", "TaintPlank"), 1, Map.ofEntries(Map.entry("arbor", 4), Map.entry("vitium", 6), Map.entry("venenum", 2), Map.entry("herba", 3)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/transemerald.json", new ResearchSpec("forbidden:transemerald", 0, -6, 3, 0, List.of("TRANSGOLD"), List.of(), List.of("TransEmerald"), 1, Map.ofEntries(Map.entry("vitreus", 2), Map.entry("permutatio", 5), Map.entry("lucrum", 4)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/voidtouched.json", new ResearchSpec("forbidden:voidtouched", -8, -1, 4, 3, List.of("forbidden:morphtools", "VOIDMETAL"), List.of(), List.of("Voidtouched"), 1, Map.ofEntries(Map.entry("alienis", 16), Map.entry("instrumentum", 10), Map.entry("fabrico", 8), Map.entry("invidia", 32)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/wrath.json", new ResearchSpec("forbidden:wrath", -6, -3, 4, 3, List.of("forbidden:nethershards", "INFUSIONENCHANTMENT"), List.of(), List.of("Wrath"), 1, Map.ofEntries(Map.entry("ira", 16), Map.entry("telum", 20), Map.entry("praecantatio", 10)), false, false)),
+            Map.entry("/data/forbidden/thaumcraft/research/wrathcage.json", new ResearchSpec("forbidden:wrathcage", -6, -9, 4, 3, List.of("forbidden:fork"), List.of("INFUSION", "THAUMIUM", "DISTILESSENTIA"), List.of("WrathCage", "MobCrystal"), 3, Map.ofEntries(Map.entry("ira", 5), Map.entry("machina", 3), Map.entry("bestia", 2)), false, false)),
+            Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodmagic.json", new ResearchSpec("forbidden:bloodmagic", -1, -1, 0, 0, List.of("forbidden:schools"), List.of(), List.of(), 1, Map.of(), true, true)),
+            Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodrapier.json", new ResearchSpec("forbidden:bloodrapier", 1, -2, 3, 2, List.of("forbidden:bloodmagic", "INFUSION", "VOIDMETAL"), List.of(), List.of("forbidden:blood_rapier"), 1, Map.ofEntries(Map.entry("victus", 16), Map.entry("fames", 12), Map.entry("telum", 12), Map.entry("praecantatio", 12)), false, false)),
+            Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodthorn.json", new ResearchSpec("forbidden:bloodthorn", -2, -2, 2, 0, List.of("forbidden:bloodmagic"), List.of(), List.of("forbidden:bloodthorn"), 1, Map.ofEntries(Map.entry("herba", 8), Map.entry("victus", 8), Map.entry("telum", 4)), false, false)),
+            Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodwell.json", new ResearchSpec("forbidden:bloodwell", 1, -1, 1, 0, List.of("forbidden:bloodmagic"), List.of(), List.of("forbidden:bloodwell"), 1, Map.ofEntries(Map.entry("victus", 5), Map.entry("cognitio", 4), Map.entry("sensus", 3)), false, false)),
+            Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/cap_alchemical.json", new ResearchSpec("forbidden:cap_alchemical", -3, -3, 2, 0, List.of("forbidden:rod_blood", "CAP_gold"), List.of(), List.of("forbidden:wand_cap_alchemical"), 1, Map.ofEntries(Map.entry("victus", 4), Map.entry("instrumentum", 1), Map.entry("aqua", 3)), false, false)),
+            Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/eldritch_orb.json", new ResearchSpec("forbidden:eldritch_orb", 1, -3, 4, 3, List.of("forbidden:bloodmagic", "INFUSION", "PRIMPEARL", "VOIDMETAL"), List.of(), List.of("forbidden:eldritch_orb"), 1, Map.ofEntries(Map.entry("victus", 24), Map.entry("vacuos", 32), Map.entry("vitreus", 24), Map.entry("alienis", 12)), false, false)),
+            Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/rod_blood.json", new ResearchSpec("forbidden:rod_blood", -1, -3, 3, 2, List.of("ROD_silverwood", "INFUSION", "forbidden:bloodmagic"), List.of(), List.of("forbidden:wand_rod_blood"), 2, Map.ofEntries(Map.entry("victus", 5), Map.entry("aqua", 4), Map.entry("telum", 3)), false, false)),
+            Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/rod_blood_staff.json", new ResearchSpec("forbidden:rod_blood_staff", -3, -2, 2, 0, List.of("ROD_silverwood_staff", "forbidden:rod_blood"), List.of(), List.of("forbidden:wand_rod_blood_staff"), 1, Map.ofEntries(Map.entry("victus", 8), Map.entry("aqua", 7), Map.entry("telum", 6)), false, false)),
+            Map.entry("/packs/botania/data/forbidden/thaumcraft/research/botany.json", new ResearchSpec("forbidden:botany", -3, 3, 0, 0, List.of("forbidden:schools"), List.of(), List.of(), 1, Map.of(), true, true)),
+            Map.entry("/packs/botania/data/forbidden/thaumcraft/research/cap_elementium.json", new ResearchSpec("forbidden:cap_elementium", 3, 3, 4, 0, List.of("forbidden:rod_dreamwood_staff"), List.of(), List.of("forbidden:wand_cap_elementium_inert", "forbidden:wand_cap_elementium"), 1, Map.ofEntries(Map.entry("ignis", 8), Map.entry("praecantatio", 12), Map.entry("aqua", 8), Map.entry("aer", 8), Map.entry("terra", 8)), false, false)),
+            Map.entry("/packs/botania/data/forbidden/thaumcraft/research/cap_manasteel.json", new ResearchSpec("forbidden:cap_manasteel", 1, 2, 2, 0, List.of("forbidden:rod_livingwood"), List.of(), List.of("forbidden:wand_cap_manasteel_inert"), 1, Map.ofEntries(Map.entry("auram", 6), Map.entry("praecantatio", 4), Map.entry("metallum", 4)), false, false)),
+            Map.entry("/packs/botania/data/forbidden/thaumcraft/research/cap_terrasteel.json", new ResearchSpec("forbidden:cap_terrasteel", 3, 2, 1, 0, List.of("forbidden:cap_manasteel"), List.of(), List.of("forbidden:wand_cap_terrasteel"), 1, Map.ofEntries(Map.entry("potentia", 1), Map.entry("metallum", 1)), false, false)),
+            Map.entry("/packs/botania/data/forbidden/thaumcraft/research/euclidaisy.json", new ResearchSpec("forbidden:euclidaisy", -3, 5, 2, 0, List.of("forbidden:botany", "INFUSION"), List.of(), List.of("forbidden:euclidaisy"), 1, Map.ofEntries(Map.entry("herba", 8), Map.entry("praecantatio", 4), Map.entry("auram", 12)), false, false)),
+            Map.entry("/packs/botania/data/forbidden/thaumcraft/research/rod_dreamwood.json", new ResearchSpec("forbidden:rod_dreamwood", 1, 4, 2, 0, List.of("forbidden:rod_livingwood"), List.of(), List.of("forbidden:wand_rod_dreamwood"), 0, Map.ofEntries(Map.entry("arbor", 8), Map.entry("praecantatio", 4), Map.entry("alienis", 6)), false, false)),
+            Map.entry("/packs/botania/data/forbidden/thaumcraft/research/rod_dreamwood_staff.json", new ResearchSpec("forbidden:rod_dreamwood_staff", 1, 3, 2, 0, List.of("forbidden:rod_livingwood", "ROD_silverwood_staff"), List.of(), List.of("forbidden:wand_rod_dreamwood_staff", "forbidden:wand_rod_dreamwood"), 1, Map.ofEntries(Map.entry("arbor", 16), Map.entry("praecantatio", 8), Map.entry("alienis", 6)), false, false)),
+            Map.entry("/packs/botania/data/forbidden/thaumcraft/research/rod_livingwood.json", new ResearchSpec("forbidden:rod_livingwood", -1, 3, 3, 2, List.of("forbidden:botany", "ROD_silverwood", "INFUSION"), List.of(), List.of("forbidden:wand_rod_livingwood"), 1, Map.ofEntries(Map.entry("arbor", 8), Map.entry("praecantatio", 4), Map.entry("herba", 6)), false, false)),
+            Map.entry("/packs/botania/data/forbidden/thaumcraft/research/tainthistle.json", new ResearchSpec("forbidden:tainthistle", -2, 5, 2, 0, List.of("forbidden:botany", "INFUSION"), List.of(), List.of("forbidden:tainthistle"), 1, Map.ofEntries(Map.entry("herba", 8), Map.entry("vitium", 10), Map.entry("praecantatio", 4)), false, false)),
+            Map.entry("/packs/botania/data/forbidden/thaumcraft/research/whisperweed.json", new ResearchSpec("forbidden:whisperweed", -4, 5, 1, 0, List.of("forbidden:botany"), List.of(), List.of("forbidden:whisperweed"), 1, Map.ofEntries(Map.entry("herba", 8), Map.entry("cognitio", 10), Map.entry("sensus", 4)), false, false))
     );
 
     public static void main(String[] args) throws Exception {
@@ -175,17 +304,18 @@ public final class SemanticDataCheck {
     }
 
     private static void testV02Recipes() throws Exception {
-        check(RECIPE_FILES.size() == 33, "all 33 recipe definition files indexed");
+        check(RECIPE_FILES.size() == 67, "all 67 recipe definition files indexed");
 
         int arcaneCount = 0;
         int crucibleCount = 0;
         int infusionCount = 0;
         int craftingCount = 0;
         int smeltingCount = 0;
+        int manaInfusionCount = 0;
+        int altarCount = 0;
 
         for (String file : RECIPE_FILES) {
-            String path = "/data/forbidden/recipe/" + file;
-            try (var in = SemanticDataCheck.class.getResourceAsStream(path)) {
+            try (var in = SemanticDataCheck.class.getResourceAsStream(file)) {
                 check(in != null, "recipe resource found: " + file);
                 var reader = new InputStreamReader(in, StandardCharsets.UTF_8);
                 JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
@@ -198,17 +328,30 @@ public final class SemanticDataCheck {
 
                 if (type.startsWith("thaumcraft:arcane")) arcaneCount++;
                 else if (type.equals("thaumcraft:crucible")) crucibleCount++;
-                else if (type.equals("thaumcraft:infusion")) infusionCount++;
+                else if (type.startsWith("thaumcraft:infusion")) infusionCount++;
                 else if (type.startsWith("minecraft:crafting")) craftingCount++;
                 else if (type.equals("minecraft:smelting")) smeltingCount++;
+                else if (type.equals("botania:mana_infusion")) manaInfusionCount++;
+                else if (type.equals("bloodmagic:altar")) altarCount++;
             }
         }
 
-        check(arcaneCount == 4, "exactly 4 arcane workbench recipes verified");
+        check(arcaneCount == 10, "exactly 10 arcane workbench recipes verified");
         check(crucibleCount == 4, "exactly 4 crucible recipes verified");
-        check(infusionCount == 15, "exactly 15 infusion recipes verified");
-        check(craftingCount == 9, "exactly 9 crafting recipes verified");
+        check(infusionCount == 32, "exactly 32 infusion/infusion_enchantment recipes verified");
+        check(craftingCount == 16, "exactly 16 crafting recipes verified");
         check(smeltingCount == 1, "exactly 1 smelting recipe verified");
+        check(manaInfusionCount == 3, "exactly 3 mana infusion recipes verified");
+        check(altarCount == 1, "exactly 1 altar recipe verified");
+    }
+
+    private static JsonObject getJson(String resPath) {
+        try (var in = SemanticDataCheck.class.getResourceAsStream(resPath)) {
+            if (in == null) throw new IllegalArgumentException("Resource not found: " + resPath);
+            return JsonParser.parseReader(new InputStreamReader(in, StandardCharsets.UTF_8)).getAsJsonObject();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static void validateRecipeJson(JsonObject json, String file) {
@@ -218,21 +361,26 @@ public final class SemanticDataCheck {
         check(type.equals(spec.type), "recipe type matches spec: " + type + " vs " + spec.type + " in " + file);
 
         // 1. Result verification
-        check(json.has("result"), "recipe has result: " + file);
-        var resultObj = json.get("result");
-        String actualResultId = "";
-        if (resultObj.isJsonObject()) {
-            JsonObject r = resultObj.getAsJsonObject();
-            check(r.has("id") || r.has("item"), "result has id/item: " + file);
-            actualResultId = r.has("id") ? r.get("id").getAsString() : r.get("item").getAsString();
-            if (r.has("count")) {
-                check(r.get("count").getAsInt() > 0, "result count positive: " + file);
+        if (!type.equals("thaumcraft:infusion_enchantment")) {
+            check(json.has("result") || json.has("output"), "recipe has result/output: " + file);
+            var resultObj = json.has("result") ? json.get("result") : json.get("output");
+            String actualResultId = "";
+            int actualCount = 1;
+            if (resultObj.isJsonObject()) {
+                JsonObject r = resultObj.getAsJsonObject();
+                check(r.has("id") || r.has("item"), "result has id/item: " + file);
+                actualResultId = r.has("id") ? r.get("id").getAsString() : r.get("item").getAsString();
+                if (r.has("count")) {
+                    actualCount = r.get("count").getAsInt();
+                    check(actualCount > 0, "result count positive: " + file);
+                }
+            } else if (resultObj.isJsonPrimitive()) {
+                actualResultId = resultObj.getAsString();
+                check(!actualResultId.isBlank(), "result id non-blank: " + file);
             }
-        } else if (resultObj.isJsonPrimitive()) {
-            actualResultId = resultObj.getAsString();
-            check(!actualResultId.isBlank(), "result id non-blank: " + file);
+            check(spec.resultId.equals(actualResultId), "result matches spec: " + spec.resultId + " vs " + actualResultId + " in " + file);
+            check(spec.resultCount == actualCount, "result count matches spec: " + spec.resultCount + " vs " + actualCount + " in " + file);
         }
-        check(spec.resultId.equals(actualResultId), "result matches spec: " + spec.resultId + " vs " + actualResultId + " in " + file);
 
         // 2. Research & Instability verification against spec
         if (spec.research != null) {
@@ -245,55 +393,64 @@ public final class SemanticDataCheck {
         int actualInstability = json.has("instability") ? json.get("instability").getAsInt() : 0;
         check(actualInstability == spec.instability, "instability matches spec: " + spec.instability + " vs " + actualInstability + " in " + file);
 
-        // 3. Type-specific validation
-        if (type.equals("thaumcraft:infusion")) {
-            check(json.has("input") || json.has("central_item") || json.has("central"), "infusion has central input: " + file);
-            check(json.has("components"), "infusion has components: " + file);
-            check(json.getAsJsonArray("components").size() > 0, "infusion has non-empty components: " + file);
-            check(json.has("aspects"), "infusion has aspect costs: " + file);
-            JsonObject aspects = json.getAsJsonObject("aspects");
-            check(aspects.size() > 0, "infusion has non-empty aspects: " + file);
-            for (var entry : aspects.entrySet()) {
-                check(entry.getValue().getAsInt() > 0, "infusion aspect cost > 0: " + entry.getKey() + " in " + file);
+        // 3. Central input verification
+        if (spec.centralInput != null) {
+            check(json.has("input") || json.has("central_item") || json.has("central") || json.has("catalyst"), "has central item: " + file);
+            var cObj = json.has("input") ? json.get("input") : (json.has("central_item") ? json.get("central_item") : (json.has("central") ? json.get("central") : json.get("catalyst")));
+            String actualCentral = "";
+            if (cObj.isJsonObject()) {
+                JsonObject co = cObj.getAsJsonObject();
+                if (co.has("item")) actualCentral = co.get("item").getAsString();
+                else if (co.has("id")) actualCentral = co.get("id").getAsString();
+                else if (co.has("tag")) actualCentral = "#" + co.get("tag").getAsString();
+            } else if (cObj.isJsonPrimitive()) {
+                actualCentral = cObj.getAsString();
             }
-            check(json.get("instability").getAsInt() >= 0, "instability non-negative: " + file);
-        } else if (type.equals("thaumcraft:crucible")) {
-            check(json.has("catalyst"), "crucible has catalyst: " + file);
-            check(json.has("aspects"), "crucible has aspects: " + file);
-            JsonObject aspects = json.getAsJsonObject("aspects");
-            check(aspects.size() > 0, "crucible has non-empty aspects: " + file);
-            for (var entry : aspects.entrySet()) {
-                check(entry.getValue().getAsInt() > 0, "crucible aspect cost > 0: " + entry.getKey() + " in " + file);
-            }
-        } else if (type.startsWith("thaumcraft:arcane")) {
-            check(json.has("aspects") || json.has("vis"), "arcane recipe has primal vis costs: " + file);
-            JsonObject vis = json.has("vis") ? json.getAsJsonObject("vis") : json.getAsJsonObject("aspects");
-            check(vis.size() > 0, "arcane recipe has non-empty vis: " + file);
-            for (var entry : vis.entrySet()) {
-                check(entry.getValue().getAsInt() > 0, "vis cost > 0: " + entry.getKey() + " in " + file);
-            }
+            check(spec.centralInput.equals(actualCentral), "central input matches spec: " + spec.centralInput + " vs " + actualCentral + " in " + file);
         }
-    }
 
-    private static JsonObject getRecipeJson(String file) {
-        String path = "/data/forbidden/recipe/" + file;
-        try (var in = SemanticDataCheck.class.getResourceAsStream(path)) {
-            if (in == null) throw new IllegalArgumentException("Recipe not found: " + path);
-            var reader = new InputStreamReader(in, StandardCharsets.UTF_8);
-            return JsonParser.parseReader(reader).getAsJsonObject();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        // 4. Components verification
+        if (!spec.components.isEmpty()) {
+            check(json.has("components"), "recipe has components: " + file);
+            List<String> actualComps = new ArrayList<>();
+            for (var elem : json.getAsJsonArray("components")) {
+                if (elem.isJsonObject()) {
+                    JsonObject co = elem.getAsJsonObject();
+                    if (co.has("item")) actualComps.add(co.get("item").getAsString());
+                    else if (co.has("id")) actualComps.add(co.get("id").getAsString());
+                    else if (co.has("tag")) actualComps.add("#" + co.get("tag").getAsString());
+                } else if (elem.isJsonPrimitive()) {
+                    actualComps.add(elem.getAsString());
+                }
+            }
+            check(actualComps.size() == spec.components.size(), "components count matches spec: " + spec.components.size() + " vs " + actualComps.size() + " in " + file);
+            List<String> sortedActual = new ArrayList<>(actualComps);
+            List<String> sortedExpected = new ArrayList<>(spec.components);
+            Collections.sort(sortedActual);
+            Collections.sort(sortedExpected);
+            check(sortedActual.equals(sortedExpected), "components match spec in: " + file);
         }
-    }
 
-    private static JsonObject getResearchJson(String file) {
-        String path = "/data/forbidden/thaumcraft/research/" + file;
-        try (var in = SemanticDataCheck.class.getResourceAsStream(path)) {
-            if (in == null) throw new IllegalArgumentException("Research not found: " + path);
-            var reader = new InputStreamReader(in, StandardCharsets.UTF_8);
-            return JsonParser.parseReader(reader).getAsJsonObject();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        // 5. Aspects verification (infusion / crucible)
+        if (!spec.aspects.isEmpty()) {
+            check(json.has("aspects"), "recipe has aspects: " + file);
+            JsonObject aspObj = json.getAsJsonObject("aspects");
+            Map<String, Integer> actualAsp = new HashMap<>();
+            for (var entry : aspObj.entrySet()) {
+                actualAsp.put(entry.getKey(), entry.getValue().getAsInt());
+            }
+            check(spec.aspects.equals(actualAsp), "aspects match spec: " + spec.aspects + " vs " + actualAsp + " in " + file);
+        }
+
+        // 6. Vis verification (arcane)
+        if (!spec.vis.isEmpty()) {
+            check(json.has("vis") || json.has("aspects"), "arcane recipe has vis: " + file);
+            JsonObject visObj = json.has("vis") ? json.getAsJsonObject("vis") : json.getAsJsonObject("aspects");
+            Map<String, Integer> actualVis = new HashMap<>();
+            for (var entry : visObj.entrySet()) {
+                actualVis.put(entry.getKey(), entry.getValue().getAsInt());
+            }
+            check(spec.vis.equals(actualVis), "vis matches spec: " + spec.vis + " vs " + actualVis + " in " + file);
         }
     }
 
@@ -302,76 +459,72 @@ public final class SemanticDataCheck {
         check(json.has("key"), "has key: " + file);
         String key = json.get("key").getAsString();
         check(key.startsWith("forbidden:"), "key has forbidden namespace: " + key);
-
         check("forbidden:FORBIDDEN".equals(json.get("category").getAsString()), "category is forbidden:FORBIDDEN: " + file);
 
-        check(json.has("column") && json.has("row"), "has grid coordinates: " + file);
-        int col = json.get("column").getAsInt();
-        int row = json.get("row").getAsInt();
-
-        check(json.has("complexity"), "has complexity: " + file);
-        int complexity = json.get("complexity").getAsInt();
-        check(complexity >= 0 && complexity <= 4, "complexity in [0, 4]: " + complexity + " in " + file);
-
-        check(json.has("aspects"), "has aspects: " + file);
-        JsonObject aspects = json.getAsJsonObject("aspects");
-        boolean isStubOrAutoUnlock = (json.has("stub") && json.get("stub").getAsBoolean())
-                || (json.has("auto_unlock") && json.get("auto_unlock").getAsBoolean());
-        if (isStubOrAutoUnlock) {
-            check(complexity == 0, "stub/auto_unlock research has complexity 0: " + file);
-        } else {
-            check(aspects.size() > 0, "non-empty discovery aspects for standard research: " + file);
-            for (var a : aspects.entrySet()) {
-                check(a.getValue().getAsInt() > 0, "aspect amount positive: " + a.getKey() + " in " + file);
-            }
-        }
-
-        check(json.has("parents"), "has parents array: " + file);
-        check(json.has("hidden_parents"), "has hidden_parents array: " + file);
-        check(json.has("text_pages"), "has text_pages: " + file);
-        check(json.has("recipe_pages"), "has recipe_pages: " + file);
-
-        check(json.has("warp"), "has warp: " + file);
-        int warp = json.get("warp").getAsInt();
-        check(warp >= 0, "warp is non-negative: " + file);
-
-        // Deep ground truth verification against spec
         ResearchSpec spec = RESEARCH_SPECS.get(file);
         check(spec != null, "research spec exists for: " + file);
         check(spec.key.equals(key), "research key matches spec: " + spec.key + " in " + file);
-        check(col == spec.col, "research column matches spec: " + spec.col + " vs " + col + " in " + file);
-        check(row == spec.row, "research row matches spec: " + spec.row + " vs " + row + " in " + file);
-        check(complexity == spec.comp, "research complexity matches spec: " + spec.comp + " vs " + complexity + " in " + file);
-        check(warp == spec.warp, "research warp matches spec: " + spec.warp + " vs " + warp + " in " + file);
 
+        int col = json.get("column").getAsInt();
+        int row = json.get("row").getAsInt();
+        check(col == spec.col, "col matches: " + spec.col + " vs " + col + " in " + file);
+        check(row == spec.row, "row matches: " + spec.row + " vs " + row + " in " + file);
+
+        int comp = json.get("complexity").getAsInt();
+        check(comp == spec.comp, "comp matches: " + spec.comp + " vs " + comp + " in " + file);
+
+        int warp = json.has("warp") ? json.get("warp").getAsInt() : 0;
+        check(warp == spec.warp, "warp matches: " + spec.warp + " vs " + warp + " in " + file);
+
+        // Parents
         List<String> actualParents = new ArrayList<>();
-        for (var p : json.getAsJsonArray("parents")) actualParents.add(p.getAsString());
-        check(actualParents.size() == spec.parents.size(), "parents count matches spec for: " + file);
-        for (String p : spec.parents) {
-            check(actualParents.contains(p), "parent " + p + " present in: " + file);
+        if (json.has("parents")) {
+            for (var p : json.getAsJsonArray("parents")) actualParents.add(p.getAsString());
         }
+        check(actualParents.equals(spec.parents), "parents match spec in: " + file);
 
-        List<String> actualPages = new ArrayList<>();
-        for (var p : json.getAsJsonArray("recipe_pages")) actualPages.add(p.getAsString());
-        check(actualPages.size() == spec.recipePages.size(), "recipe pages count matches spec for: " + file);
-        for (String page : spec.recipePages) {
-            check(actualPages.contains(page), "recipe page " + page + " present in: " + file);
+        // Hidden Parents
+        List<String> actualHiddenParents = new ArrayList<>();
+        if (json.has("hidden_parents")) {
+            for (var p : json.getAsJsonArray("hidden_parents")) actualHiddenParents.add(p.getAsString());
         }
+        check(actualHiddenParents.equals(spec.hiddenParents), "hidden parents match spec in: " + file);
 
-        // Check specific well-known warps
-        if (key.equals("forbidden:wrath") || key.equals("forbidden:tainttree") || key.equals("forbidden:rod_infernal")) {
-            check(warp > 0, "forbidden dark research has warp > 0: " + key);
+        // Recipe Pages
+        List<String> actualRecipePages = new ArrayList<>();
+        if (json.has("recipe_pages")) {
+            for (var p : json.getAsJsonArray("recipe_pages")) actualRecipePages.add(p.getAsString());
         }
+        check(actualRecipePages.equals(spec.recipePages), "recipe pages match spec in: " + file);
+
+        // Text Pages Count
+        int actualTextPages = json.has("text_pages") ? json.getAsJsonArray("text_pages").size() : 0;
+        check(actualTextPages == spec.textPagesCount, "text pages count matches spec: " + spec.textPagesCount + " vs " + actualTextPages + " in " + file);
+
+        // Aspects
+        Map<String, Integer> actualAspects = new HashMap<>();
+        if (json.has("aspects")) {
+            for (var entry : json.getAsJsonObject("aspects").entrySet()) {
+                actualAspects.put(entry.getKey(), entry.getValue().getAsInt());
+            }
+        }
+        check(spec.aspects.equals(actualAspects), "research aspects match spec in: " + file);
+
+        // Auto unlock / stub
+        boolean actualAuto = json.has("auto_unlock") && json.get("auto_unlock").getAsBoolean();
+        boolean actualStub = json.has("stub") && json.get("stub").getAsBoolean();
+        check(actualAuto == spec.autoUnlock, "auto_unlock matches spec in: " + file);
+        check(actualStub == spec.stub, "stub matches spec in: " + file);
     }
 
     private static void testV03Research() throws Exception {
-        check(RESEARCH_FILES.size() == 31, "all 31 research definition files indexed");
+        check(RESEARCH_FILES.size() == 49, "all 49 research definition files indexed");
 
         Set<String> uniqueKeys = new HashSet<>();
         Set<String> uniqueCoordinates = new HashSet<>();
 
         for (String file : RESEARCH_FILES) {
-            JsonObject json = getResearchJson(file);
+            JsonObject json = getJson(file);
             String key = json.get("key").getAsString();
             check(uniqueKeys.add(key), "key is globally unique: " + key);
 
@@ -383,137 +536,125 @@ public final class SemanticDataCheck {
             validateResearchJson(json, file);
         }
 
-        check(uniqueKeys.size() == 31, "exactly 31 unique research entries verified");
-        check(uniqueCoordinates.size() == 31, "exactly 31 unique coordinate slots occupied");
+        check(uniqueKeys.size() == 49, "exactly 49 unique research entries verified");
+        check(uniqueCoordinates.size() == 49, "exactly 49 unique coordinate slots occupied");
     }
 
     private static void testNegativeRecipeRegressions() {
+        String target = "/data/forbidden/recipe/wrath_cage.json";
+
         // Mutation 1: Alter recipe research key
-        JsonObject mutatedWrathCage1 = getRecipeJson("wrath_cage.json");
-        mutatedWrathCage1.addProperty("research", "forbidden:invalid_research");
-        boolean caught1 = false;
-        try {
-            validateRecipeJson(mutatedWrathCage1, "wrath_cage.json");
-        } catch (AssertionError e) {
-            caught1 = true;
-        }
-        check(caught1, "altered recipe research key detected and rejected");
+        JsonObject m1 = getJson(target);
+        m1.addProperty("research", "forbidden:invalid_research");
+        assertThrows(() -> validateRecipeJson(m1, target), "altered recipe research key");
 
         // Mutation 2: Alter recipe instability
-        JsonObject mutatedWrathCage2 = getRecipeJson("wrath_cage.json");
-        mutatedWrathCage2.addProperty("instability", 0); // expected 10!
-        boolean caught2 = false;
-        try {
-            validateRecipeJson(mutatedWrathCage2, "wrath_cage.json");
-        } catch (AssertionError e) {
-            caught2 = true;
-        }
-        check(caught2, "altered recipe instability detected and rejected");
+        JsonObject m2 = getJson(target);
+        m2.addProperty("instability", 0);
+        assertThrows(() -> validateRecipeJson(m2, target), "altered recipe instability");
 
         // Mutation 3: Alter recipe result
-        JsonObject mutatedWrathCage3 = getRecipeJson("wrath_cage.json");
+        JsonObject m3 = getJson(target);
         JsonObject fakeRes = new JsonObject();
         fakeRes.addProperty("id", "minecraft:dirt");
-        mutatedWrathCage3.add("result", fakeRes);
-        boolean caught3 = false;
-        try {
-            validateRecipeJson(mutatedWrathCage3, "wrath_cage.json");
-        } catch (AssertionError e) {
-            caught3 = true;
-        }
-        check(caught3, "altered recipe result detected and rejected");
+        m3.add("result", fakeRes);
+        assertThrows(() -> validateRecipeJson(m3, target), "altered recipe result");
 
-        // Mutation 4: Negative aspect cost
-        JsonObject badRecipeAspects = getRecipeJson("wrath_cage.json");
-        JsonObject badAsp = badRecipeAspects.getAsJsonObject("aspects").deepCopy();
-        badAsp.addProperty("ira", -10);
-        badRecipeAspects.add("aspects", badAsp);
-        boolean caught4 = false;
-        try {
-            validateRecipeJson(badRecipeAspects, "wrath_cage.json");
-        } catch (AssertionError e) {
-            caught4 = true;
-        }
-        check(caught4, "negative aspect cost in recipe detected and rejected");
+        // Mutation 4: Alter result count
+        JsonObject m4 = getJson("/data/forbidden/recipe/emerald_nuggets.json");
+        JsonObject badCountRes = m4.getAsJsonObject("result").deepCopy();
+        badCountRes.addProperty("count", 1);
+        m4.add("result", badCountRes);
+        assertThrows(() -> validateRecipeJson(m4, "/data/forbidden/recipe/emerald_nuggets.json"), "altered result count");
 
-        // Mutation 5: Empty components array in infusion recipe
-        JsonObject badRecipeComps = getRecipeJson("wrath_cage.json");
-        badRecipeComps.add("components", new JsonArray());
-        boolean caught5 = false;
-        try {
-            validateRecipeJson(badRecipeComps, "wrath_cage.json");
-        } catch (AssertionError e) {
-            caught5 = true;
-        }
-        check(caught5, "empty components array in infusion recipe detected and rejected");
+        // Mutation 5: Alter central input
+        JsonObject m5 = getJson(target);
+        JsonObject fakeCentral = new JsonObject();
+        fakeCentral.addProperty("item", "minecraft:dirt");
+        m5.add("input", fakeCentral);
+        assertThrows(() -> validateRecipeJson(m5, target), "altered central input");
+
+        // Mutation 6: Alter components
+        JsonObject m6 = getJson(target);
+        JsonArray badComps = m6.getAsJsonArray("components").deepCopy();
+        badComps.remove(0);
+        m6.add("components", badComps);
+        assertThrows(() -> validateRecipeJson(m6, target), "altered components count");
+
+        // Mutation 7: Alter aspect amounts
+        JsonObject m7 = getJson(target);
+        JsonObject badAsp = m7.getAsJsonObject("aspects").deepCopy();
+        badAsp.addProperty("forbidden:ira", 999);
+        m7.add("aspects", badAsp);
+        assertThrows(() -> validateRecipeJson(m7, target), "altered aspect amount");
+
+        // Mutation 8: Alter vis cost
+        JsonObject m8 = getJson("/data/forbidden/recipe/taint_stone.json");
+        JsonObject badVis = (m8.has("vis") ? m8.getAsJsonObject("vis") : m8.getAsJsonObject("aspects")).deepCopy();
+        badVis.addProperty("ordo", 999);
+        if (m8.has("vis")) m8.add("vis", badVis); else m8.add("aspects", badVis);
+        assertThrows(() -> validateRecipeJson(m8, "/data/forbidden/recipe/taint_stone.json"), "altered vis cost");
     }
 
     private static void testNegativeResearchRegressions() {
-        // Mutation 1: Mutated column/row coordinates
-        JsonObject mutatedResearch1 = getResearchJson("wrathcage.json");
-        mutatedResearch1.addProperty("column", 0); // expected -6!
-        boolean caughtRes1 = false;
-        try {
-            validateResearchJson(mutatedResearch1, "wrathcage.json");
-        } catch (AssertionError e) {
-            caughtRes1 = true;
-        }
-        check(caughtRes1, "altered research coordinates detected and rejected");
+        String target = "/data/forbidden/thaumcraft/research/wrathcage.json";
 
-        // Mutation 2: Mutated parents
-        JsonObject mutatedResearch2 = getResearchJson("wrathcage.json");
-        mutatedResearch2.add("parents", new JsonArray()); // empty parents!
-        boolean caughtRes2 = false;
-        try {
-            validateResearchJson(mutatedResearch2, "wrathcage.json");
-        } catch (AssertionError e) {
-            caughtRes2 = true;
-        }
-        check(caughtRes2, "altered research parents detected and rejected");
+        // Mutation 1: Mutate coordinates
+        JsonObject m1 = getJson(target);
+        m1.addProperty("column", 0);
+        assertThrows(() -> validateResearchJson(m1, target), "mutated column coordinate");
 
-        // Mutation 3: Mutated complexity
-        JsonObject mutatedResearch3 = getResearchJson("wrath.json");
-        mutatedResearch3.addProperty("complexity", 1); // expected 4!
-        boolean caughtRes3 = false;
-        try {
-            validateResearchJson(mutatedResearch3, "wrath.json");
-        } catch (AssertionError e) {
-            caughtRes3 = true;
-        }
-        check(caughtRes3, "altered research complexity detected and rejected");
+        // Mutation 2: Mutate parents
+        JsonObject m2 = getJson(target);
+        m2.add("parents", new JsonArray());
+        assertThrows(() -> validateResearchJson(m2, target), "mutated parents");
 
-        // Mutation 4: Mutated warp
-        JsonObject mutatedResearch4 = getResearchJson("morphtools.json");
-        mutatedResearch4.addProperty("warp", 0); // expected 4!
-        boolean caughtRes4 = false;
-        try {
-            validateResearchJson(mutatedResearch4, "morphtools.json");
-        } catch (AssertionError e) {
-            caughtRes4 = true;
-        }
-        check(caughtRes4, "altered research warp detected and rejected");
+        // Mutation 3: Mutate hidden parents
+        JsonObject m3 = getJson(target);
+        m3.add("hidden_parents", new JsonArray());
+        assertThrows(() -> validateResearchJson(m3, target), "mutated hidden parents");
 
-        // Mutation 5: Mutated recipe pages
-        JsonObject mutatedResearch5 = getResearchJson("wrathcage.json");
-        mutatedResearch5.add("recipe_pages", new JsonArray()); // empty pages!
-        boolean caughtRes5 = false;
-        try {
-            validateResearchJson(mutatedResearch5, "wrathcage.json");
-        } catch (AssertionError e) {
-            caughtRes5 = true;
-        }
-        check(caughtRes5, "altered research recipe_pages detected and rejected");
+        // Mutation 4: Mutate complexity
+        JsonObject m4 = getJson(target);
+        m4.addProperty("complexity", 1);
+        assertThrows(() -> validateResearchJson(m4, target), "mutated complexity");
 
-        // Mutation 6: Missing forbidden namespace
-        JsonObject badRes3 = getResearchJson("wrathcage.json");
-        badRes3.addProperty("key", "unnamespaced_key");
-        boolean caught6 = false;
+        // Mutation 5: Mutate warp
+        JsonObject m5 = getJson(target);
+        m5.addProperty("warp", 0);
+        assertThrows(() -> validateResearchJson(m5, target), "mutated warp");
+
+        // Mutation 6: Mutate recipe pages
+        JsonObject m6 = getJson(target);
+        m6.add("recipe_pages", new JsonArray());
+        assertThrows(() -> validateResearchJson(m6, target), "mutated recipe pages");
+
+        // Mutation 7: Mutate text pages count
+        JsonObject m7 = getJson(target);
+        m7.add("text_pages", new JsonArray());
+        assertThrows(() -> validateResearchJson(m7, target), "mutated text pages count");
+
+        // Mutation 8: Mutate research aspects
+        JsonObject m8 = getJson(target);
+        JsonObject badAsp = m8.getAsJsonObject("aspects").deepCopy();
+        badAsp.addProperty("ira", 999);
+        m8.add("aspects", badAsp);
+        assertThrows(() -> validateResearchJson(m8, target), "mutated research aspects");
+
+        // Mutation 9: Missing namespace
+        JsonObject m9 = getJson(target);
+        m9.addProperty("key", "unnamespaced_key");
+        assertThrows(() -> validateResearchJson(m9, target), "unnamespaced key");
+    }
+
+    private static void assertThrows(Runnable runnable, String description) {
+        boolean caught = false;
         try {
-            validateResearchJson(badRes3, "wrathcage.json");
+            runnable.run();
         } catch (AssertionError e) {
-            caught6 = true;
+            caught = true;
         }
-        check(caught6, "unnamespaced research key detected and rejected");
+        check(caught, "mutation correctly detected and rejected: " + description);
     }
 
     private SemanticDataCheck() {}

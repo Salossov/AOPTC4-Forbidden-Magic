@@ -1,5 +1,6 @@
 package forbidden.verification;
 
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import forbidden.compat.bloodmagic.BloodMagicBridge;
 import forbidden.compat.bloodmagic.BloodMagicCompat;
@@ -11,30 +12,44 @@ import forbidden.compat.bloodmagic.items.*;
 import forbidden.compat.bloodmagic.rituals.RitualSanity;
 import forbidden.compat.bloodmagic.wands.BloodStaffUpdate;
 import forbidden.compat.bloodmagic.wands.BloodWandUpdate;
+import forbidden.compat.botania.BotaniaCompat;
 import forbidden.component.ForbiddenComponents;
 import forbidden.config.ForbiddenConfig;
 import forbidden.content.ForbiddenAspects;
 import forbidden.content.ForbiddenContent;
 import forbidden.content.ForbiddenWandVisuals;
 import forbidden.content.wands.ForbiddenWandMechanics;
+import java.io.File;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.jar.JarFile;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.bus.api.BusBuilder;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import sun.misc.Unsafe;
 import thaumcraft.api.IScribeTools;
 import thaumcraft.api.IWarpingGear;
 import thaumcraft.api.wands.StaffRod;
@@ -56,7 +71,8 @@ import wayoftime.bloodmagic.ritual.RitualComponent;
  * - C07: Bloodwell (IScribeTools, durability 5), Boundwell (IScribeTools, durability 100),
  *        Blood Rapier (durability 700, 2 warp), Eldritch Orb (Tier 6, 80M LP, 5 warp, EPIC rarity, reusable).
  * - C08: Ritual "Plea of Delayed Insanity" (spite_sanity, 20k act, 15k refresh, 600 interval, 28 runes),
- *        Bloodthorn flower (magic dmg, Weakness III, LP/mana feed).
+ *        Bloodthorn flower (Weakness III, mana threshold, player exemption, redstone pause).
+ * - R06: Functional simulation of Bloodthorn flower and datapack integrity check against BM jar.
  */
 public final class P04BloodMagicCheck {
     private static int checks = 0;
@@ -93,6 +109,7 @@ public final class P04BloodMagicCheck {
         var bus = BusBuilder.builder().build();
         ForbiddenComponents.register(bus);
         ForbiddenContent.register(bus);
+        forbidden.content.ForbiddenTools.register(bus);
         BloodMagicCompat.register(bus);
 
         var constructor = RegisterEvent.class.getDeclaredConstructor(ResourceKey.class, Registry.class);
@@ -114,6 +131,17 @@ public final class P04BloodMagicCheck {
         ForbiddenWandMechanics.registerAll();
         BloodMagicCompat.registerWandParts();
         ForbiddenWandVisuals.register();
+
+        try {
+            var emptyTypeHolder = net.neoforged.neoforge.common.NeoForgeMod.EMPTY_TYPE;
+            var holderField = net.neoforged.neoforge.registries.DeferredHolder.class.getDeclaredField("holder");
+            holderField.setAccessible(true);
+            if (emptyTypeHolder != null && holderField.get(emptyTypeHolder) == null) {
+                var emptyFluidType = new net.neoforged.neoforge.fluids.FluidType(net.neoforged.neoforge.fluids.FluidType.Properties.create());
+                holderField.set(emptyTypeHolder, net.minecraft.core.Holder.direct(emptyFluidType));
+            }
+        } catch (Throwable ignored) {
+        }
 
         testC05ApiAndClassLoaderSafety();
         testC06RodsAndCaps();
@@ -208,6 +236,73 @@ public final class P04BloodMagicCheck {
         check(bloodOrb.getFillRate() == 140, "orb fill rate 140");
     }
 
+    public static class TestLivingEntity extends LivingEntity {
+        public Map<Holder<MobEffect>, MobEffectInstance> customEffects;
+        public boolean alive = true;
+
+        @SuppressWarnings("null")
+        protected TestLivingEntity() {
+            super(null, null);
+        }
+
+        @Override public boolean isAlive() { return alive; }
+        @Override public MobEffectInstance getEffect(Holder<MobEffect> effect) {
+            return customEffects != null ? customEffects.get(effect) : null;
+        }
+        @Override public boolean addEffect(MobEffectInstance effectInstance, net.minecraft.world.entity.Entity entity) {
+            if (customEffects != null) {
+                customEffects.put(effectInstance.getEffect(), effectInstance);
+            }
+            return true;
+        }
+        @Override public Iterable<ItemStack> getArmorSlots() { return List.of(); }
+        @Override public ItemStack getItemBySlot(EquipmentSlot slot) { return ItemStack.EMPTY; }
+        @Override public void setItemSlot(EquipmentSlot slot, ItemStack stack) {}
+        @Override public HumanoidArm getMainArm() { return HumanoidArm.RIGHT; }
+    }
+
+    public static class TestPlayerEntity extends Player {
+        public boolean alive = true;
+
+        @SuppressWarnings("null")
+        protected TestPlayerEntity() {
+            super(null, null, 0, null);
+        }
+
+        @Override public boolean isAlive() { return alive; }
+        @Override public boolean isSpectator() { return false; }
+        @Override public boolean isCreative() { return false; }
+    }
+
+    private static TestLivingEntity createTestMob(AABB box) {
+        try {
+            Field f = Unsafe.class.getDeclaredField("theUnsafe");
+            f.setAccessible(true);
+            Unsafe unsafe = (Unsafe) f.get(null);
+            TestLivingEntity mob = (TestLivingEntity) unsafe.allocateInstance(TestLivingEntity.class);
+            mob.customEffects = new HashMap<>();
+            mob.setBoundingBox(box);
+            mob.alive = true;
+            return mob;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to allocate TestLivingEntity", e);
+        }
+    }
+
+    private static TestPlayerEntity createTestPlayer(AABB box) {
+        try {
+            Field f = Unsafe.class.getDeclaredField("theUnsafe");
+            f.setAccessible(true);
+            Unsafe unsafe = (Unsafe) f.get(null);
+            TestPlayerEntity p = (TestPlayerEntity) unsafe.allocateInstance(TestPlayerEntity.class);
+            p.setBoundingBox(box);
+            p.alive = true;
+            return p;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to allocate TestPlayerEntity", e);
+        }
+    }
+
     private static void testC08RitualAndFlower() {
         // Ritual Plea of Delayed Insanity
         RitualSanity sanity = new RitualSanity();
@@ -265,9 +360,105 @@ public final class P04BloodMagicCheck {
         var seal = BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.parse("forbidden:blood_seal"));
         check(seal instanceof BloodSealEffect, "blood seal is BloodSealEffect");
         check(seal.getCategory() == MobEffectCategory.HARMFUL, "blood seal is harmful");
+
+        // --- Functional Simulation of Bloodthorn (R06) ---
+        SimulatedFlowerLevel simLevel = SimulatedFlowerLevel.create();
+        BlockPos flowerPos = new BlockPos(0, 64, 0);
+        simLevel.setBlock(flowerPos, block.defaultBlockState(), 3);
+        var simBloodthorn = new BloodthornBlockEntity(flowerPos, block.defaultBlockState());
+
+        TestLivingEntity simMob = createTestMob(new AABB(flowerPos).inflate(2));
+        TestPlayerEntity simPlayer = createTestPlayer(new AABB(flowerPos).inflate(2));
+        simLevel.entities.add(simMob);
+        simLevel.entities.add(simPlayer);
+
+        // A. Redstone pause test
+        simBloodthorn.addMana(360);
+        simLevel.neighborSignal = true;
+        simBloodthorn.tick(simLevel, flowerPos, block.defaultBlockState());
+        check(simBloodthorn.getMana() == 360, "bloodthorn pauses on redstone, mana untouched");
+        check(simMob.customEffects.isEmpty(), "bloodthorn does not inflict effect when paused by redstone");
+
+        // B. Insufficient mana test (< 40)
+        simLevel.neighborSignal = false;
+        simBloodthorn.addMana(-360);
+        simBloodthorn.addMana(39);
+        check(simBloodthorn.getMana() == 39, "bloodthorn mana set to 39");
+        simBloodthorn.tick(simLevel, flowerPos, block.defaultBlockState());
+        check(simBloodthorn.getMana() == 39, "insufficient mana (<40) does not consume mana");
+        check(simMob.customEffects.isEmpty(), "insufficient mana does not inflict weakness");
+
+        // C. Successful Weakness III application and mana consumption (40)
+        simBloodthorn.addMana(1); // 40 mana
+        check(simBloodthorn.getMana() == 40, "bloodthorn mana at threshold 40");
+        simBloodthorn.tick(simLevel, flowerPos, block.defaultBlockState());
+        check(simBloodthorn.getMana() == 0, "consumed exactly 40 mana for 1 target");
+        check(simMob.customEffects.containsKey(MobEffects.WEAKNESS), "applied weakness to mob");
+        var inst = simMob.customEffects.get(MobEffects.WEAKNESS);
+        check(inst.getAmplifier() == 2, "weakness amplifier is 2 (Weakness III)");
+        check(inst.getDuration() == 60, "weakness duration is 60 ticks");
+
+        // D. Already afflicted check (no duplicate consumption)
+        simBloodthorn.addMana(100);
+        simBloodthorn.tick(simLevel, flowerPos, block.defaultBlockState());
+        check(simBloodthorn.getMana() == 100, "target already afflicted, no extra mana consumed");
+
+        // E. Player exemption test
+        simMob.setBoundingBox(new AABB(100, 100, 100, 101, 101, 101)); // mob out of range
+        simBloodthorn.tick(simLevel, flowerPos, block.defaultBlockState());
+        check(simBloodthorn.getMana() == 100, "player in range is strictly exempted, zero mana consumed");
+        check(simMob.customEffects.size() == 1, "no extra effects recorded");
+
+        // F. Boundary tests for Botania mana helpers
+        check(BotaniaCompat.drawMana(null, flowerPos, null, 100) == 0, "drawMana with null level returns 0");
+        check(BotaniaCompat.drawMana(simLevel, flowerPos, null, -50) == 0, "drawMana with negative needed returns 0");
+        check(BotaniaCompat.emitMana(null, flowerPos, null, 100) == 0, "emitMana with null level returns 0");
+        check(BotaniaCompat.emitMana(simLevel, flowerPos, null, -50) == 0, "emitMana with negative available returns 0");
     }
 
     private static void testDataPackIntegrity() throws Exception {
+        Set<String> validBloodMagicItems = new HashSet<>();
+        URL bmJarUrl = IBindable.class.getProtectionDomain().getCodeSource().getLocation();
+        try (JarFile jar = new JarFile(new File(bmJarUrl.toURI()))) {
+            var entries = jar.entries();
+            while (entries.hasMoreElements()) {
+                var entry = entries.nextElement();
+                String name = entry.getName();
+                if (name.startsWith("assets/bloodmagic/models/item/") && name.endsWith(".json")) {
+                    String id = name.substring("assets/bloodmagic/models/item/".length(), name.length() - 5);
+                    validBloodMagicItems.add("bloodmagic:" + id);
+                }
+                if (name.startsWith("assets/bloodmagic/blockstates/") && name.endsWith(".json")) {
+                    String id = name.substring("assets/bloodmagic/blockstates/".length(), name.length() - 5);
+                    validBloodMagicItems.add("bloodmagic:" + id);
+                }
+            }
+        }
+        check(!validBloodMagicItems.isEmpty(), "BM items found in jar: " + validBloodMagicItems.size());
+        check(validBloodMagicItems.contains("bloodmagic:reagentbinding"), "BM jar contains reagentbinding");
+        check(validBloodMagicItems.contains("bloodmagic:blankslate"), "BM jar contains blankslate");
+        check(!validBloodMagicItems.contains("bloodmagic:blank_slate"), "BM jar rejects legacy blank_slate");
+        check(!validBloodMagicItems.contains("bloodmagic:incense_crucible"), "BM jar rejects incense_crucible");
+
+        Set<String> validBotaniaItems = new HashSet<>();
+        URL botaniaJarUrl = vazkii.botania.common.item.BotaniaItems.class.getProtectionDomain().getCodeSource().getLocation();
+        try (JarFile jar = new JarFile(new File(botaniaJarUrl.toURI()))) {
+            var entries = jar.entries();
+            while (entries.hasMoreElements()) {
+                var entry = entries.nextElement();
+                String name = entry.getName();
+                if (name.startsWith("assets/botania/models/item/") && name.endsWith(".json")) {
+                    String id = name.substring("assets/botania/models/item/".length(), name.length() - 5);
+                    validBotaniaItems.add("botania:" + id);
+                }
+                if (name.startsWith("assets/botania/blockstates/") && name.endsWith(".json")) {
+                    String id = name.substring("assets/botania/blockstates/".length(), name.length() - 5);
+                    validBotaniaItems.add("botania:" + id);
+                }
+            }
+        }
+        check(!validBotaniaItems.isEmpty(), "Botania items found in jar: " + validBotaniaItems.size());
+
         List<String> researches = List.of(
                 "bloodmagic", "rod_blood", "rod_blood_staff", "cap_alchemical",
                 "bloodwell", "bloodrapier", "eldritch_orb", "bloodthorn"
@@ -285,7 +476,8 @@ public final class P04BloodMagicCheck {
 
         List<String> recipes = List.of(
                 "wand_rod_blood", "wand_rod_blood_staff", "wand_cap_alchemical", "bloodwell",
-                "blood_rapier", "eldritch_orb", "boundwell", "bloodthorn"
+                "blood_rapier", "eldritch_orb", "boundwell", "bloodthorn",
+                "wand_rod_blood_inert", "altar_wand_rod_blood"
         );
         for (String rec : recipes) {
             String path = "/packs/bloodmagic/data/forbidden/recipe/" + rec + ".json";
@@ -294,7 +486,94 @@ public final class P04BloodMagicCheck {
             try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                 var json = JsonParser.parseReader(reader).getAsJsonObject();
                 check(json.has("type") && !json.get("type").getAsString().isEmpty(), "Recipe has non-empty type: " + rec);
-                check(json.has("result") || json.has("key"), "Recipe has result or key: " + rec);
+                check(json.has("result") || json.has("output") || json.has("key"), "Recipe has result/output/key: " + rec);
+                validateReferencedItems(json, validBloodMagicItems, validBotaniaItems, rec);
+            }
+        }
+    }
+
+    private static void validateReferencedItems(JsonObject json, Set<String> validBm, Set<String> validBotania, String recipe) {
+        List<String> itemsToCheck = new ArrayList<>();
+        var res = json.has("result") ? json.get("result") : json.get("output");
+        if (res != null) {
+            if (res.isJsonObject()) {
+                var r = res.getAsJsonObject();
+                if (r.has("id")) itemsToCheck.add(r.get("id").getAsString());
+                else if (r.has("item")) itemsToCheck.add(r.get("item").getAsString());
+            } else if (res.isJsonPrimitive()) {
+                itemsToCheck.add(res.getAsString());
+            }
+        }
+        var in = json.has("input") ? json.get("input") : (json.has("central_item") ? json.get("central_item") : json.get("catalyst"));
+        if (in != null) {
+            if (in.isJsonObject()) {
+                var r = in.getAsJsonObject();
+                if (r.has("id")) itemsToCheck.add(r.get("id").getAsString());
+                else if (r.has("item")) itemsToCheck.add(r.get("item").getAsString());
+            } else if (in.isJsonPrimitive()) {
+                itemsToCheck.add(in.getAsString());
+            }
+        }
+        if (json.has("components")) {
+            for (var elem : json.getAsJsonArray("components")) {
+                if (elem.isJsonObject()) {
+                    var r = elem.getAsJsonObject();
+                    if (r.has("id")) itemsToCheck.add(r.get("id").getAsString());
+                    else if (r.has("item")) itemsToCheck.add(r.get("item").getAsString());
+                } else if (elem.isJsonPrimitive()) {
+                    itemsToCheck.add(elem.getAsString());
+                }
+            }
+        }
+        if (json.has("ingredients")) {
+            for (var elem : json.getAsJsonArray("ingredients")) {
+                if (elem.isJsonObject()) {
+                    var r = elem.getAsJsonObject();
+                    if (r.has("id")) itemsToCheck.add(r.get("id").getAsString());
+                    else if (r.has("item")) itemsToCheck.add(r.get("item").getAsString());
+                } else if (elem.isJsonPrimitive()) {
+                    itemsToCheck.add(elem.getAsString());
+                }
+            }
+        }
+        if (json.has("key")) {
+            var keyObj = json.getAsJsonObject("key");
+            for (var entry : keyObj.entrySet()) {
+                if (entry.getValue().isJsonObject()) {
+                    var r = entry.getValue().getAsJsonObject();
+                    if (r.has("id")) itemsToCheck.add(r.get("id").getAsString());
+                    else if (r.has("item")) itemsToCheck.add(r.get("item").getAsString());
+                } else if (entry.getValue().isJsonPrimitive()) {
+                    itemsToCheck.add(entry.getValue().getAsString());
+                }
+            }
+        }
+
+        for (String id : itemsToCheck) {
+            check(!id.isBlank(), "item id non-blank in " + recipe);
+            if (id.startsWith("bloodmagic:")) {
+                check(validBm.contains(id), "Blood Magic item exists in real mod registry: " + id + " in " + recipe);
+            } else if (id.startsWith("botania:")) {
+                check(validBotania.contains(id), "Botania item exists in real mod registry: " + id + " in " + recipe);
+            } else if (id.startsWith("forbidden:")) {
+                var loc = ResourceLocation.parse(id);
+                boolean exists = BuiltInRegistries.ITEM.containsKey(loc) || BuiltInRegistries.BLOCK.containsKey(loc);
+                check(exists, "Forbidden Item/Block exists in registry: " + id + " in " + recipe);
+            } else if (id.startsWith("minecraft:")) {
+                var loc = ResourceLocation.parse(id);
+                boolean exists = BuiltInRegistries.ITEM.containsKey(loc) || BuiltInRegistries.BLOCK.containsKey(loc);
+                check(exists, "Minecraft Item/Block exists in registry: " + id + " in " + recipe);
+            } else if (id.startsWith("thaumcraft:")) {
+                var loc = ResourceLocation.parse(id);
+                String path = loc.getPath();
+                String capName = path.startsWith("wand_cap_") ? path.substring("wand_cap_".length()) : path;
+                String rodName = path.startsWith("wand_rod_") ? path.substring("wand_rod_".length()) : path;
+                boolean exists = BuiltInRegistries.ITEM.containsKey(loc) || BuiltInRegistries.BLOCK.containsKey(loc)
+                        || WandCap.caps.containsKey(path) || WandCap.caps.containsKey(capName) || WandCap.caps.containsKey("thaumcraft:" + capName)
+                        || WandRod.rods.containsKey(path) || WandRod.rods.containsKey(rodName) || WandRod.rods.containsKey("thaumcraft:" + rodName)
+                        || P04BloodMagicCheck.class.getResource("/assets/thaumcraft/models/item/" + loc.getPath() + ".json") != null
+                        || P04BloodMagicCheck.class.getResource("/assets/thaumcraft/blockstates/" + loc.getPath() + ".json") != null;
+                check(exists, "Thaumcraft Item/Block exists: " + id + " in " + recipe);
             }
         }
     }

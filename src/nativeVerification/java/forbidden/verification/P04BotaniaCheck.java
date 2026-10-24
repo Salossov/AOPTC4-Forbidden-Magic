@@ -15,8 +15,7 @@ import forbidden.content.ForbiddenWands;
 import forbidden.content.wands.ForbiddenWandMechanics;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
@@ -25,8 +24,15 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.neoforged.bus.api.BusBuilder;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -108,6 +114,18 @@ public final class P04BotaniaCheck {
         ForbiddenWandMechanics.registerAll();
         BotaniaCompat.registerWandParts();
         ForbiddenWandVisuals.register();
+
+        try {
+            var emptyTypeHolder = net.neoforged.neoforge.common.NeoForgeMod.EMPTY_TYPE;
+            var holderField = net.neoforged.neoforge.registries.DeferredHolder.class.getDeclaredField("holder");
+            holderField.setAccessible(true);
+            if (emptyTypeHolder != null && holderField.get(emptyTypeHolder) == null) {
+                var emptyFluidType = new net.neoforged.neoforge.fluids.FluidType(net.neoforged.neoforge.fluids.FluidType.Properties.create());
+                holderField.set(emptyTypeHolder, net.minecraft.core.Holder.direct(emptyFluidType));
+            }
+        } catch (Throwable ignored) {
+        }
+        registerTestFluxBlocks();
 
         testC01ApiAndIsolation();
         testC02RodsAndCaps();
@@ -291,9 +309,117 @@ public final class P04BotaniaCheck {
         check(tainthistleReloaded.getBurnTime() == 4000, "reloaded tainthistle burnTime == 4000");
         check(tainthistleReloaded.getTicksExisted() == 456, "reloaded tainthistle ticks == 456");
         check(new BlockPos(1, 2, 3).equals(tainthistleReloaded.getBindingPos()), "reloaded tainthistle boundPos matches");
+
+        // --- Functional Simulation of Tainthistle (R01 & R06) ---
+        check(TainthistleBlockEntity.isFlux(testFluxGoo.defaultBlockState()), "isFlux recognizes flux_goo");
+        check(TainthistleBlockEntity.isFlux(testFluxGas.defaultBlockState()), "isFlux recognizes flux_gas");
+        check(!TainthistleBlockEntity.isFlux(tainthistleBlock.defaultBlockState()), "isFlux strictly rejects own flower (R01 protection)");
+        var taintStone = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("forbidden:taint_stone"));
+        check(taintStone != null && !TainthistleBlockEntity.isFlux(taintStone.defaultBlockState()), "isFlux rejects taint_stone construction block");
+        var taintLog = BuiltInRegistries.BLOCK.get(ResourceLocation.parse("forbidden:taint_log"));
+        check(taintLog != null && !TainthistleBlockEntity.isFlux(taintLog.defaultBlockState()), "isFlux rejects taint_log construction block");
+        check(!TainthistleBlockEntity.isFlux(Blocks.AIR.defaultBlockState()), "isFlux rejects air");
+        check(!TainthistleBlockEntity.isFlux(null), "isFlux rejects null");
+
+        check(TainthistleBlockEntity.getFluxDepth(testFluxGoo.defaultBlockState().setValue(QUANTA, 1)) == 1, "flux depth quanta=1");
+        check(TainthistleBlockEntity.getFluxDepth(testFluxGoo.defaultBlockState().setValue(QUANTA, 4)) == 4, "flux depth quanta=4");
+        check(TainthistleBlockEntity.getFluxDepth(testFluxGoo.defaultBlockState().setValue(QUANTA, 8)) == 8, "flux depth quanta=8");
+        check(TainthistleBlockEntity.getFluxDepth(testFluxGoo.defaultBlockState().setValue(QUANTA, 16)) == 16, "flux depth quanta=16");
+
+        SimulatedFlowerLevel simLevel = SimulatedFlowerLevel.create();
+        BlockPos flowerPos = new BlockPos(0, 64, 0);
+        simLevel.setBlock(flowerPos, tainthistleBlock.defaultBlockState(), 3);
+        simLevel.setBlock(flowerPos.above(), tainthistleBlock.defaultBlockState(), 3);
+        simLevel.setBlock(flowerPos.east(), taintStone.defaultBlockState(), 3);
+        simLevel.setBlock(flowerPos.north(), testFluxGoo.defaultBlockState().setValue(QUANTA, 4), 3);
+        simLevel.setBlock(flowerPos.south(), testFluxGas.defaultBlockState().setValue(QUANTA, 8), 3);
+
+        var simTainthistle = new TainthistleBlockEntity(flowerPos, tainthistleBlock.defaultBlockState());
+        for (int t = 0; t < 80; t++) {
+            simTainthistle.tick(simLevel, flowerPos, tainthistleBlock.defaultBlockState());
+        }
+        check(simTainthistle.getBurnTime() == 239, "burnTime increased by 4*20 + 8*20 - 1 = 239, actual: " + simTainthistle.getBurnTime());
+        check(simLevel.getBlockState(flowerPos).getBlock() == tainthistleBlock, "tainthistle NEVER deletes itself at pos!");
+        check(simLevel.getBlockState(flowerPos.above()).getBlock() == tainthistleBlock, "neighboring tainthistle intact!");
+        check(simLevel.getBlockState(flowerPos.east()).getBlock() == taintStone, "taint_stone intact!");
+        check(simLevel.getBlockState(flowerPos.north()).isAir(), "flux goo consumed to air!");
+        check(simLevel.getBlockState(flowerPos.south()).isAir(), "flux gas consumed to air!");
+
+        for (int t = 0; t < 10; t++) {
+            simTainthistle.tick(simLevel, flowerPos, tainthistleBlock.defaultBlockState());
+        }
+        check(simTainthistle.getBurnTime() == 229, "burnTime decreased from 239 to 229: " + simTainthistle.getBurnTime());
+        check(simTainthistle.getMana() == 18, "mana increased by 18 (3 per 2 ticks across 6 even ticks: 80,82,84,86,88,90): " + simTainthistle.getMana());
+
+        int sent = BotaniaCompat.emitMana(simLevel, flowerPos, null, simTainthistle.getMana());
+        check(sent >= 0, "emitMana safe execution");
+
+        // --- Functional Simulation of Euclidaisy (R06) ---
+        var simEuclidaisy = new EuclidaisyBlockEntity(flowerPos, euclidaisyBlock.defaultBlockState());
+        simLevel.neighborSignal = true;
+        simEuclidaisy.addMana(9000);
+        for (int t = 0; t < 400; t++) {
+            simEuclidaisy.tick(simLevel, flowerPos, euclidaisyBlock.defaultBlockState());
+        }
+        check(simEuclidaisy.getMana() == 9000, "euclidaisy pauses on redstone signal, does not consume mana");
+        check(simLevel.spawnedEntities.isEmpty(), "euclidaisy does not spawn essence when paused by redstone");
+
+        simLevel.neighborSignal = false;
+        simEuclidaisy.setTicksExisted(399);
+        simEuclidaisy.tick(simLevel, flowerPos, euclidaisyBlock.defaultBlockState());
+        check(simEuclidaisy.getMana() == 0, "euclidaisy consumed 9000 mana on interval");
+        check(simLevel.spawnedEntities.size() == 1, "euclidaisy spawned essence entity");
+        var spawnedItem = simLevel.spawnedEntities.get(0);
+        check(spawnedItem instanceof ItemEntity, "spawned entity is ItemEntity");
+        var itemStack = ((ItemEntity) spawnedItem).getItem();
+        check(!itemStack.isEmpty(), "spawned essence stack is not empty");
+        CustomData customDataComp = itemStack.get(DataComponents.CUSTOM_DATA);
+        check(customDataComp != null, "spawned essence has custom data");
+        CompoundTag spawnedTag = customDataComp.copyTag();
+        check(spawnedTag.contains("EssenceAspect"), "spawned essence has EssenceAspect");
+        check(spawnedTag.getInt("EssenceAmount") == 2, "spawned essence amount is 2");
+
+        // --- Functional Simulation of Whisperweed (R06) ---
+        var simWhisperweed = new WhisperweedBlockEntity(flowerPos, whisperweedBlock.defaultBlockState());
+        simLevel.neighborSignal = true;
+        simWhisperweed.addMana(6000);
+        for (int t = 0; t < 300; t++) {
+            simWhisperweed.tick(simLevel, flowerPos, whisperweedBlock.defaultBlockState());
+        }
+        check(simWhisperweed.getMana() == 6000, "whisperweed pauses on redstone signal");
+        simLevel.neighborSignal = false;
+        for (int t = 0; t < 300; t++) {
+            simWhisperweed.tick(simLevel, flowerPos, whisperweedBlock.defaultBlockState());
+        }
+        check(simWhisperweed.getMana() == 6000, "whisperweed without player in range does not consume mana");
+
+        check(BotaniaCompat.drawMana(null, flowerPos, null, 100) == 0, "drawMana with null level returns 0");
+        check(BotaniaCompat.drawMana(simLevel, flowerPos, null, -50) == 0, "drawMana with negative needed returns 0");
+        check(BotaniaCompat.emitMana(null, flowerPos, null, 100) == 0, "emitMana with null level returns 0");
+        check(BotaniaCompat.emitMana(simLevel, flowerPos, null, -50) == 0, "emitMana with negative available returns 0");
     }
 
     private static void testDataPackIntegrity() throws Exception {
+        Set<String> validBotaniaItems = new HashSet<>();
+        java.net.URL jarUrl = vazkii.botania.common.item.BotaniaItems.class.getProtectionDomain().getCodeSource().getLocation();
+        try (java.util.jar.JarFile jar = new java.util.jar.JarFile(new java.io.File(jarUrl.toURI()))) {
+            var entries = jar.entries();
+            while (entries.hasMoreElements()) {
+                var entry = entries.nextElement();
+                String name = entry.getName();
+                if (name.startsWith("assets/botania/models/item/") && name.endsWith(".json")) {
+                    String id = name.substring("assets/botania/models/item/".length(), name.length() - 5);
+                    validBotaniaItems.add("botania:" + id);
+                }
+                if (name.startsWith("assets/botania/blockstates/") && name.endsWith(".json")) {
+                    String id = name.substring("assets/botania/blockstates/".length(), name.length() - 5);
+                    validBotaniaItems.add("botania:" + id);
+                }
+            }
+        }
+        check(!validBotaniaItems.isEmpty(), "Botania items registered in set: " + validBotaniaItems.size());
+        check(!validBotaniaItems.contains("botania:mana_petal"), "legacy botania:mana_petal is NOT a valid item");
+
         List<String> researches = List.of(
                 "botany", "rod_livingwood", "cap_manasteel", "rod_dreamwood_staff", "rod_dreamwood",
                 "cap_elementium", "cap_terrasteel", "euclidaisy", "whisperweed", "tainthistle"
@@ -310,9 +436,11 @@ public final class P04BotaniaCheck {
         }
 
         List<String> recipes = List.of(
-                "wand_rod_livingwood", "wand_cap_manasteel_inert", "wand_rod_dreamwood", "wand_rod_dreamwood_staff",
-                "wand_cap_elementium_inert", "wand_cap_elementium", "wand_cap_terrasteel", "euclidaisy", "whisperweed",
-                "tainthistle", "botanist_emblem"
+                "wand_rod_livingwood", "wand_rod_livingwood_inert", "mana_infusion_wand_rod_livingwood",
+                "wand_cap_manasteel_inert", "mana_infusion_wand_cap_manasteel",
+                "wand_rod_dreamwood", "wand_rod_dreamwood_inert", "mana_infusion_wand_rod_dreamwood",
+                "wand_rod_dreamwood_staff", "wand_cap_elementium_inert", "wand_cap_elementium",
+                "wand_cap_terrasteel", "euclidaisy", "whisperweed", "tainthistle", "botanist_emblem"
         );
         for (String rec : recipes) {
             String path = "/packs/botania/data/forbidden/recipe/" + rec + ".json";
@@ -321,9 +449,112 @@ public final class P04BotaniaCheck {
             try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                 var json = JsonParser.parseReader(reader).getAsJsonObject();
                 check(json.has("type") && !json.get("type").getAsString().isEmpty(), "Recipe has non-empty type: " + rec);
-                check(json.has("result") || json.has("key"), "Recipe has result or key: " + rec);
+                check(json.has("result") || json.has("output") || json.has("key"), "Recipe has result/output/key: " + rec);
+                validateReferencedItems(json, validBotaniaItems, rec);
             }
         }
+    }
+
+    private static void validateReferencedItems(com.google.gson.JsonObject json, Set<String> validBotania, String recipe) {
+        List<String> itemsToCheck = new ArrayList<>();
+        var res = json.has("result") ? json.get("result") : json.get("output");
+        if (res != null) {
+            if (res.isJsonObject()) {
+                var r = res.getAsJsonObject();
+                if (r.has("id")) itemsToCheck.add(r.get("id").getAsString());
+                else if (r.has("item")) itemsToCheck.add(r.get("item").getAsString());
+            } else if (res.isJsonPrimitive()) {
+                itemsToCheck.add(res.getAsString());
+            }
+        }
+        var in = json.has("input") ? json.get("input") : (json.has("central_item") ? json.get("central_item") : json.get("catalyst"));
+        if (in != null) {
+            if (in.isJsonObject()) {
+                var r = in.getAsJsonObject();
+                if (r.has("id")) itemsToCheck.add(r.get("id").getAsString());
+                else if (r.has("item")) itemsToCheck.add(r.get("item").getAsString());
+            } else if (in.isJsonPrimitive()) {
+                itemsToCheck.add(in.getAsString());
+            }
+        }
+        if (json.has("components")) {
+            for (var elem : json.getAsJsonArray("components")) {
+                if (elem.isJsonObject()) {
+                    var r = elem.getAsJsonObject();
+                    if (r.has("id")) itemsToCheck.add(r.get("id").getAsString());
+                    else if (r.has("item")) itemsToCheck.add(r.get("item").getAsString());
+                } else if (elem.isJsonPrimitive()) {
+                    itemsToCheck.add(elem.getAsString());
+                }
+            }
+        }
+        if (json.has("key")) {
+            var keyObj = json.getAsJsonObject("key");
+            for (var entry : keyObj.entrySet()) {
+                if (entry.getValue().isJsonObject()) {
+                    var r = entry.getValue().getAsJsonObject();
+                    if (r.has("id")) itemsToCheck.add(r.get("id").getAsString());
+                    else if (r.has("item")) itemsToCheck.add(r.get("item").getAsString());
+                } else if (entry.getValue().isJsonPrimitive()) {
+                    itemsToCheck.add(entry.getValue().getAsString());
+                }
+            }
+        }
+
+        for (String id : itemsToCheck) {
+            check(!id.isBlank(), "item id non-blank in " + recipe);
+            if (id.startsWith("botania:")) {
+                check(validBotania.contains(id), "Botania item exists in real mod registry: " + id + " in " + recipe);
+            } else if (id.startsWith("forbidden:")) {
+                var loc = ResourceLocation.parse(id);
+                boolean exists = BuiltInRegistries.ITEM.containsKey(loc) || BuiltInRegistries.BLOCK.containsKey(loc);
+                check(exists, "Forbidden Item/Block exists in registry: " + id + " in " + recipe);
+            } else if (id.startsWith("minecraft:")) {
+                var loc = ResourceLocation.parse(id);
+                boolean exists = BuiltInRegistries.ITEM.containsKey(loc) || BuiltInRegistries.BLOCK.containsKey(loc);
+                check(exists, "Minecraft Item/Block exists in registry: " + id + " in " + recipe);
+            } else if (id.startsWith("thaumcraft:")) {
+                var loc = ResourceLocation.parse(id);
+                boolean exists = BuiltInRegistries.ITEM.containsKey(loc) || BuiltInRegistries.BLOCK.containsKey(loc)
+                        || P04BotaniaCheck.class.getResource("/assets/thaumcraft/models/item/" + loc.getPath() + ".json") != null
+                        || P04BotaniaCheck.class.getResource("/assets/thaumcraft/blockstates/" + loc.getPath() + ".json") != null;
+                check(exists, "Thaumcraft Item/Block exists: " + id + " in " + recipe);
+            }
+        }
+    }
+
+    private static final IntegerProperty QUANTA = IntegerProperty.create("quanta", 1, 16);
+    private static Block testFluxGoo;
+    private static Block testFluxGas;
+
+    private static class TestFluxBlock extends Block {
+        TestFluxBlock() {
+            super(BlockBehaviour.Properties.of());
+            registerDefaultState(stateDefinition.any().setValue(QUANTA, 1));
+        }
+        @Override
+        protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+            builder.add(QUANTA);
+        }
+    }
+
+    private static void registerTestFluxBlocks() {
+        var gooLoc = ResourceLocation.parse("thaumcraft:flux_goo");
+        var gasLoc = ResourceLocation.parse("thaumcraft:flux_gas");
+        ((MappedRegistry<Block>) BuiltInRegistries.BLOCK).unfreeze();
+        if (!BuiltInRegistries.BLOCK.containsKey(gooLoc)) {
+            testFluxGoo = new TestFluxBlock();
+            Registry.register(BuiltInRegistries.BLOCK, gooLoc, testFluxGoo);
+        } else {
+            testFluxGoo = BuiltInRegistries.BLOCK.get(gooLoc);
+        }
+        if (!BuiltInRegistries.BLOCK.containsKey(gasLoc)) {
+            testFluxGas = new TestFluxBlock();
+            Registry.register(BuiltInRegistries.BLOCK, gasLoc, testFluxGas);
+        } else {
+            testFluxGas = BuiltInRegistries.BLOCK.get(gasLoc);
+        }
+        BuiltInRegistries.BLOCK.freeze();
     }
 
     private static void testC04EmblemAndVisualsIntegrity() {
