@@ -7,7 +7,8 @@
 - D9 excludes four unreachable classes, not the active anonymous creative tabs or physical meta variants. D13 preserves unused resources without activating unused mechanics.
 - Startup gates must match the release: the cage stays registered when disabled; Gluttony items stay registered; `noLust` removes Luxuria and the collar, but changes shard 4 without changing its ID.
 - Keep references, decompilation, private tools, reports, decision logs, caches, dependency JARs and worlds outside Git and the gameplay JAR. Tests stay in separate source sets and out of the gameplay JAR.
-- Use PowerShell and `gradlew.ps1`; do not launch CMD or batch files. Do not use subagents or worktrees unless requested.
+- Use PowerShell and `gradlew.ps1`; do not launch CMD or batch files. Do not use subagents unless explicitly requested.
+- Each implementation batch, including corrective batches and verification-script implementation, must use its own branch and Git worktree under this repository's `.worktree/` directory, as explicitly requested by the user. Read-only audits and handoff-only tasks do not need a new worktree. Keep worktrees out of Git/artifacts; ensure generators, dependencies and reports target the selected checkout rather than the primary checkout. Preserve unrelated WIP.
 - Local Git and commits of completed stages are authorized by D1. Push, publication, user-world changes and accepting the EULA are not authorized.
 - Explain progress and results in Russian. Write AGENTS.md in English.
 - Report code, build, automated rules, server acceptance and client acceptance separately. A successful build does not establish gameplay parity.
