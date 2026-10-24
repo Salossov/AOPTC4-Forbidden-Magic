@@ -5,15 +5,16 @@
     "item": "botania:dreamwood_log"
   },
   "components": [
-    { "item": "botania:mana_string" },
-    { "item": "botania:rune_water" },
-    { "item": "botania:rune_fire" },
-    { "item": "botania:rune_earth" },
-    { "item": "botania:rune_air" },
-    { "item": "botania:rune_spring" },
-    { "item": "botania:rune_summer" },
-    { "item": "botania:rune_autumn" },
-    { "item": "botania:rune_winter" }
+    { "item": "botania:mana_diamond" },
+    { "item": "botania:rune_of_mana" },
+    { "item": "botania:rune_of_water" },
+    { "item": "botania:rune_of_fire" },
+    { "item": "botania:rune_of_earth" },
+    { "item": "botania:rune_of_air" },
+    { "item": "botania:rune_of_spring" },
+    { "item": "botania:rune_of_summer" },
+    { "item": "botania:rune_of_autumn" },
+    { "item": "botania:rune_of_winter" }
   ],
   "aspects": {
     "praecantatio": 16,
@@ -24,6 +25,6 @@
   },
   "instability": 3,
   "result": {
-    "id": "forbidden:wand_rod_dreamwood_inert"
+    "id": "forbidden:wand_rod_dreamwood"
   }
 }

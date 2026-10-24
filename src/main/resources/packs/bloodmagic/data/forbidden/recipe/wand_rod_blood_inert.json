@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  S",
+    " R ",
+    "S  "
+  ],
+  "key": {
+    "R": {
+      "item": "thaumcraft:wand_rod_wood"
+    },
+    "S": {
+      "item": "bloodmagic:blankslate"
+    }
+  },
+  "result": {
+    "id": "forbidden:wand_rod_blood_inert",
+    "count": 1
+  }
+}

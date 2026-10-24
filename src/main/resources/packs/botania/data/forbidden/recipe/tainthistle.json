@@ -5,11 +5,11 @@
     "item": "forbidden:taint_stone"
   },
   "components": [
-    { "item": "botania:purple_petal" },
-    { "item": "botania:purple_petal" },
-    { "item": "botania:purple_petal" },
-    { "item": "botania:rune_wrath" },
-    { "item": "botania:rune_spring" }
+    { "item": "botania:purple_mystical_petal" },
+    { "item": "botania:purple_mystical_petal" },
+    { "item": "botania:purple_mystical_petal" },
+    { "item": "botania:rune_of_wrath" },
+    { "item": "botania:rune_of_spring" }
   ],
   "aspects": {
     "vitium": 8,

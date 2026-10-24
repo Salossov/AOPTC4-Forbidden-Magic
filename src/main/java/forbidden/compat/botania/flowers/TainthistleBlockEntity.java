@@ -11,11 +11,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 /**
  * Tainthistle BlockEntity (C03).
- * Generating flower: scans 4 blocks around (9x9x9), consumes flux/taint blocks up to 4000 burn time,
- * produces 3 Mana every 2 ticks while burning into its 150 buffer, and emits to mana spreaders.
+ * Generating flower: scans 4 blocks around (9x9x9), consumes flux blocks (gas/goo) up to 4000 burn time,
+ * produces 3 Mana every 2 ticks while burning into its 150 buffer, and emits to mana spreaders/pools.
+ * Strictly ignores own position and non-flux construction/taint blocks.
  */
 public class TainthistleBlockEntity extends BlockEntity {
     public static final int RANGE = 4;
@@ -98,10 +100,12 @@ public class TainthistleBlockEntity extends BlockEntity {
                 for (int dz = -RANGE; dz <= RANGE; dz++) {
                     if (burnTime >= BURN_CAP) return;
                     BlockPos target = pos.offset(dx, dy, dz);
+                    if (target.equals(pos)) continue; // STRICT: never consume self!
                     BlockState targetState = level.getBlockState(target);
-                    if (isTaintOrFlux(targetState)) {
+                    if (isFlux(targetState)) {
+                        int depth = getFluxDepth(targetState);
                         level.setBlock(target, Blocks.AIR.defaultBlockState(), 3);
-                        burnTime = Math.min(BURN_CAP, burnTime + 20);
+                        burnTime = Math.min(BURN_CAP, burnTime + depth * 20);
                         setChanged();
                     }
                 }
@@ -109,13 +113,22 @@ public class TainthistleBlockEntity extends BlockEntity {
         }
     }
 
-    private boolean isTaintOrFlux(BlockState state) {
-        if (state.isAir()) return false;
+    public static boolean isFlux(BlockState state) {
+        if (state == null || state.isAir()) return false;
         ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
         if (id == null) return false;
-        String path = id.getPath();
-        return (id.getNamespace().equals("thaumcraft") || id.getNamespace().equals("forbidden"))
-                && (path.contains("taint") || path.contains("flux"));
+        return "thaumcraft".equals(id.getNamespace())
+                && ("flux_gas".equals(id.getPath()) || "flux_goo".equals(id.getPath()));
+    }
+
+    public static int getFluxDepth(BlockState state) {
+        if (state == null) return 1;
+        for (var prop : state.getProperties()) {
+            if ("quanta".equals(prop.getName()) && prop instanceof IntegerProperty intProp) {
+                return state.getValue(intProp);
+            }
+        }
+        return 1;
     }
 
     public int getTicksExisted() {

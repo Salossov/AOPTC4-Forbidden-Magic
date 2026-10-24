@@ -7,7 +7,7 @@
   ],
   "key": {
     "P": {
-      "item": "botania:mana_petal"
+      "tag": "botania:petals"
     },
     "E": {
       "item": "minecraft:emerald"

@@ -1,0 +1,13 @@
+{
+  "type": "bloodmagic:altar",
+  "altarSyphon": 20000,
+  "consumptionRate": 15,
+  "drainRate": 20,
+  "input": {
+    "item": "forbidden:wand_rod_blood_inert"
+  },
+  "output": {
+    "item": "forbidden:wand_rod_blood"
+  },
+  "upgradeLevel": 3
+}

@@ -5,15 +5,15 @@
     "item": "bloodmagic:masterbloodorb"
   },
   "components": [
-    { "item": "bloodmagic:magicales" },
-    { "item": "bloodmagic:reinforcedslate" },
-    { "item": "bloodmagic:reinforcedslate" },
-    { "item": "bloodmagic:blankslate" },
-    { "item": "bloodmagic:sanctus" },
-    { "item": "bloodmagic:aquasalus" },
-    { "item": "bloodmagic:incendium" },
-    { "item": "bloodmagic:terrae" },
-    { "item": "bloodmagic:aether" }
+    { "item": "bloodmagic:reagentbinding" },
+    { "item": "bloodmagic:infusedslate" },
+    { "item": "bloodmagic:infusedslate" },
+    { "item": "bloodmagic:reagentvoid" },
+    { "item": "bloodmagic:reagentbloodlight" },
+    { "item": "bloodmagic:reagentwater" },
+    { "item": "bloodmagic:reagentlava" },
+    { "item": "bloodmagic:reagentgrowth" },
+    { "item": "bloodmagic:reagentair" }
   ],
   "aspects": {
     "victus": 32,
@@ -22,6 +22,6 @@
   },
   "instability": 2,
   "result": {
-    "id": "forbidden:wand_rod_blood_inert"
+    "id": "forbidden:wand_rod_blood"
   }
 }

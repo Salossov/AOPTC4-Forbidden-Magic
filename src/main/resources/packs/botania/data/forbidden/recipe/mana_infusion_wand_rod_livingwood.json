@@ -1,0 +1,11 @@
+{
+  "type": "botania:mana_infusion",
+  "input": {
+    "item": "forbidden:wand_rod_livingwood_inert"
+  },
+  "mana": 10000,
+  "output": {
+    "count": 1,
+    "id": "forbidden:wand_rod_livingwood"
+  }
+}

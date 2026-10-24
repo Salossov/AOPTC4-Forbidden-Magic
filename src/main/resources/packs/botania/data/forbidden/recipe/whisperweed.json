@@ -6,9 +6,9 @@
     { "item": "forbidden:manasteel_nugget" },
     { "item": "botania:mana_diamond" },
     { "item": "thaumcraft:amber" },
-    { "item": "botania:gray_petal" },
-    { "item": "botania:magenta_petal" },
-    { "item": "botania:rune_greed" },
+    { "item": "botania:gray_mystical_petal" },
+    { "item": "botania:magenta_mystical_petal" },
+    { "item": "botania:rune_of_greed" },
     { "item": "thaumcraft:tallow" }
   ],
   "vis": {

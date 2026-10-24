@@ -5,9 +5,9 @@
     "item": "thaumcraft:wand_cap_iron"
   },
   "components": [
-    { "item": "bloodmagic:magicales" },
-    { "item": "bloodmagic:magicales" },
-    { "item": "bloodmagic:magicales" }
+    { "item": "bloodmagic:reagentbinding" },
+    { "item": "bloodmagic:reagentbinding" },
+    { "item": "bloodmagic:reagentbinding" }
   ],
   "aspects": {
     "victus": 12,
