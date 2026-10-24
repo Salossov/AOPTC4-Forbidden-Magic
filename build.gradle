@@ -1,0 +1,95 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+}
+group = 'forbidden'
+version = project.mod_version
+base { archivesName = 'ForbiddenMagic-1.21.1' }
+java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
+
+sourceSets {
+    rules {
+        java.srcDir 'src/main/java'
+        java.include '**/ContentGates.java', '**/FoundationRules.java'
+    }
+    nativeVerification {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+    client {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
+}
+configurations.nativeVerificationImplementation.extendsFrom configurations.implementation
+configurations.nativeVerificationCompileOnly.extendsFrom configurations.compileOnly
+configurations.nativeVerificationRuntimeOnly.extendsFrom configurations.runtimeOnly
+configurations.clientImplementation.extendsFrom configurations.implementation
+configurations.clientCompileOnly.extendsFrom configurations.compileOnly
+configurations.clientRuntimeOnly.extendsFrom configurations.runtimeOnly
+
+neoForge {
+    version = project.neo_version
+    addModdingDependenciesTo sourceSets.nativeVerification
+    addModdingDependenciesTo sourceSets.client
+    mods {
+        forbidden {
+            sourceSet sourceSets.main
+            sourceSet sourceSets.client
+        }
+    }
+    runs {
+        client { client(); sourceSet = sourceSets.client; gameDirectory = file('runs/private-client') }
+        server { server(); gameDirectory = file('runs/private-server') }
+        gameTestServer {
+            type = 'gameTestServer'
+            sourceSet = sourceSets.nativeVerification
+            gameDirectory = file('runs/private-gametest')
+            systemProperty 'neoforge.enabledGameTestNamespaces', 'forbidden'
+        }
+    }
+}
+
+def coreRoot = file('../../../repo')
+def apiJar = file(providers.gradleProperty('thaumcraftApiJar').getOrElse("${coreRoot}/api/build/libs/thaumcraft-api-${project.thaumcraft_version}.jar"))
+dependencies {
+    compileOnly files(apiJar)
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}:api"
+    runtimeOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}"
+    runtimeOnly files(providers.gradleProperty('thaumcraftRuntimeJar').getOrElse("${coreRoot}/mod/build/libs/thaumcraft-1.21.1-${project.thaumcraft_version}.jar"))
+    // Runtime support for the core is supplied explicitly; never bundle it in this addon.
+    if (providers.gradleProperty('aopUiJar').isPresent()) runtimeOnly files(providers.gradleProperty('aopUiJar').get())
+}
+repositories {
+    mavenCentral()
+    exclusiveContent {
+        forRepository { maven { url = 'https://maven.theillusivec4.top/' } }
+        filter { includeGroup 'top.theillusivec4.curios' }
+    }
+}
+tasks.register('verifyApiArtifact') {
+    inputs.file(apiJar)
+    doLast { if (!apiJar.isFile()) throw new GradleException("Build the pinned Thaumcraft API or pass -PthaumcraftApiJar=<path>: ${apiJar}") }
+}
+tasks.named('compileJava') { dependsOn 'verifyApiArtifact' }
+tasks.withType(JavaCompile).configureEach { options.encoding = 'UTF-8' }
+tasks.withType(AbstractArchiveTask).configureEach { preserveFileTimestamps = false; reproducibleFileOrder = true }
+tasks.withType(Jar).configureEach { from('LICENSE'); from('NOTICE.md') }
+tasks.named('jar') { from sourceSets.client.output }
+tasks.named('sourcesJar') { from sourceSets.client.allSource }
+def artifactVersion = project.version.toString()
+tasks.named('processResources') {
+    inputs.property('mod_version', artifactVersion)
+    filesMatching('META-INF/neoforge.mods.toml') { expand(mod_version: artifactVersion) }
+}
+tasks.register('foundationRules', JavaExec) {
+    dependsOn 'rulesClasses'
+    classpath = sourceSets.getByName('rules').runtimeClasspath
+    mainClass = 'forbidden.rules.FoundationRules'
+}
+tasks.register('componentCodecCheck', JavaExec) {
+    dependsOn 'nativeVerificationClasses'
+    classpath = sourceSets.nativeVerification.runtimeClasspath
+    mainClass = 'forbidden.verification.ComponentCodecCheck'
+}
+tasks.named('check') { dependsOn 'foundationRules', 'componentCodecCheck', 'clientClasses' }

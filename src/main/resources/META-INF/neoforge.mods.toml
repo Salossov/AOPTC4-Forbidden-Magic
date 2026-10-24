@@ -1,0 +1,30 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="WTFPL-2.0; original third-party notices apply"
+[[mods]]
+modId="forbidden"
+version="${mod_version}"
+displayName="Forbidden Magic"
+authors="SpitefulFox and original contributors; unofficial port contributors"
+description='''Foundation for an unofficial port of Forbidden Magic 0.575. Gameplay migration and acceptance testing are incomplete.'''
+[[dependencies.forbidden]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1]"
+side="BOTH"
+[[dependencies.forbidden]]
+modId="neoforge"
+type="required"
+versionRange="[21.1.252,)"
+side="BOTH"
+[[dependencies.forbidden]]
+modId="thaumcraft"
+type="required"
+versionRange="[1.0.0,2)"
+ordering="AFTER"
+side="BOTH"
+[[dependencies.forbidden]]
+modId="curios"
+type="required"
+versionRange="[9.5.1,)"
+side="BOTH"
