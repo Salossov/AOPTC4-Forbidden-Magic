@@ -1,5 +1,7 @@
 package forbidden.compat;
 
+import forbidden.compat.bloodmagic.BloodMagicCompat;
+import forbidden.compat.botania.BotaniaCompat;
 import forbidden.compat.tinkerer.TinkererCompat;
 import forbidden.compat.twilight.TwilightCompat;
 import forbidden.compat.viewers.ViewersCompat;
@@ -15,6 +17,8 @@ public final class Compat {
     public static boolean kami = false;
     public static boolean twilight = false;
     public static boolean viewers = false;
+    public static boolean bloodmagic = false;
+    public static boolean botania = false;
 
     // Archival and deferred integration statuses
     public static final String SPECIAL_MOBS_STATUS = "Deferred: Special Mobs not ported; reserved for future porting";
@@ -29,6 +33,8 @@ public final class Compat {
         kami = TinkererCompat.isKamiAvailable();
         twilight = TwilightCompat.isAvailable();
         viewers = ViewersCompat.isAvailable();
+        bloodmagic = BloodMagicCompat.isAvailable();
+        botania = BotaniaCompat.isAvailable();
     }
 
     public static void onCommonSetup(FMLCommonSetupEvent event) {
@@ -36,6 +42,8 @@ public final class Compat {
         event.enqueueWork(() -> {
             TwilightCompat.init();
             ViewersCompat.init();
+            BloodMagicCompat.commonSetup();
+            BotaniaCompat.commonSetup();
         });
     }
 

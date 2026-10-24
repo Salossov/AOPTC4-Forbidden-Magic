@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "forbidden:blocks/euclidaisy"
+  },
+  "render_type": "minecraft:cutout"
+}

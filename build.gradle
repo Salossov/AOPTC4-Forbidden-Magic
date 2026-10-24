@@ -69,14 +69,17 @@ dependencies {
     if (botaniaJar.isFile()) {
         compileOnly files(botaniaJar)
         nativeVerificationCompileOnly files(botaniaJar)
+        nativeVerificationRuntimeOnly files(botaniaJar)
     }
     if (bloodMagicJar.isFile()) {
         compileOnly files(bloodMagicJar)
         nativeVerificationCompileOnly files(bloodMagicJar)
+        nativeVerificationRuntimeOnly files(bloodMagicJar)
     }
     if (modopediaJar.isFile()) {
         compileOnly files(modopediaJar)
         nativeVerificationCompileOnly files(modopediaJar)
+        nativeVerificationRuntimeOnly files(modopediaJar)
     }
     compileOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}"
@@ -142,7 +145,17 @@ tasks.register('p04CompatCheck', JavaExec) {
     classpath = sourceSets.nativeVerification.runtimeClasspath
     mainClass = 'forbidden.verification.P04CompatCheck'
 }
-tasks.named('check') { dependsOn 'p02ToolsCheck', 'p02WandCheck', 'p03WrathCageCheck', 'p03VillagerCheck', 'p04CompatCheck' }
+tasks.register('p04BloodMagicCheck', JavaExec) {
+    dependsOn 'nativeVerificationClasses'
+    classpath = sourceSets.nativeVerification.runtimeClasspath
+    mainClass = 'forbidden.verification.P04BloodMagicCheck'
+}
+tasks.register('p04BotaniaCheck', JavaExec) {
+    dependsOn 'nativeVerificationClasses'
+    classpath = sourceSets.nativeVerification.runtimeClasspath
+    mainClass = 'forbidden.verification.P04BotaniaCheck'
+}
+tasks.named('check') { dependsOn 'p02ToolsCheck', 'p02WandCheck', 'p03WrathCageCheck', 'p03VillagerCheck', 'p04CompatCheck', 'p04BloodMagicCheck', 'p04BotaniaCheck' }
 ['normal': ['false', 'true'], 'noLust': ['true', 'true'], 'noCage': ['false', 'false']].each { profile, flags ->
     tasks.register("p01Content${profile.capitalize()}", JavaExec) {
         dependsOn 'nativeVerificationClasses'

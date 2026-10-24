@@ -13,6 +13,7 @@ public final class StartupPacks {
         add(event,ForbiddenConfig.NO_LUST.get()?"no_lust":"lust");
         if(ForbiddenConfig.ENCHANTING.get())add(event,"enchanting");
         if(ForbiddenConfig.CROSS_MOD.get()&&ForbiddenConfig.BOTANIA.get()&&net.neoforged.fml.ModList.get().isLoaded("botania"))add(event,"botania");
+        if(ForbiddenConfig.CROSS_MOD.get()&&ForbiddenConfig.BLOOD_MAGIC.get()&&net.neoforged.fml.ModList.get().isLoaded("bloodmagic"))add(event,"bloodmagic");
     }
     private static void add(AddPackFindersEvent event,String name){event.addPackFinders(ResourceLocation.fromNamespaceAndPath("forbidden","packs/"+name),event.getPackType(),Component.literal("Forbidden Magic: "+name),PackSource.BUILT_IN,true,Pack.Position.TOP);}
     private StartupPacks(){}

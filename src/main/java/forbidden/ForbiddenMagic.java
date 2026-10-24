@@ -1,6 +1,8 @@
 package forbidden;
 
 import forbidden.compat.Compat;
+import forbidden.compat.bloodmagic.BloodMagicCompat;
+import forbidden.compat.botania.BotaniaCompat;
 import forbidden.component.ForbiddenComponents;
 import forbidden.config.ForbiddenConfig;
 import forbidden.content.ForbiddenContent;
@@ -26,6 +28,8 @@ public final class ForbiddenMagic {
         ForbiddenComponents.register(bus);
         ForbiddenContent.register(bus);
         ForbiddenTools.register(bus);
+        BloodMagicCompat.register(bus);
+        BotaniaCompat.register(bus);
         ContentCondition.register(bus);
         bus.addListener(StartupPacks::add);
         bus.addListener(Compat::onCommonSetup);

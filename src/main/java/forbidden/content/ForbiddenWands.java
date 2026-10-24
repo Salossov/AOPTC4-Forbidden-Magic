@@ -1,5 +1,7 @@
 package forbidden.content;
 
+import forbidden.compat.bloodmagic.BloodMagicCompat;
+import forbidden.compat.botania.BotaniaCompat;
 import forbidden.content.wands.ForbiddenWandMechanics;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.*;
@@ -9,6 +11,8 @@ import thaumcraft.api.wands.*;
 public final class ForbiddenWands {
     public static void register(){
         ForbiddenWandMechanics.registerAll();
+        BloodMagicCompat.registerWandParts();
+        BotaniaCompat.registerWandParts();
     }
     public static void creative(CreativeModeTab.Output output){
         var item=net.minecraft.core.registries.BuiltInRegistries.ITEM.getOptional(ResourceLocation.parse("thaumcraft:casting_wand")).orElseThrow();
@@ -27,6 +31,22 @@ public final class ForbiddenWands {
         WandApi.parts(creativeStaff, new WandParts("forbidden:neutronium_staff", "forbidden:orichalcum"));
         for (var aspect : thaumcraft.api.aspects.Aspect.all().values()) if (aspect.isPrimal()) WandApi.set(creativeStaff, aspect, WandApi.capacity(creativeStaff));
         output.accept(creativeStaff);
+
+        var bloodWand = new ItemStack(item);
+        WandApi.parts(bloodWand, new WandParts("forbidden:blood", "forbidden:alchemical"));
+        output.accept(bloodWand);
+
+        var bloodStaff = new ItemStack(staffItem);
+        WandApi.parts(bloodStaff, new WandParts("forbidden:blood_staff", "forbidden:alchemical"));
+        output.accept(bloodStaff);
+
+        var livingwoodWand = new ItemStack(item);
+        WandApi.parts(livingwoodWand, new WandParts("forbidden:livingwood", "forbidden:manasteel"));
+        output.accept(livingwoodWand);
+
+        var dreamwoodStaff = new ItemStack(staffItem);
+        WandApi.parts(dreamwoodStaff, new WandParts("forbidden:dreamwood_staff", "forbidden:elementium"));
+        output.accept(dreamwoodStaff);
     }
     private ForbiddenWands(){}
 }

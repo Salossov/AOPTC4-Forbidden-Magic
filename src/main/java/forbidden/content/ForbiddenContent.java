@@ -1,6 +1,8 @@
 package forbidden.content;
 
 import forbidden.ForbiddenMagic;
+import forbidden.compat.bloodmagic.BloodMagicItems;
+import forbidden.compat.botania.BotaniaItems;
 import forbidden.config.ForbiddenConfig;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
@@ -66,7 +68,12 @@ public final class ForbiddenContent {
         item("arcane_cake", () -> new BlockItem(ARCANE_CAKE.get(), new Item.Properties()));
         if (ForbiddenConfig.WRATH_CAGE.get()) MOB_CRYSTAL = ITEMS.register("mob_crystal", () -> new MobCrystalItem(new Item.Properties().stacksTo(1)));
         TABS.register("main", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.forbidden")).icon(() -> new ItemStack(item("wrath_shard")))
-            .displayItems((parameters, output) -> {MAIN.values().forEach(i -> output.accept(i.get()));ForbiddenWands.creative(output);}).build());
+            .displayItems((parameters, output) -> {
+                MAIN.values().forEach(i -> output.accept(i.get()));
+                BloodMagicItems.ITEMS_MAP.values().forEach(i -> output.accept(i.get()));
+                BotaniaItems.ITEMS_MAP.values().forEach(i -> output.accept(i.get()));
+                ForbiddenWands.creative(output);
+            }).build());
         if (ForbiddenConfig.WRATH_CAGE.get()) TABS.register("mob_crystals", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.forbidden.mobcrystal"))
             .icon(() -> new ItemStack(MOB_CRYSTAL.get())).displayItems((parameters, output) -> {
                 output.accept(MOB_CRYSTAL.get());

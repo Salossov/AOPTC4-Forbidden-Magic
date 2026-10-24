@@ -20,6 +20,7 @@ public record ContentCondition(String gate) implements ICondition {
         case "emerald_transmutation"->ForbiddenConfig.EMERALD_TRANSMUTATION.get();
         case "wrath_cage"->ForbiddenConfig.WRATH_CAGE.get();
         case "botania"->ForbiddenConfig.CROSS_MOD.get()&&ForbiddenConfig.BOTANIA.get()&&net.neoforged.fml.ModList.get().isLoaded("botania");
+        case "bloodmagic"->ForbiddenConfig.CROSS_MOD.get()&&ForbiddenConfig.BLOOD_MAGIC.get()&&net.neoforged.fml.ModList.get().isLoaded("bloodmagic");
         default->throw new IllegalArgumentException("Unknown Forbidden Magic gate "+gate);
     };}
 }
