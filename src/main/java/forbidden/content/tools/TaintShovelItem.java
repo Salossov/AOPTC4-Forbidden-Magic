@@ -17,6 +17,7 @@ import net.minecraft.world.item.ShovelItem;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import thaumcraft.api.IRepairable;
 import forbidden.content.ForbiddenContent;
@@ -81,18 +82,20 @@ public class TaintShovelItem extends ShovelItem implements IRepairable {
                     ResourceLocation id = BuiltInRegistries.BLOCK.getKey(targetState.getBlock());
                     if (id.getNamespace().equals("thaumcraft") && (id.getPath().equals("flux_goo") || id.getPath().equals("flux_gas"))) {
                         purified++;
-                        level.removeBlock(target, false);
+                        // removeBlock restores the fluid's legacy block instead of clearing it.
+                        // Match TC4 setBlockToAir, with world changes owned by the server.
+                        if (!level.isClientSide) level.setBlock(target, Blocks.AIR.defaultBlockState(), 3);
                     }
                 }
             }
         }
 
         if (purified > 0) {
-            if (player != null) {
+            if (!level.isClientSide && player != null) {
                 context.getItemInHand().hurtAndBreak(Math.min(purified, 15), player, LivingEntity.getSlotForHand(context.getHand()));
                 player.swing(context.getHand());
             }
-            level.playSound(null, clickedPos,
+            if (!level.isClientSide) level.playSound(null, clickedPos,
                 SoundEvent.createVariableRangeEvent(ResourceLocation.parse("thaumcraft:wandfail")),
                 SoundSource.PLAYERS, 0.2F, 0.2F + level.random.nextFloat() * 0.2F);
             return InteractionResult.sidedSuccess(level.isClientSide);

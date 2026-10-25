@@ -87,7 +87,9 @@ try {
 # 5. Dependency Hashes
 $dependencyHashes = @{}
 if (-not [string]::IsNullOrWhiteSpace($CoreRoot)) {
-    $apiJars = Get-ChildItem -Path (Join-Path $CoreRoot 'api/build/libs') -Filter "thaumcraft-api-*.jar" -ErrorAction SilentlyContinue
+    $apiJars = @(Get-ChildItem -Path (Join-Path $CoreRoot 'api/build/libs') -Filter "thaumcraft-api-*.jar" -ErrorAction SilentlyContinue |
+        Where-Object { $_.Name -notlike '*-sources.jar' -and $_.Name -notlike '*-javadoc.jar' } |
+        Sort-Object Name)
     if ($apiJars -and $apiJars.Count -gt 0) {
         $sha = [System.Security.Cryptography.SHA256]::Create()
         $stream = [System.IO.File]::OpenRead($apiJars[0].FullName)

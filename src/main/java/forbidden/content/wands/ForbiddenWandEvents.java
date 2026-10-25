@@ -48,7 +48,7 @@ public final class ForbiddenWandEvents {
             }
         }
 
-        // Tainted wand (B18): when receiving taint damage, add 1 centivis to 3 random primals
+        // TC4 addVis(..., 1, true): one whole vis to each of three random primals.
         if (rod.equals("tainted") || rod.equals("forbidden:tainted")) {
             var source = event.getSource();
             boolean isTaintDamage = source.typeHolder().unwrapKey()
@@ -59,7 +59,7 @@ public final class ForbiddenWandEvents {
                     var aspect = primals.get(RANDOM.nextInt(primals.size()));
                     int cur = WandApi.stored(wand, aspect);
                     if (cur < WandApi.capacity(wand)) {
-                        WandApi.set(wand, aspect, Math.min(WandApi.capacity(wand), cur + 1));
+                        WandApi.set(wand, aspect, Math.min(WandApi.capacity(wand), cur + WandApi.centivis(1)));
                     }
                 }
             }

@@ -16,7 +16,7 @@ import thaumcraft.api.wands.WandParts;
 
 /**
  * Profane wand contract update (B19):
- * Charges wand up to 25000 centivis contract deficit, granting ROD_profane research,
+ * Charges wand up to 25000 centivis contract deficit, granting forbidden:rod_profane research,
  * applying warp via ResearchApi.addWarp (K01), and transforming rod into profaned when fulfilled.
  */
 public final class ProfaneWandUpdate implements BiConsumer<ItemStack, Player> {
@@ -30,8 +30,8 @@ public final class ProfaneWandUpdate implements BiConsumer<ItemStack, Player> {
 
         var customData = wand.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
         if (!customData.contains("contract")) {
-            if (ResearchApi.exists(serverPlayer, "ROD_profane")) {
-                ResearchApi.grant(serverPlayer, "ROD_profane");
+            if (ResearchApi.exists(serverPlayer, "forbidden:rod_profane")) {
+                ResearchApi.grant(serverPlayer, "forbidden:rod_profane");
             }
             customData.putInt("contract", CONTRACT_TOTAL);
             CustomData.update(DataComponents.CUSTOM_DATA, wand, tag -> tag.putInt("contract", CONTRACT_TOTAL));

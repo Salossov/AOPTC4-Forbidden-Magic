@@ -46,14 +46,14 @@ public final class InfernalWandUpdate implements BiConsumer<ItemStack, Player> {
                 for (var aspect : NON_FIRE_PRIMALS) {
                     int current = WandApi.stored(wand, aspect);
                     if (current < WandApi.capacity(wand) / 10) {
-                        WandApi.set(wand, aspect, current + 1);
+                        WandApi.set(wand, aspect, Math.min(WandApi.capacity(wand), current + WandApi.centivis(1)));
                     }
                 }
             }
             var ignis = Aspect.getAspect("ignis");
             int current = WandApi.stored(wand, ignis);
             if (current < WandApi.capacity(wand) / 5) {
-                WandApi.set(wand, ignis, current + 1);
+                WandApi.set(wand, ignis, Math.min(WandApi.capacity(wand), current + WandApi.centivis(1)));
             }
         }
     }

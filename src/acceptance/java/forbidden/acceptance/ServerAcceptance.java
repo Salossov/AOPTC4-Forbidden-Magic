@@ -80,6 +80,7 @@ public final class ServerAcceptance {
             check("requested_no_lust_profile", ForbiddenConfig.NO_LUST.get() == profile.equals("no-lust"));
             check("requested_no_cage_profile", ForbiddenConfig.WRATH_CAGE.get() != profile.equals("no-cage"));
             check("requested_no_enchantments_profile", ForbiddenConfig.ENCHANTING.get() != profile.equals("no-enchantments"));
+            check("requested_free_cage_profile", ForbiddenConfig.WRATH_COST.get() == (profile.equals("free-cage") ? 0 : 5));
             check("cage_registered_even_if_disabled", BuiltInRegistries.BLOCK.containsKey(id("wrath_cage")));
             check("crystal_startup_gate", BuiltInRegistries.ITEM.containsKey(id("mob_crystal")) == ForbiddenConfig.WRATH_CAGE.get());
             check("collar_startup_gate", BuiltInRegistries.ITEM.containsKey(id("sub_collar")) != ForbiddenConfig.NO_LUST.get());
@@ -178,7 +179,9 @@ public final class ServerAcceptance {
         check("cage_transport_capability", transport == cage);
         var ira = Aspect.getAspect("forbidden:ira");
         cage.setWrath(63);
-        check("cage_F01_accepts_only_one", cage.addEssentia(ira, 4, Direction.UP) == 1 && cage.getWrath() == 64);
+        if (ForbiddenConfig.WRATH_COST.get() > 0)
+            check("cage_F01_accepts_only_one", cage.addEssentia(ira, 4, Direction.UP) == 1 && cage.getWrath() == 64);
+        else check("V37_free_cage_rejects_essentia",cage.addEssentia(ira,4,Direction.UP) == 0 && cage.getWrath() == 63);
         cage.setWrath(16);
         if (ForbiddenConfig.WRATH_CAGE.get()) {
             level.setBlockAndUpdate(ACTIVE, ForbiddenContent.WRATH_CAGE.get().defaultBlockState());
@@ -198,12 +201,19 @@ public final class ServerAcceptance {
         check("morph_advances_phase", cycled.get(ForbiddenComponents.MORPH.get()).phase() == 2);
         check("morph_charges_five_damage", cycled.getDamageValue() == damage + 5);
         check("morph_retains_inactive_name_and_enchants", cycled.get(ForbiddenComponents.MORPH.get()).phases().get(1).enchantments().get(ResourceLocation.parse("minecraft:silk_touch")) == 1);
-        if (profile.equals("base")) WorldScenarios.prepare(level, this::record);
+        if (profile.equals("base")) {
+            WorldScenarios.prepare(level, this::record);
+            ToolWorldScenarios.run(level, this::record);
+            WandWorldScenarios.prepare(level, chest, this::record);
+            CageWorldScenarios.prepare(level, this::record);
+        }
+        if (profile.equals("free-cage")) CageWorldScenarios.prepareFlow(level,true,this::record);
     }
     private void verifyStorage(ServerLevel level) {
         var chest = (ChestBlockEntity) level.getBlockEntity(STORAGE);
         check("chest_exists_after_world_load", chest != null);
         var pick = chest.getItem(0);
+        if (profile.equals("base")) WandWorldScenarios.verifyStorage(level, chest, this::record);
         check("morph_stored_phase", pick.get(ForbiddenComponents.MORPH.get()).phase() == 1);
         check("morph_stored_damage", pick.getDamageValue() == 17);
         check("morph_stored_name", pick.getHoverName().getString().equals("Survey Pick"));
@@ -228,9 +238,14 @@ public final class ServerAcceptance {
             var level = server.overworld();
             verifyStorage(level);
             if (profile.equals("base") && phase.equals("write")) WorldScenarios.afterTicks(level, this::record);
+            if (profile.equals("base") || profile.equals("free-cage")) CageWorldScenarios.afterTicks(level,profile.equals("free-cage"),this::record);
             if (ForbiddenConfig.WRATH_CAGE.get() && phase.equals("write")) {
                 int pigs = level.getEntities(EntityType.PIG, new AABB(ACTIVE).inflate(12), e -> true).size();
                 check("cage_spawns_on_live_server_without_players", pigs > 0);
+                if (profile.equals("free-cage")) {
+                    var active=(WrathCageEntity)level.getBlockEntity(ACTIVE);
+                    check("V37_free_cage_spawns_without_fuel_or_consumption",active.getWrath() == 32 && active.getSpawnerLogic().getFuel() <= 0);
+                }
                 check("no_real_players_needed", server.getPlayerList().getPlayerCount() == 0);
                 // Freeze the dynamic scene before lifecycle restart assertions.
                 level.setBlockAndUpdate(ACTIVE.above(), Blocks.REDSTONE_BLOCK.defaultBlockState());

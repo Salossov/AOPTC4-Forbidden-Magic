@@ -19,7 +19,7 @@ import thaumcraft.api.wands.WandApi;
 /**
  * Hellfire wand-block trigger (B22):
  * Focus-less wand right-click on Direction.UP of Obsidian or Netherrack.
- * Requires "HELLFIRE" research, costs 2 Ignis (200 centivis), checks block permissions,
+ * Requires "forbidden:hellfire" research, costs 2 Ignis (200 centivis), checks block permissions,
  * and atomically creates fire above the block with ignite sound and player swing.
  */
 public final class HellfireWandTrigger {
@@ -35,7 +35,7 @@ public final class HellfireWandTrigger {
         BlockState state = event.getLevel().getBlockState(event.getPos());
         if (!state.is(Blocks.OBSIDIAN) && !state.is(Blocks.NETHERRACK)) return false;
 
-        if (!ResearchApi.knows(player, "HELLFIRE")) return false;
+        if (!ResearchApi.knows(player, "forbidden:hellfire")) return false;
         if (!player.level().mayInteract(player, event.getPos())) return false;
 
         BlockPos above = event.getPos().above();

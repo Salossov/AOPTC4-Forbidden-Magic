@@ -3,6 +3,10 @@ package forbidden.events;
 import forbidden.ForbiddenMagic;
 import forbidden.config.ForbiddenConfig;
 import forbidden.content.ForbiddenContent;
+import forbidden.content.tools.MorphAxeItem;
+import forbidden.content.tools.MorphPickaxeItem;
+import forbidden.content.tools.MorphShovelItem;
+import forbidden.content.tools.MorphSwordItem;
 import forbidden.enchantments.DarkEnchantments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -466,6 +470,9 @@ public final class ForbiddenEvents {
 
         for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
             ItemStack stack = player.getInventory().getItem(i);
+            // Morph tools already repair in their native inventoryTick (including non-player holders).
+            if (stack.getItem() instanceof MorphAxeItem || stack.getItem() instanceof MorphPickaxeItem
+                    || stack.getItem() instanceof MorphShovelItem || stack.getItem() instanceof MorphSwordItem) continue;
             if (!stack.isEmpty() && stack.isDamaged() && DarkEnchantments.getLevel(stack, DarkEnchantments.VOIDTOUCHED) > 0) {
                 stack.setDamageValue(stack.getDamageValue() - 1);
             }

@@ -9,7 +9,8 @@ import thaumcraft.api.wands.WandApi;
 
 /**
  * Tainted wand update (B18):
- * Slowly recovers vis in tainted biomes: interval 50 ticks, 1 centivis for each primal aspect up to 15000 (150 vis).
+ * Recovers one whole vis per primal every 100 ticks in the tainted biome,
+ * while that aspect is below one tenth of the wand capacity (TC4 addVis units).
  */
 public final class TaintedWandUpdate implements BiConsumer<ItemStack, Player> {
     public static final TaintedWandUpdate INSTANCE = new TaintedWandUpdate();
@@ -17,17 +18,16 @@ public final class TaintedWandUpdate implements BiConsumer<ItemStack, Player> {
 
     @Override
     public void accept(ItemStack wand, Player player) {
-        if (player.level().isClientSide() || player.tickCount % 50 != 0) return;
+        if (player.level().isClientSide() || player.tickCount % 100 != 0) return;
         var biome = player.level().getBiome(player.blockPosition());
-        boolean isTaintBiome = biome.is(TAINTED_LAND)
-                || biome.unwrapKey().map(k -> k.location().getPath().contains("taint")).orElse(false);
+        boolean isTaintBiome = biome.is(TAINTED_LAND);
         if (!isTaintBiome) return;
 
         for (var aspect : Aspects.PRIMALS) {
             int current = WandApi.stored(wand, aspect);
-            int cap = Math.min(15000, WandApi.capacity(wand));
-            if (current < cap) {
-                WandApi.set(wand, aspect, current + 1);
+            int capacity = WandApi.capacity(wand);
+            if (current < capacity / 10) {
+                WandApi.set(wand, aspect, Math.min(capacity, current + WandApi.centivis(1)));
             }
         }
     }
