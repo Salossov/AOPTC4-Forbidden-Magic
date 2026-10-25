@@ -81,6 +81,7 @@ public final class ServerAcceptance {
             check("requested_no_cage_profile", ForbiddenConfig.WRATH_CAGE.get() != profile.equals("no-cage"));
             check("requested_no_enchantments_profile", ForbiddenConfig.ENCHANTING.get() != profile.equals("no-enchantments"));
             check("requested_free_cage_profile", ForbiddenConfig.WRATH_COST.get() == (profile.equals("free-cage") ? 0 : 5));
+            check("requested_cries_havoc_profile", ForbiddenConfig.CRIES_HAVOC.get() == profile.equals("cries-havoc"));
             check("cage_registered_even_if_disabled", BuiltInRegistries.BLOCK.containsKey(id("wrath_cage")));
             check("crystal_startup_gate", BuiltInRegistries.ITEM.containsKey(id("mob_crystal")) == ForbiddenConfig.WRATH_CAGE.get());
             check("collar_startup_gate", BuiltInRegistries.ITEM.containsKey(id("sub_collar")) != ForbiddenConfig.NO_LUST.get());
@@ -204,9 +205,13 @@ public final class ServerAcceptance {
         if (profile.equals("base")) {
             WorldScenarios.prepare(level, this::record);
             ToolWorldScenarios.run(level, this::record);
+                ImpactAcceptanceScenarios.run(level, this::record);
+                BlinkAcceptanceScenarios.run(level, this::record);
+                EnchantmentAcceptanceScenarios.run(level, this::record);
             WandWorldScenarios.prepare(level, chest, this::record);
             CageWorldScenarios.prepare(level, this::record);
         }
+            if (profile.equals("base") || profile.equals("cries-havoc")) ToolEventScenarios.run(level, this::record);
         if (profile.equals("free-cage")) CageWorldScenarios.prepareFlow(level,true,this::record);
     }
     private void verifyStorage(ServerLevel level) {

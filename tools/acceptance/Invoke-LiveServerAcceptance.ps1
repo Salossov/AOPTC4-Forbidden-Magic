@@ -33,7 +33,7 @@ function Quote-ProcessArgument([string]$Value) {
     '"' + $Value + '"'
 }
 foreach ($profile in $Profiles) {
-    if ($profile -notin @('base', 'no-lust', 'no-cage', 'no-enchantments', 'gluttony-off', 'gluttony-hard', 'botania', 'bloodmagic', 'tinkerer', 'integrations', 'free-cage')) { throw "Unknown profile: $profile" }
+if ($profile -notin @('base', 'no-lust', 'no-cage', 'no-enchantments', 'gluttony-off', 'gluttony-hard', 'botania', 'bloodmagic', 'tinkerer', 'integrations', 'free-cage', 'cries-havoc')) { throw "Unknown profile: $profile" }
     $directory = [IO.Path]::GetFullPath((Join-Path $runRoot $profile))
     if (-not $directory.StartsWith($root + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'Run directory escaped acceptance root.' }
     $config = Join-Path $directory 'config'
@@ -43,6 +43,7 @@ foreach ($profile in $Profiles) {
     $enchant = ($profile -ne 'no-enchantments').ToString().ToLowerInvariant()
     $gluttony = if ($profile -eq 'gluttony-off') { 1 } elseif ($profile -eq 'gluttony-hard') { 2 } else { 0 }
     $wrathCost = if ($profile -eq 'free-cage') { 0 } else { 5 }
+    $criesHavoc = ($profile -eq 'cries-havoc').ToString().ToLowerInvariant()
     # NeoForge's actual default STARTUP filename, not the old preparation-only forbiddenmagic.toml.
     [IO.File]::WriteAllText((Join-Path $config 'forbidden-startup.toml'), @"
 [general]
@@ -51,6 +52,7 @@ wrathCageEnabled=$cage
 enchantmentsEnabled=$enchant
 gluttony=$gluttony
 wrathCageFuelCost=$wrathCost
+wrathCageCriesHavoc=$criesHavoc
 [compatibility]
 crossModInteraction=true
 "@, [Text.UTF8Encoding]::new($false))
