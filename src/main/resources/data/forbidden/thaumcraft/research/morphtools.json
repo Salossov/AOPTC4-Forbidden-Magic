@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:morphtools",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:nethershards"
   ],
@@ -11,10 +11,10 @@
   ],
   "aspects": {
     "instrumentum": 2,
-    "invidia": 3,
+    "forbidden:invidia": 3,
     "permutatio": 2
   },
-  "complexity": 4,
+  "complexity": 3,
   "auto_unlock": false,
   "concealed": true,
   "column": -9,

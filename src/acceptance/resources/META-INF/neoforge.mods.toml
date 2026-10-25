@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="WTFPL-2.0"
+[[mods]]
+modId="forbidden_acceptance"
+version="1.0.0"
+displayName="Forbidden Magic private server acceptance"
+[[dependencies.forbidden_acceptance]]
+modId="forbidden"
+type="required"
+versionRange="*"
+ordering="AFTER"
+side="SERVER"

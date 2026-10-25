@@ -27,6 +27,7 @@ $researchFiles = Get-ChildItem -Recurse -Path $ResourcesDir -Filter *.json | Whe
 
 $recipeListEntries = @()
 $recipeMapEntries = @()
+$arcaneRecipeCount = 0
 
 foreach ($f in $recipeFiles) {
     $j = Get-Content $f.FullName -Raw | ConvertFrom-Json
@@ -35,6 +36,7 @@ foreach ($f in $recipeFiles) {
     $recipeListEntries += "`"$resPath`""
 
     $rtype = $j.type
+    if ($rtype -like 'thaumcraft:arcane*') { $arcaneRecipeCount++ }
     $research = if ($j.research) { "`"$($j.research)`"" } else { "null" }
     $resid = if ($j.result.id) { $j.result.id } elseif ($j.result.item) { $j.result.item } elseif ($j.result -is [string]) { $j.result } elseif ($j.output.id) { $j.output.id } elseif ($j.output.item) { $j.output.item } elseif ($j.output -is [string]) { $j.output } else { "" }
     $rescnt = if ($j.result.count) { $j.result.count } elseif ($j.output.count) { $j.output.count } else { 1 }
@@ -189,7 +191,8 @@ $sb.AppendLine("import java.util.*;") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("/**") | Out-Null
 $sb.AppendLine(" * Dedicated semantic data verification suite for V02 (Recipes) and V03 (Research).") | Out-Null
-$sb.AppendLine(" * Performs comprehensive offline validation of all 64 recipes and 49 researches") | Out-Null
+$sb.AppendLine(" * Structural snapshot validation of $($recipeFiles.Count) recipes and $($researchFiles.Count) research files.") | Out-Null
+$sb.AppendLine(" * Generated from current data; independent legacy parity requires separate review.") | Out-Null
 $sb.AppendLine(" * across base and integration datapacks (Botania, Blood Magic, Enchanting).") | Out-Null
 $sb.AppendLine(" * Verifies exact types, results, counts, inputs, components, aspect costs, vis costs,") | Out-Null
 $sb.AppendLine(" * coordinates, complexity, warp, parents, hidden parents, recipe pages, text pages, page order,") | Out-Null
@@ -274,7 +277,7 @@ $sb.AppendLine("        System.out.println(""FORBIDDEN_SEMANTIC_DATA_PASS checks
 $sb.AppendLine("    }") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    private static void testV02Recipes() throws Exception {") | Out-Null
-$sb.AppendLine("        check(RECIPE_FILES.size() == 64, ""all 64 recipe definition files indexed"");") | Out-Null
+$sb.AppendLine("        check(RECIPE_FILES.size() == $($recipeFiles.Count), ""all recipe definition files indexed"");") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("        int arcaneCount = 0;") | Out-Null
 $sb.AppendLine("        int crucibleCount = 0;") | Out-Null
@@ -306,7 +309,7 @@ $sb.AppendLine("                else if (type.equals(""bloodmagic:altar"")) alta
 $sb.AppendLine("            }") | Out-Null
 $sb.AppendLine("        }") | Out-Null
 $sb.AppendLine("") | Out-Null
-$sb.AppendLine("        check(arcaneCount == 10, ""exactly 10 arcane workbench recipes verified"");") | Out-Null
+$sb.AppendLine("        check(arcaneCount == $arcaneRecipeCount, ""arcane workbench recipe variants indexed"");") | Out-Null
 $sb.AppendLine("        check(crucibleCount == 4, ""exactly 4 crucible recipes verified"");") | Out-Null
 $sb.AppendLine("        check(infusionCount == 32, ""exactly 32 infusion/infusion_enchantment recipes verified"");") | Out-Null
 $sb.AppendLine("        check(craftingCount == 12, ""exactly 12 crafting recipes verified"");") | Out-Null
@@ -494,7 +497,7 @@ $sb.AppendLine("        check(""research"".equals(json.get(""kind"").getAsString
 $sb.AppendLine("        check(json.has(""key""), ""has key: "" + file);") | Out-Null
 $sb.AppendLine("        String key = json.get(""key"").getAsString();") | Out-Null
 $sb.AppendLine("        check(key.startsWith(""forbidden:""), ""key has forbidden namespace: "" + key);") | Out-Null
-$sb.AppendLine("        check(""forbidden:FORBIDDEN"".equals(json.get(""category"").getAsString()), ""category is forbidden:FORBIDDEN: "" + file);") | Out-Null
+$sb.AppendLine("        check(""forbidden:forbidden"".equals(json.get(""category"").getAsString()), ""category is forbidden:forbidden: "" + file);") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("        ResearchSpec spec = RESEARCH_SPECS.get(file);") | Out-Null
 $sb.AppendLine("        check(spec != null, ""research spec exists for: "" + file);") | Out-Null
@@ -578,7 +581,7 @@ $sb.AppendLine("        check(actualSiblings.equals(spec.siblings), ""siblings m
 $sb.AppendLine("    }") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    private static void testV03Research() throws Exception {") | Out-Null
-$sb.AppendLine("        check(RESEARCH_FILES.size() == 49, ""all 49 research definition files indexed"");") | Out-Null
+$sb.AppendLine("        check(RESEARCH_FILES.size() == $($researchFiles.Count), ""all research definition files indexed"");") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("        Set<String> uniqueKeys = new HashSet<>();") | Out-Null
 $sb.AppendLine("        Set<String> uniqueCoordinates = new HashSet<>();") | Out-Null

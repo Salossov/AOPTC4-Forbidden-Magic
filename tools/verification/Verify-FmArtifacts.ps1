@@ -87,7 +87,7 @@ try {
         $entryNames.Add($name) | Out-Null
 
         # Check for forbidden payloads
-        if ($name -match '^forbidden/rules/' -or $name -match '^forbidden/verification/') {
+        if ($name -match '^forbidden/rules/' -or $name -match '^forbidden/verification/' -or $name -match '^forbidden/acceptance/') {
             $violations.Add("Forbidden test/verification class present in release JAR: $name")
         }
         if ($name -match '^thaumcraft/' -or $name -match '^net/minecraft/' -or $name -match '^net/neoforged/') {

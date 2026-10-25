@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:bloodrapier",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:bloodmagic",
     "INFUSION",

@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:eldritch_orb",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:bloodmagic",
     "INFUSION",
@@ -15,7 +15,7 @@
     "vitreus": 24,
     "alienis": 12
   },
-  "complexity": 4,
+  "complexity": 3,
   "auto_unlock": false,
   "concealed": true,
   "column": 1,

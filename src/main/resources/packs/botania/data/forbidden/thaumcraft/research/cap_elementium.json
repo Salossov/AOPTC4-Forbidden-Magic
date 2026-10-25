@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:cap_elementium",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:rod_dreamwood_staff"
   ],
@@ -13,7 +13,7 @@
     "aer": 8,
     "terra": 8
   },
-  "complexity": 4,
+  "complexity": 3,
   "auto_unlock": false,
   "concealed": true,
   "column": 3,

@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:euclidaisy",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:botany",
     "INFUSION"

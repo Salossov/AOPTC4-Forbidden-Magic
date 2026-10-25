@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:bloodthorn",
+  "category": "forbidden:forbidden",
+  "parents": [
+    "forbidden:bloodmagic"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "herba": 8,
+    "victus": 8,
+    "telum": 4
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -2,
+  "row": -2,
+  "text_pages": [
+    "forbidden.research_page.BLOODTHORN.1"
+  ],
+  "recipe_pages": [
+    "forbidden:bloodthorn"
+  ],
+  "page_order": [
+    "forbidden.research_page.BLOODTHORN.1",
+    "forbidden:bloodthorn"
+  ],
+  "icon": "forbidden:bloodthorn",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

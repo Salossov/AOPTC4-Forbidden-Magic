@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:nethershards",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [],
   "hidden_parents": [],
   "aspects": {},

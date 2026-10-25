@@ -183,7 +183,8 @@ public final class P04CompatCheck {
                 check(resKey != null && resKey.equals(entry.research()), "receiver research matches: " + resKey + " == " + entry.research());
                 check(resKey.startsWith("forbidden:"), "receiver research is namespaced: " + resKey);
                 // Verify corresponding research JSON definition exists in FM
-                String jsonPath = "/data/forbidden/thaumcraft/research/" + entry.id().getPath() + ".json";
+                String pack = entry.id().getPath().equals("greedy") ? "greedy" : "enchanting";
+                String jsonPath = "/packs/" + pack + "/data/forbidden/thaumcraft/research/" + entry.id().getPath() + ".json";
                 try (var resStream = P04CompatCheck.class.getResourceAsStream(jsonPath)) {
                     check(resStream != null, "research definition exists for " + entry.id() + " at " + jsonPath);
                 }

@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:cap_alchemical",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:rod_blood",
     "CAP_gold"

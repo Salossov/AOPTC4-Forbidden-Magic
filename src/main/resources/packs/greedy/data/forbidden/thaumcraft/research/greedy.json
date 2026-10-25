@@ -1,0 +1,44 @@
+{
+  "kind": "research",
+  "key": "forbidden:greedy",
+  "category": "forbidden:forbidden",
+  "parents": [
+    "forbidden:nethershards",
+    "INFUSIONENCHANTMENT"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "praecantatio": 2,
+    "telum": 1,
+    "lucrum": 3
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -6,
+  "row": -5,
+  "text_pages": [
+    "forbidden.research_page.GREEDY.1"
+  ],
+  "recipe_pages": [
+    "Greedy"
+  ],
+  "page_order": [
+    "forbidden.research_page.GREEDY.1",
+    "Greedy"
+  ],
+  "icon": "forbidden:textures/misc/greedy.png",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

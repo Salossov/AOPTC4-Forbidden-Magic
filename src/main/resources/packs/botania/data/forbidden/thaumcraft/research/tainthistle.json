@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:tainthistle",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:botany",
     "INFUSION"

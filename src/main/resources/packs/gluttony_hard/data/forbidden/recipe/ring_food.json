@@ -1,0 +1,29 @@
+{
+  "type": "thaumcraft:arcane",
+  "research": "forbidden:ringfood",
+  "pattern": [
+    " D ",
+    "SXS",
+    " S "
+  ],
+  "key": {
+    "D": {
+      "item": "forbidden:star_block"
+    },
+    "S": {
+      "item": "forbidden:gluttony_shard"
+    },
+    "X": {
+      "item": "thaumcraft:ring_blank"
+    }
+  },
+  "vis": {
+    "perditio": 10,
+    "aqua": 20,
+    "terra": 20
+  },
+  "result": {
+    "id": "forbidden:ring_nutrition",
+    "count": 1
+  }
+}

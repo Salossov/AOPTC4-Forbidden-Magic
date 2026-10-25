@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:primewell",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "PRIMPEARL"
   ],

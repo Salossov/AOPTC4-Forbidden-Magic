@@ -464,13 +464,14 @@ public final class P04BloodMagicCheck {
                 "bloodwell", "bloodrapier", "eldritch_orb", "bloodthorn"
         );
         for (String r : researches) {
-            String path = "/packs/bloodmagic/data/forbidden/thaumcraft/research/" + r + ".json";
+            String pack = r.equals("bloodthorn") ? "bloodthorn" : "bloodmagic";
+            String path = "/packs/" + pack + "/data/forbidden/thaumcraft/research/" + r + ".json";
             var stream = P04BloodMagicCheck.class.getResourceAsStream(path);
             check(stream != null, "Blood Magic research exists: " + path);
             try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                 var json = JsonParser.parseReader(reader).getAsJsonObject();
                 check(json.has("key") && !json.get("key").getAsString().isEmpty(), "Research has non-empty key: " + r);
-                check(json.has("category") && json.get("category").getAsString().equals("forbidden:FORBIDDEN"), "Research in FORBIDDEN category: " + r);
+                check(json.has("category") && json.get("category").getAsString().equals("forbidden:forbidden"), "Research in FORBIDDEN category: " + r);
             }
         }
 

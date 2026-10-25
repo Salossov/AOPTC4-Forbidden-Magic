@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:rod_blood_staff",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "ROD_silverwood_staff",
     "forbidden:rod_blood"

@@ -482,7 +482,7 @@ public final class P04BotaniaCheck {
             try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
                 var json = JsonParser.parseReader(reader).getAsJsonObject();
                 check(json.has("key") && !json.get("key").getAsString().isEmpty(), "Research has non-empty key: " + r);
-                check(json.has("category") && json.get("category").getAsString().equals("forbidden:FORBIDDEN"), "Research in FORBIDDEN category: " + r);
+                check(json.has("category") && json.get("category").getAsString().equals("forbidden:forbidden"), "Research in FORBIDDEN category: " + r);
             }
         }
 

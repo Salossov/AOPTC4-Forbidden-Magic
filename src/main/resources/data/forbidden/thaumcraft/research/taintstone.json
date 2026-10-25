@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:taintstone",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "THAUMIUM",
     "INFUSION",

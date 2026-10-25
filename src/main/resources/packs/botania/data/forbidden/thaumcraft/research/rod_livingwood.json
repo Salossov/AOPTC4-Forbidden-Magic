@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:rod_livingwood",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:botany",
     "ROD_silverwood",

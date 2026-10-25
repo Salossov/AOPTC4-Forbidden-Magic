@@ -4,8 +4,8 @@
 .DESCRIPTION
     Configures and defines 8 isolated startup profiles in separate processes:
     - Base: Minimal baseline with Thaumcraft + Forbidden Magic.
-    - NoLust: general.noLust = true (Lust shard, whip, aspect disabled).
-    - NoCage: general.wrathCageEnabled = false (Wrath cage block & spawner logic disabled).
+    - NoLust: collar/Luxuria absent; the single shard ID changes to despair; riding crop remains.
+    - NoCage: cage block/BE stay registered; crystal, cage recipes/research and operation disabled.
     - Standalone: Zero optional cross-mods (compatibility.crossModInteraction = false).
     - WithBotania: FM + Botania only.
     - WithBloodMagic: FM + Blood Magic only.
@@ -36,17 +36,17 @@ $profiles = @(
     },
     @{
         Name = 'Profile-NoLust'
-        Description = 'Lust disabled: verifies complete gating of lust shard, riding crop, luxuria aspect'
+        Description = 'No Lust: Luxuria/collar absent; shard keeps its ID and becomes despair; riding crop remains'
         ConfigOverrides = @{ 'general.noLust' = 'true'; 'general.wrathCageEnabled' = 'true'; 'compatibility.crossModInteraction' = 'true' }
         OptionalMods = @()
         ExpectedRegistries = @('forbidden:infernus', 'forbidden:wrath_cage')
     },
     @{
         Name = 'Profile-NoCage'
-        Description = 'Wrath Cage disabled: verifies clean absence of spawner entity without crash'
+        Description = 'No Cage: block and block entity remain; crystal/recipes/research and spawning disabled'
         ConfigOverrides = @{ 'general.noLust' = 'false'; 'general.wrathCageEnabled' = 'false'; 'compatibility.crossModInteraction' = 'true' }
         OptionalMods = @()
-        ExpectedRegistries = @('forbidden:infernus')
+        ExpectedRegistries = @('forbidden:infernus', 'forbidden:wrath_cage')
     },
     @{
         Name = 'Profile-Standalone'
@@ -88,7 +88,7 @@ $profiles = @(
 Write-Host "==========================================================" -ForegroundColor Cyan
 Write-Host " Forbidden Magic Startup Profile Matrix (Preparation)" -ForegroundColor Cyan
 Write-Host " Total Defined Profiles: $($profiles.Count)" -ForegroundColor Cyan
-Write-Host " Gating: Execution strictly blocked until user approval" -ForegroundColor Yellow
+Write-Host " Preparation only. Execute with Invoke-LiveServerAcceptance.ps1 -AcceptEula" -ForegroundColor Yellow
 Write-Host "==========================================================" -ForegroundColor Cyan
 
 foreach ($p in $profiles) {
@@ -103,7 +103,7 @@ foreach ($p in $profiles) {
         $modsDir = Join-Path $targetDir "mods"
         New-Item -ItemType Directory -Force -Path $configDir, $modsDir | Out-Null
 
-        $tomlPath = Join-Path $configDir "forbiddenmagic.toml"
+        $tomlPath = Join-Path $configDir "forbidden-startup.toml"
         $noLust = if ($p.ConfigOverrides.ContainsKey('general.noLust')) { $p.ConfigOverrides['general.noLust'] } else { 'false' }
         $wrathCage = if ($p.ConfigOverrides.ContainsKey('general.wrathCageEnabled')) { $p.ConfigOverrides['general.wrathCageEnabled'] } else { 'true' }
         $crossMod = if ($p.ConfigOverrides.ContainsKey('compatibility.crossModInteraction')) { $p.ConfigOverrides['compatibility.crossModInteraction'] } else { 'true' }

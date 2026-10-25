@@ -25,7 +25,7 @@
   },
   "instability": 3,
   "result": {
-    "id": "forbidden:focus_blink",
+    "id": "forbidden:blink_focus",
     "count": 1
   }
 }

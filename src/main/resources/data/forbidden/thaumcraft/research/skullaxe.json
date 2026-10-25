@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:skullaxe",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:nethershards",
     "THAUMIUM",
@@ -10,8 +10,8 @@
   "hidden_parents": [],
   "aspects": {
     "telum": 3,
-    "ira": 4,
-    "infernus": 1
+    "forbidden:ira": 4,
+    "forbidden:infernus": 1
   },
   "complexity": 2,
   "auto_unlock": false,

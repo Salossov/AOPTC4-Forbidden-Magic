@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:rod_tainted",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "ROD_silverwood",
     "forbidden:taintshovel",

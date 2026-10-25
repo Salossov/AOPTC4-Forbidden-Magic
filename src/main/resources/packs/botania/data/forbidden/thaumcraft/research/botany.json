@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:botany",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:schools"
   ],

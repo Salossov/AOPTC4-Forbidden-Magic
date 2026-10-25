@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:focusblink",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:nethershards",
     "INFUSION"
@@ -10,8 +10,8 @@
   "aspects": {
     "iter": 3,
     "perditio": 3,
-    "infernus": 3,
-    "desidia": 6
+    "forbidden:infernus": 3,
+    "forbidden:desidia": 6
   },
   "complexity": 2,
   "auto_unlock": false,
@@ -28,7 +28,7 @@
     "forbidden.research_page.FOCUSBLINK.1",
     "FocusBlink"
   ],
-  "icon": "forbidden:focus_blink",
+  "icon": "forbidden:blink_focus",
   "virtual": false,
   "round": false,
   "stub": false,

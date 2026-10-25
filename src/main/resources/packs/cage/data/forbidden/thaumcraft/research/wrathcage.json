@@ -1,0 +1,53 @@
+{
+  "kind": "research",
+  "key": "forbidden:wrathcage",
+  "category": "forbidden:forbidden",
+  "parents": [
+    "forbidden:fork"
+  ],
+  "hidden_parents": [
+    "INFUSION",
+    "THAUMIUM",
+    "DISTILESSENTIA"
+  ],
+  "aspects": {
+    "forbidden:ira": 5,
+    "machina": 3,
+    "bestia": 2
+  },
+  "complexity": 3,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -6,
+  "row": -9,
+  "text_pages": [
+    "forbidden.research_page.WRATHCAGE.1",
+    "forbidden.research_page.WRATHCAGE.2",
+    "forbidden.research_page.WRATHCAGE.3"
+  ],
+  "recipe_pages": [
+    "WrathCage",
+    "MobCrystal"
+  ],
+  "page_order": [
+    "forbidden.research_page.WRATHCAGE.1",
+    "forbidden.research_page.WRATHCAGE.2",
+    "forbidden.research_page.WRATHCAGE.3",
+    "WrathCage",
+    "MobCrystal"
+  ],
+  "icon": "forbidden:wrath_cage",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 3,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

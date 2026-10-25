@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:bloodwell",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:bloodmagic"
   ],

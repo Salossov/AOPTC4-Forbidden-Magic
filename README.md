@@ -32,7 +32,15 @@ All code and data mechanics are verified offline via 13 dedicated JVM test suite
 12. `p04BloodMagicCheck`: Blood Magic integration (268 checks).
 13. `p04BotaniaCheck`: Botania integration (262 checks).
 
-*Live server and client acceptance tests remain strictly gated until explicit user approval.*
+*Gameplay acceptance is incomplete. On 2026-10-25 the user authorized dedicated-server runs and EULA acceptance in isolated test worlds. Live runs have exposed defects that the offline snapshots missed. Client/rendering and real two-player acceptance have not been performed.*
+
+### Automated dedicated-server acceptance
+
+```powershell
+.\tools\acceptance\Invoke-LiveServerAcceptance.ps1 -AcceptEula -Profiles @('no-lust','no-cage','botania','bloodmagic','tinkerer','integrations') -Lifecycle -ContinueOnFailure
+```
+
+Each invocation uses a fresh `build/acceptance/<runId>` directory, two server processes for persistence checks, `--nogui`, the packaged gameplay JAR, nonce-tagged assertion reports and graceful shutdown. No client, desktop interaction, screenshots or audio are involved. The private `src/acceptance` mod never ships in the gameplay JAR. `base` also exercises actual world interactions and reports known failures rather than suppressing them. These checks do not establish visual or two-player network parity.
 
 ## Building & Verification
 

@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:crystalwell",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "RESEARCH"
   ],

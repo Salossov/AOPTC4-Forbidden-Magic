@@ -1,0 +1,44 @@
+{
+  "kind": "research",
+  "key": "forbidden:corrupting",
+  "category": "forbidden:forbidden",
+  "parents": [
+    "forbidden:nethershards",
+    "INFUSIONENCHANTMENT"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "forbidden:infernus": 5,
+    "vitreus": 2,
+    "permutatio": 1
+  },
+  "complexity": 1,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -6,
+  "row": -4,
+  "text_pages": [
+    "forbidden.research_page.CORRUPTING.1"
+  ],
+  "recipe_pages": [
+    "Corrupting"
+  ],
+  "page_order": [
+    "forbidden.research_page.CORRUPTING.1",
+    "Corrupting"
+  ],
+  "icon": "forbidden:textures/misc/corrupting.png",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

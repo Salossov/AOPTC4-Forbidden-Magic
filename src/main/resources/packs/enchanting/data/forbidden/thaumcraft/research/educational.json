@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:educational",
+  "category": "forbidden:forbidden",
+  "parents": [
+    "INFUSIONENCHANTMENT"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "cognitio": 5,
+    "telum": 1,
+    "praecantatio": 3
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -4,
+  "row": -7,
+  "text_pages": [
+    "forbidden.research_page.EDUCATIONAL.1"
+  ],
+  "recipe_pages": [
+    "Educational"
+  ],
+  "page_order": [
+    "forbidden.research_page.EDUCATIONAL.1",
+    "Educational"
+  ],
+  "icon": "forbidden:textures/misc/educational.png",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

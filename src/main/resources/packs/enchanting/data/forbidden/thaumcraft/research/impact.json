@@ -1,0 +1,45 @@
+{
+  "kind": "research",
+  "key": "forbidden:impact",
+  "category": "forbidden:forbidden",
+  "parents": [
+    "forbidden:morphtools",
+    "ELEMENTALSHOVEL"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "perditio": 8,
+    "instrumentum": 10,
+    "perfodio": 16,
+    "forbidden:invidia": 10
+  },
+  "complexity": 3,
+  "auto_unlock": false,
+  "concealed": true,
+  "column": -9,
+  "row": -1,
+  "text_pages": [
+    "forbidden.research_page.IMPACT.1"
+  ],
+  "recipe_pages": [
+    "Impact"
+  ],
+  "page_order": [
+    "forbidden.research_page.IMPACT.1",
+    "Impact"
+  ],
+  "icon": "forbidden:textures/misc/impact.png",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

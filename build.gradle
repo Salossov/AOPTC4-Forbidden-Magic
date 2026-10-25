@@ -8,6 +8,7 @@ base { archivesName = 'ForbiddenMagic-1.21.1' }
 java { toolchain.languageVersion = JavaLanguageVersion.of(21); withSourcesJar() }
 
 sourceSets {
+    acceptance
     rules {
         java.srcDir 'src/main/java'
         java.include '**/ContentGates.java', '**/FoundationRules.java'
@@ -27,18 +28,33 @@ configurations.nativeVerificationRuntimeOnly.extendsFrom configurations.runtimeO
 configurations.clientImplementation.extendsFrom configurations.implementation
 configurations.clientCompileOnly.extendsFrom configurations.compileOnly
 configurations.clientRuntimeOnly.extendsFrom configurations.runtimeOnly
+configurations.acceptanceRuntimeOnly.extendsFrom configurations.runtimeOnly
 
 neoForge {
     version = project.neo_version
     addModdingDependenciesTo sourceSets.nativeVerification
     addModdingDependenciesTo sourceSets.client
+    addModdingDependenciesTo sourceSets.acceptance
     mods {
+        forbidden_acceptance { sourceSet sourceSets.acceptance }
         forbidden {
             sourceSet sourceSets.main
             sourceSet sourceSets.client
         }
     }
     runs {
+        acceptanceServer {
+            server()
+            sourceSet = sourceSets.acceptance
+            loadedMods = [neoForge.mods.forbidden_acceptance]
+            gameDirectory = file(providers.gradleProperty('acceptanceDirectory').getOrElse('build/acceptance/default'))
+            programArgument '--nogui'
+            systemProperty 'java.awt.headless', 'true'
+            systemProperty 'forbidden.acceptance.phase', providers.gradleProperty('acceptancePhase').getOrElse('write')
+            systemProperty 'forbidden.acceptance.runId', providers.gradleProperty('acceptanceRunId').getOrElse('unassigned')
+            systemProperty 'forbidden.acceptance.profile', providers.gradleProperty('acceptanceProfile').getOrElse('base')
+            systemProperty 'forbidden.acceptance.jar', layout.buildDirectory.file("libs/ForbiddenMagic-1.21.1-${project.version}.jar").get().asFile.absolutePath
+        }
         client { client(); sourceSet = sourceSets.client; gameDirectory = file('runs/private-client') }
         server { server(); gameDirectory = file('runs/private-server') }
         gameTestServer {
@@ -71,10 +87,15 @@ def ttJarCandidates = [
     file("${projectDir}/../../../../Thaumic_Tinkerer/repo/.worktree/f01-tt-enchanter-api/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar")
 ]
 def tinkererJar = ttJarCandidates.find { it.isFile() } ?: ttJarCandidates[0]
+def acceptanceMods = providers.gradleProperty('acceptanceMods').getOrElse('').tokenize(',')
 dependencies {
+    acceptanceCompileOnly files(tasks.named('jar'))
+    acceptanceCompileOnly files(apiJar)
+    acceptanceRuntimeOnly files(tasks.named('jar'))
     compileOnly files(apiJar)
     nativeVerificationRuntimeOnly files(apiJar)
     if (botaniaJar.isFile()) {
+        acceptanceCompileOnly files(botaniaJar)
         compileOnly files(botaniaJar)
         nativeVerificationCompileOnly files(botaniaJar)
         nativeVerificationRuntimeOnly files(botaniaJar)
@@ -93,6 +114,12 @@ dependencies {
         nativeVerificationCompileOnly files(tinkererJar)
         nativeVerificationRuntimeOnly files(tinkererJar)
     }
+    if (acceptanceMods.contains('botania')) {
+        acceptanceRuntimeOnly files(botaniaJar)
+        acceptanceRuntimeOnly 'vazkii.patchouli:Patchouli:1.21.1-92-NEOFORGE'
+    }
+    if (acceptanceMods.contains('bloodmagic')) acceptanceRuntimeOnly files(bloodMagicJar, modopediaJar)
+    if (acceptanceMods.contains('thaumictinkerer')) acceptanceRuntimeOnly files(tinkererJar)
     compileOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}"
     runtimeOnly files(providers.gradleProperty('thaumcraftRuntimeJar').getOrElse("${coreRoot}/mod/build/libs/thaumcraft-1.21.1-${project.thaumcraft_version}.jar"))
@@ -102,9 +129,17 @@ dependencies {
 repositories {
     mavenCentral()
     exclusiveContent {
+        forRepository { maven { url = 'https://maven.blamejared.com' } }
+        filter { includeGroup 'vazkii.patchouli' }
+    }
+    exclusiveContent {
         forRepository { maven { url = 'https://maven.theillusivec4.top/' } }
         filter { includeGroup 'top.theillusivec4.curios' }
     }
+}
+
+neoForge.runs.configureEach {
+    if (name != 'acceptanceServer') loadedMods = [neoForge.mods.forbidden]
 }
 tasks.register('verifyApiArtifact') {
     inputs.file(apiJar)
@@ -173,6 +208,15 @@ tasks.register('semanticDataCheck', JavaExec) {
     mainClass = 'forbidden.verification.SemanticDataCheck'
 }
 tasks.named('check') { dependsOn 'p02ToolsCheck', 'p02WandCheck', 'p03WrathCageCheck', 'p03VillagerCheck', 'p04CompatCheck', 'p04BloodMagicCheck', 'p04BotaniaCheck', 'semanticDataCheck' }
+
+// Independent native checks must not compete for the same Log4j debug.log on Windows.
+tasks.withType(JavaExec).configureEach {
+    if (name.endsWith('Check') || name == 'foundationRules' || name.startsWith('p01Content')) {
+        def privateDirectory = layout.buildDirectory.dir("verification-working/${name}").get().asFile
+        workingDir privateDirectory
+        doFirst { privateDirectory.mkdirs() }
+    }
+}
 ['normal': ['false', 'true'], 'noLust': ['true', 'true'], 'noCage': ['false', 'false']].each { profile, flags ->
     tasks.register("p01Content${profile.capitalize()}", JavaExec) {
         dependsOn 'nativeVerificationClasses'

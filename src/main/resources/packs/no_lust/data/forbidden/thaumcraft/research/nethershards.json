@@ -1,0 +1,38 @@
+{
+  "kind": "research",
+  "key": "forbidden:nethershards",
+  "category": "forbidden:forbidden",
+  "parents": [],
+  "hidden_parents": [],
+  "aspects": {},
+  "complexity": 0,
+  "auto_unlock": true,
+  "concealed": false,
+  "column": -8,
+  "row": -5,
+  "text_pages": [
+    "forbidden.research_page.NETHERSHARDS.1",
+    "forbidden.research_page.NETHERSHARDS.2b",
+    "forbidden.research_page.NETHERSHARDS.3"
+  ],
+  "recipe_pages": [],
+  "page_order": [
+    "forbidden.research_page.NETHERSHARDS.1",
+    "forbidden.research_page.NETHERSHARDS.2b",
+    "forbidden.research_page.NETHERSHARDS.3"
+  ],
+  "icon": "forbidden:wrath_shard",
+  "virtual": false,
+  "round": true,
+  "stub": true,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

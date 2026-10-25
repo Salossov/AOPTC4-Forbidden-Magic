@@ -9,5 +9,8 @@
   "output": {
     "item": "forbidden:bloodthorn"
   },
-  "upgradeLevel": 3
+  "upgradeLevel": 3,
+  "neoforge:conditions": [
+    { "type": "forbidden:content", "gate": "botania" }
+  ]
 }

@@ -1,0 +1,43 @@
+{
+  "kind": "research",
+  "key": "forbidden:ringfood",
+  "category": "forbidden:forbidden",
+  "parents": [
+    "forbidden:nethershards"
+  ],
+  "hidden_parents": [],
+  "aspects": {
+    "forbidden:gula": 4,
+    "fames": 3,
+    "victus": 2
+  },
+  "complexity": 2,
+  "auto_unlock": false,
+  "concealed": false,
+  "column": -11,
+  "row": -6,
+  "text_pages": [
+    "forbidden.research_page.RINGFOOD.1"
+  ],
+  "recipe_pages": [
+    "RingFood"
+  ],
+  "page_order": [
+    "forbidden.research_page.RINGFOOD.1",
+    "RingFood"
+  ],
+  "icon": "forbidden:ring_nutrition",
+  "virtual": false,
+  "round": false,
+  "stub": false,
+  "secondary": false,
+  "siblings": [],
+  "hidden": false,
+  "warp": 0,
+  "item_triggers": [],
+  "entity_triggers": [],
+  "aspect_triggers": [],
+  "page_requirements": {},
+  "special": false,
+  "recipe_groups": {}
+}

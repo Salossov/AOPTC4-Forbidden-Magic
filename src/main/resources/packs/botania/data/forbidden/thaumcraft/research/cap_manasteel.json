@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:cap_manasteel",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:rod_livingwood"
   ],

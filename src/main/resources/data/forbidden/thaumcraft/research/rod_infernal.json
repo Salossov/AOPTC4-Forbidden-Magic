@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:rod_infernal",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "ROD_silverwood",
     "INFUSION",
@@ -9,7 +9,7 @@
   ],
   "hidden_parents": [],
   "aspects": {
-    "infernus": 4,
+    "forbidden:infernus": 4,
     "ignis": 3,
     "instrumentum": 1
   },

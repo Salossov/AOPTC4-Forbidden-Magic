@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:rod_profane",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:nethershards"
   ],

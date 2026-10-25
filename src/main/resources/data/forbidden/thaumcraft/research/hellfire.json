@@ -1,14 +1,14 @@
 {
   "kind": "research",
   "key": "forbidden:hellfire",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:nethershards"
   ],
   "hidden_parents": [],
   "aspects": {
     "ignis": 3,
-    "infernus": 4,
+    "forbidden:infernus": 4,
     "iter": 2
   },
   "complexity": 1,

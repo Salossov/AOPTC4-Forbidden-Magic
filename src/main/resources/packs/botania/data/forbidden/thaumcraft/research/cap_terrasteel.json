@@ -1,7 +1,7 @@
 {
   "kind": "research",
   "key": "forbidden:cap_terrasteel",
-  "category": "forbidden:FORBIDDEN",
+  "category": "forbidden:forbidden",
   "parents": [
     "forbidden:cap_manasteel"
   ],
