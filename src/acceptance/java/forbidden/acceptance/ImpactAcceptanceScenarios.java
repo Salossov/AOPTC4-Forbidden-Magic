@@ -39,6 +39,8 @@ final class ImpactAcceptanceScenarios {
         facePlane(level, player, check, Direction.UP, "up");
         facePlane(level, player, check, Direction.NORTH, "north");
         facePlane(level, player, check, Direction.EAST, "east");
+        morphToolPlane(level, player, check, "morph_pickaxe", Blocks.STONE.defaultBlockState(), "morph_pickaxe");
+        morphToolPlane(level, player, check, "morph_shovel", Blocks.DIRT.defaultBlockState(), "morph_shovel");
 
         // The click event is still posted, but a tool without Impact must not mine neighbors.
         var noImpactCenter = new BlockPos(4, 93, 4);
@@ -94,9 +96,34 @@ final class ImpactAcceptanceScenarios {
         check.accept("impact_" + label + "_outside_3x3_retained", level.getBlockState(outOfRange).is(Blocks.STONE));
     }
 
+    private static void morphToolPlane(ServerLevel level, ServerPlayer player, BiConsumer<String, Boolean> check,
+                                       String toolName, net.minecraft.world.level.block.state.BlockState block, String label) {
+        var center = new BlockPos(toolName.equals("morph_pickaxe") ? 20 : 24, 98, 4);
+        player.setYRot(0.0F);
+        player.setXRot(0.0F);
+        Direction face = player.getDirection().getOpposite();
+        fillPlane(level, center, face, block);
+        BlockPos outOfRange = face.getStepX() != 0 ? center.offset(0, 2, 0)
+            : face.getStepY() != 0 ? center.offset(2, 0, 0) : center.offset(2, 0, 0);
+        level.setBlockAndUpdate(outOfRange, block);
+        var tool = new ItemStack(WorldScenarios.item(toolName));
+        tool.enchant(level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT)
+            .getOrThrow(DarkEnchantments.IMPACT), 1);
+        player.setItemInHand(InteractionHand.MAIN_HAND, tool);
+        player.setPos(center.getX() + 0.5, center.getY(), center.getZ() + 0.5);
+        player.gameMode.destroyBlock(center);
+        check.accept("impact_" + label + "_native_3x3_cleared", countSolidNeighbors(level, center, face) == 0);
+        check.accept("impact_" + label + "_outside_3x3_retained", level.getBlockState(outOfRange).equals(block));
+    }
+
     private static void fillPlane(ServerLevel level, BlockPos center, Direction face) {
-        forEachNeighbor(center, face, pos -> level.setBlockAndUpdate(pos, Blocks.STONE.defaultBlockState()));
-        level.setBlockAndUpdate(center, Blocks.STONE.defaultBlockState());
+        fillPlane(level, center, face, Blocks.STONE.defaultBlockState());
+    }
+
+    private static void fillPlane(ServerLevel level, BlockPos center, Direction face,
+                                  net.minecraft.world.level.block.state.BlockState block) {
+        forEachNeighbor(center, face, pos -> level.setBlockAndUpdate(pos, block));
+        level.setBlockAndUpdate(center, block);
     }
 
     private static void postBreak(ServerPlayer player, BlockPos center, Direction face) {

@@ -224,6 +224,8 @@ public final class ForbiddenEvents {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
         ItemStack tool = player.getMainHandItem();
+        // Morph pickaxe/shovel implement Impact from mineBlock; the generic event path would duplicate it.
+        if (tool.getItem() instanceof MorphPickaxeItem || tool.getItem() instanceof MorphShovelItem) return;
         int impactLevel = DarkEnchantments.getLevel(tool, DarkEnchantments.IMPACT);
         if (impactLevel <= 0) return;
 
