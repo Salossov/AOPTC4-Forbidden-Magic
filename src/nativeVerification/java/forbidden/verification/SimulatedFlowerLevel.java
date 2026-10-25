@@ -35,6 +35,7 @@ import sun.misc.Unsafe;
 public class SimulatedFlowerLevel extends Level {
     public final Map<BlockPos, BlockState> blocks = new HashMap<>();
     public final Map<BlockPos, BlockEntity> blockEntities = new HashMap<>();
+    public final Map<BlockPos, Object> capabilities = new HashMap<>();
     public final List<Entity> entities = new ArrayList<>();
     public final List<Entity> spawnedEntities = new ArrayList<>();
     public boolean neighborSignal = false;
@@ -58,6 +59,10 @@ public class SimulatedFlowerLevel extends Level {
             Field beField = SimulatedFlowerLevel.class.getDeclaredField("blockEntities");
             beField.setAccessible(true);
             beField.set(level, new HashMap<BlockPos, BlockEntity>());
+
+            Field capField = SimulatedFlowerLevel.class.getDeclaredField("capabilities");
+            capField.setAccessible(true);
+            capField.set(level, new HashMap<BlockPos, Object>());
 
             Field entitiesField = SimulatedFlowerLevel.class.getDeclaredField("entities");
             entitiesField.setAccessible(true);
@@ -101,6 +106,26 @@ public class SimulatedFlowerLevel extends Level {
     @Override
     public BlockEntity getBlockEntity(BlockPos pos) {
         return blockEntities.get(pos);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T, C> T getCapability(net.neoforged.neoforge.capabilities.BlockCapability<T, C> capability, BlockPos pos, BlockState state, BlockEntity blockEntity, C context) {
+        Object val = capabilities.get(pos);
+        if (val != null) {
+            return (T) val;
+        }
+        return super.getCapability(capability, pos, state, blockEntity, context);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T, C> T getCapability(net.neoforged.neoforge.capabilities.BlockCapability<T, C> capability, BlockPos pos, C context) {
+        Object val = capabilities.get(pos);
+        if (val != null) {
+            return (T) val;
+        }
+        return super.getCapability(capability, pos, context);
     }
 
     @Override

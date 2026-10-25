@@ -1,20 +1,13 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "pattern": [
-    " P ",
-    "PFP",
-    " P "
-  ],
-  "key": {
-    "P": {
-      "item": "botania:red_mystical_petal"
-    },
-    "F": {
-      "item": "bloodmagic:blankslate"
-    }
+  "type": "bloodmagic:altar",
+  "altarSyphon": 15000,
+  "consumptionRate": 25,
+  "drainRate": 50,
+  "input": {
+    "item": "botania:red_mystical_flower"
   },
-  "result": {
-    "id": "forbidden:bloodthorn",
-    "count": 1
-  }
+  "output": {
+    "item": "forbidden:bloodthorn"
+  },
+  "upgradeLevel": 3
 }

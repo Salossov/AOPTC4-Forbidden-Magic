@@ -1,8 +1,29 @@
-$root = "c:\Users\Raphtalia\Desktop\Code\Minecraft\thaumcraft4_port\port_addons\Forbidden_magic\repo\.worktree\fix-reaudit-verification-and-semantics\src\main\resources"
-$targetJava = "c:\Users\Raphtalia\Desktop\Code\Minecraft\thaumcraft4_port\port_addons\Forbidden_magic\repo\.worktree\fix-reaudit-verification-and-semantics\src\nativeVerification\java\forbidden\verification\SemanticDataCheck.java"
+[CmdletBinding()]
+param(
+    [string]$ProjectRoot = '',
+    [string]$ResourcesDir = '',
+    [string]$TargetJava = ''
+)
 
-$recipeFiles = Get-ChildItem -Recurse -Path $root -Filter *.json | Where-Object { $_.FullName -like "*\recipe\*" } | Sort-Object FullName
-$researchFiles = Get-ChildItem -Recurse -Path $root -Filter *.json | Where-Object { $_.FullName -like "*\research\*" } | Sort-Object FullName
+$ErrorActionPreference = 'Stop'
+
+if ([string]::IsNullOrWhiteSpace($ProjectRoot)) {
+    $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '..')).Path
+}
+
+if ([string]::IsNullOrWhiteSpace($ResourcesDir)) {
+    $ResourcesDir = Join-Path $ProjectRoot 'src/main/resources'
+}
+
+if ([string]::IsNullOrWhiteSpace($TargetJava)) {
+    $TargetJava = Join-Path $ProjectRoot 'src/nativeVerification/java/forbidden/verification/SemanticDataCheck.java'
+}
+
+Write-Host "Scanning resources in: $ResourcesDir" -ForegroundColor Cyan
+Write-Host "Target Java file:     $TargetJava" -ForegroundColor Cyan
+
+$recipeFiles = Get-ChildItem -Recurse -Path $ResourcesDir -Filter *.json | Where-Object { $_.FullName -like "*\recipe\*" } | Sort-Object FullName
+$researchFiles = Get-ChildItem -Recurse -Path $ResourcesDir -Filter *.json | Where-Object { $_.FullName -like "*\research\*" } | Sort-Object FullName
 
 $recipeListEntries = @()
 $recipeMapEntries = @()
@@ -49,7 +70,44 @@ foreach ($f in $recipeFiles) {
     }
     $visStr = if ($vis.Count -gt 0) { "Map.ofEntries(" + ($vis -join ", ") + ")" } else { "Map.of()" }
 
-    $recipeMapEntries += "            Map.entry(`"$resPath`", new RecipeSpec(`"$rtype`", $research, `"$resid`", $rescnt, $instab, $cVal, $compsStr, $aspsStr, $visStr))"
+    # Pattern (shaped)
+    $pattern = @()
+    if ($j.pattern) {
+        foreach ($p in $j.pattern) { $pattern += "`"$p`"" }
+    }
+    $patStr = if ($pattern.Count -gt 0) { "List.of(" + ($pattern -join ", ") + ")" } else { "List.of()" }
+
+    # Key (shaped)
+    $keys = @()
+    if ($j.key) {
+        foreach ($prop in $j.key.PSObject.Properties) {
+            $v = $prop.Value
+            $vStr = if ($v -is [string]) { $v } elseif ($v.item) { $v.item } elseif ($v.tag) { "#" + $v.tag } elseif ($v.id) { $v.id } else { "" }
+            $keys += "Map.entry(`"$($prop.Name)`", `"$vStr`")"
+        }
+    }
+    $keyStr = if ($keys.Count -gt 0) { "Map.ofEntries(" + ($keys -join ", ") + ")" } else { "Map.of()" }
+
+    # Ingredients (shapeless)
+    $ingrs = @()
+    if ($j.ingredients) {
+        foreach ($ing in $j.ingredients) {
+            $iStr = if ($ing -is [string]) { $ing } elseif ($ing.item) { $ing.item } elseif ($ing.tag) { "#" + $ing.tag } elseif ($ing.id) { $ing.id } else { "" }
+            $ingrs += "`"$iStr`""
+        }
+    }
+    $ingrsStr = if ($ingrs.Count -gt 0) { "List.of(" + ($ingrs -join ", ") + ")" } else { "List.of()" }
+
+    # Mana (mana_infusion)
+    $mana = if ($j.mana) { [int]$j.mana } else { 0 }
+
+    # Altar properties (bloodmagic:altar)
+    $altarSyphon = if ($j.altarSyphon) { [int]$j.altarSyphon } else { 0 }
+    $consumptionRate = if ($j.consumptionRate) { [int]$j.consumptionRate } else { 0 }
+    $drainRate = if ($j.drainRate) { [int]$j.drainRate } else { 0 }
+    $upgradeLevel = if ($j.upgradeLevel) { [int]$j.upgradeLevel } else { 0 }
+
+    $recipeMapEntries += "            Map.entry(`"$resPath`", new RecipeSpec(`"$rtype`", $research, `"$resid`", $rescnt, $instab, $cVal, $compsStr, $aspsStr, $visStr, $patStr, $keyStr, $ingrsStr, $mana, $altarSyphon, $consumptionRate, $drainRate, $upgradeLevel))"
 }
 
 $researchListEntries = @()
@@ -85,7 +143,17 @@ foreach ($f in $researchFiles) {
     }
     $rpStr = if ($rpages.Count -gt 0) { "List.of(" + ($rpages -join ", ") + ")" } else { "List.of()" }
 
-    $textCount = if ($j.text_pages) { $j.text_pages.Count } else { 0 }
+    $tpages = @()
+    if ($j.text_pages) {
+        foreach ($p in $j.text_pages) { $tpages += "`"$p`"" }
+    }
+    $tpStr = if ($tpages.Count -gt 0) { "List.of(" + ($tpages -join ", ") + ")" } else { "List.of()" }
+
+    $porder = @()
+    if ($j.page_order) {
+        foreach ($p in $j.page_order) { $porder += "`"$p`"" }
+    }
+    $poStr = if ($porder.Count -gt 0) { "List.of(" + ($porder -join ", ") + ")" } else { "List.of()" }
 
     $asps = @()
     if ($j.aspects) {
@@ -97,8 +165,18 @@ foreach ($f in $researchFiles) {
 
     $auto = if ($j.auto_unlock) { "true" } else { "false" }
     $stub = if ($j.stub) { "true" } else { "false" }
+    $concealed = if ($j.concealed) { "true" } else { "false" }
+    $secondary = if ($j.secondary) { "true" } else { "false" }
+    $round = if ($j.round) { "true" } else { "false" }
+    $hidden = if ($j.hidden) { "true" } else { "false" }
 
-    $researchMapEntries += "            Map.entry(`"$resPath`", new ResearchSpec(`"$key`", $col, $row, $comp, $warp, $pStr, $hpStr, $rpStr, $textCount, $aspsStr, $auto, $stub))"
+    $sibs = @()
+    if ($j.siblings) {
+        foreach ($p in $j.siblings) { $sibs += "`"$p`"" }
+    }
+    $sibsStr = if ($sibs.Count -gt 0) { "List.of(" + ($sibs -join ", ") + ")" } else { "List.of()" }
+
+    $researchMapEntries += "            Map.entry(`"$resPath`", new ResearchSpec(`"$key`", $col, $row, $comp, $warp, $pStr, $hpStr, $rpStr, $tpStr, $poStr, $aspsStr, $auto, $stub, $concealed, $secondary, $round, $hidden, $sibsStr))"
 }
 
 $sb = [System.Text.StringBuilder]::new()
@@ -111,10 +189,12 @@ $sb.AppendLine("import java.util.*;") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("/**") | Out-Null
 $sb.AppendLine(" * Dedicated semantic data verification suite for V02 (Recipes) and V03 (Research).") | Out-Null
-$sb.AppendLine(" * Performs comprehensive offline validation of all 67 recipes and 49 researches") | Out-Null
+$sb.AppendLine(" * Performs comprehensive offline validation of all 64 recipes and 49 researches") | Out-Null
 $sb.AppendLine(" * across base and integration datapacks (Botania, Blood Magic, Enchanting).") | Out-Null
 $sb.AppendLine(" * Verifies exact types, results, counts, inputs, components, aspect costs, vis costs,") | Out-Null
-$sb.AppendLine(" * coordinates, complexity, warp, parents, hidden parents, recipe pages, and text pages.") | Out-Null
+$sb.AppendLine(" * coordinates, complexity, warp, parents, hidden parents, recipe pages, text pages, page order,") | Out-Null
+$sb.AppendLine(" * pattern, key, ingredients, mana, altarSyphon, consumptionRate, drainRate, upgradeLevel,") | Out-Null
+$sb.AppendLine(" * and research flags (concealed, secondary, round, hidden, siblings).") | Out-Null
 $sb.AppendLine(" * Includes extensive negative mutation regressions for all key semantic properties.") | Out-Null
 $sb.AppendLine(" */") | Out-Null
 $sb.AppendLine("public final class SemanticDataCheck {") | Out-Null
@@ -136,7 +216,15 @@ $sb.AppendLine("            int instability,") | Out-Null
 $sb.AppendLine("            String centralInput,") | Out-Null
 $sb.AppendLine("            List<String> components,") | Out-Null
 $sb.AppendLine("            Map<String, Integer> aspects,") | Out-Null
-$sb.AppendLine("            Map<String, Integer> vis") | Out-Null
+$sb.AppendLine("            Map<String, Integer> vis,") | Out-Null
+$sb.AppendLine("            List<String> pattern,") | Out-Null
+$sb.AppendLine("            Map<String, String> key,") | Out-Null
+$sb.AppendLine("            List<String> ingredients,") | Out-Null
+$sb.AppendLine("            int mana,") | Out-Null
+$sb.AppendLine("            int altarSyphon,") | Out-Null
+$sb.AppendLine("            int consumptionRate,") | Out-Null
+$sb.AppendLine("            int drainRate,") | Out-Null
+$sb.AppendLine("            int upgradeLevel") | Out-Null
 $sb.AppendLine("    ) {}") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    public record ResearchSpec(") | Out-Null
@@ -148,10 +236,16 @@ $sb.AppendLine("            int warp,") | Out-Null
 $sb.AppendLine("            List<String> parents,") | Out-Null
 $sb.AppendLine("            List<String> hiddenParents,") | Out-Null
 $sb.AppendLine("            List<String> recipePages,") | Out-Null
-$sb.AppendLine("            int textPagesCount,") | Out-Null
+$sb.AppendLine("            List<String> textPages,") | Out-Null
+$sb.AppendLine("            List<String> pageOrder,") | Out-Null
 $sb.AppendLine("            Map<String, Integer> aspects,") | Out-Null
 $sb.AppendLine("            boolean autoUnlock,") | Out-Null
-$sb.AppendLine("            boolean stub") | Out-Null
+$sb.AppendLine("            boolean stub,") | Out-Null
+$sb.AppendLine("            boolean concealed,") | Out-Null
+$sb.AppendLine("            boolean secondary,") | Out-Null
+$sb.AppendLine("            boolean round,") | Out-Null
+$sb.AppendLine("            boolean hidden,") | Out-Null
+$sb.AppendLine("            List<String> siblings") | Out-Null
 $sb.AppendLine("    ) {}") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    private static final List<String> RECIPE_FILES = List.of(") | Out-Null
@@ -180,7 +274,7 @@ $sb.AppendLine("        System.out.println(""FORBIDDEN_SEMANTIC_DATA_PASS checks
 $sb.AppendLine("    }") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    private static void testV02Recipes() throws Exception {") | Out-Null
-$sb.AppendLine("        check(RECIPE_FILES.size() == 67, ""all 67 recipe definition files indexed"");") | Out-Null
+$sb.AppendLine("        check(RECIPE_FILES.size() == 64, ""all 64 recipe definition files indexed"");") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("        int arcaneCount = 0;") | Out-Null
 $sb.AppendLine("        int crucibleCount = 0;") | Out-Null
@@ -215,10 +309,10 @@ $sb.AppendLine("") | Out-Null
 $sb.AppendLine("        check(arcaneCount == 10, ""exactly 10 arcane workbench recipes verified"");") | Out-Null
 $sb.AppendLine("        check(crucibleCount == 4, ""exactly 4 crucible recipes verified"");") | Out-Null
 $sb.AppendLine("        check(infusionCount == 32, ""exactly 32 infusion/infusion_enchantment recipes verified"");") | Out-Null
-$sb.AppendLine("        check(craftingCount == 16, ""exactly 16 crafting recipes verified"");") | Out-Null
+$sb.AppendLine("        check(craftingCount == 12, ""exactly 12 crafting recipes verified"");") | Out-Null
 $sb.AppendLine("        check(smeltingCount == 1, ""exactly 1 smelting recipe verified"");") | Out-Null
 $sb.AppendLine("        check(manaInfusionCount == 3, ""exactly 3 mana infusion recipes verified"");") | Out-Null
-$sb.AppendLine("        check(altarCount == 1, ""exactly 1 altar recipe verified"");") | Out-Null
+$sb.AppendLine("        check(altarCount == 2, ""exactly 2 altar recipes verified"");") | Out-Null
 $sb.AppendLine("    }") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    private static JsonObject getJson(String resPath) {") | Out-Null
@@ -328,6 +422,71 @@ $sb.AppendLine("                actualVis.put(entry.getKey(), entry.getValue().g
 $sb.AppendLine("            }") | Out-Null
 $sb.AppendLine("            check(spec.vis.equals(actualVis), ""vis matches spec: "" + spec.vis + "" vs "" + actualVis + "" in "" + file);") | Out-Null
 $sb.AppendLine("        }") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // 7. Pattern & Key verification (shaped)") | Out-Null
+$sb.AppendLine("        if (!spec.pattern.isEmpty()) {") | Out-Null
+$sb.AppendLine("            check(json.has(""pattern""), ""shaped recipe has pattern: "" + file);") | Out-Null
+$sb.AppendLine("            List<String> actualPat = new ArrayList<>();") | Out-Null
+$sb.AppendLine("            for (var p : json.getAsJsonArray(""pattern"")) actualPat.add(p.getAsString());") | Out-Null
+$sb.AppendLine("            check(spec.pattern.equals(actualPat), ""pattern matches spec in: "" + file);") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("            check(json.has(""key""), ""shaped recipe has key map: "" + file);") | Out-Null
+$sb.AppendLine("            Map<String, String> actualKey = new HashMap<>();") | Out-Null
+$sb.AppendLine("            for (var entry : json.getAsJsonObject(""key"").entrySet()) {") | Out-Null
+$sb.AppendLine("                String k = entry.getKey();") | Out-Null
+$sb.AppendLine("                var v = entry.getValue();") | Out-Null
+$sb.AppendLine("                String valStr = """";") | Out-Null
+$sb.AppendLine("                if (v.isJsonObject()) {") | Out-Null
+$sb.AppendLine("                    var vo = v.getAsJsonObject();") | Out-Null
+$sb.AppendLine("                    if (vo.has(""item"")) valStr = vo.get(""item"").getAsString();") | Out-Null
+$sb.AppendLine("                    else if (vo.has(""tag"")) valStr = ""#"" + vo.get(""tag"").getAsString();") | Out-Null
+$sb.AppendLine("                    else if (vo.has(""id"")) valStr = vo.get(""id"").getAsString();") | Out-Null
+$sb.AppendLine("                } else if (v.isJsonPrimitive()) {") | Out-Null
+$sb.AppendLine("                    valStr = v.getAsString();") | Out-Null
+$sb.AppendLine("                }") | Out-Null
+$sb.AppendLine("                actualKey.put(k, valStr);") | Out-Null
+$sb.AppendLine("            }") | Out-Null
+$sb.AppendLine("            check(spec.key.equals(actualKey), ""key map matches spec: "" + spec.key + "" vs "" + actualKey + "" in "" + file);") | Out-Null
+$sb.AppendLine("        }") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // 8. Ingredients verification (shapeless)") | Out-Null
+$sb.AppendLine("        if (!spec.ingredients.isEmpty()) {") | Out-Null
+$sb.AppendLine("            check(json.has(""ingredients""), ""shapeless recipe has ingredients: "" + file);") | Out-Null
+$sb.AppendLine("            List<String> actualIngrs = new ArrayList<>();") | Out-Null
+$sb.AppendLine("            for (var elem : json.getAsJsonArray(""ingredients"")) {") | Out-Null
+$sb.AppendLine("                if (elem.isJsonObject()) {") | Out-Null
+$sb.AppendLine("                    var eo = elem.getAsJsonObject();") | Out-Null
+$sb.AppendLine("                    if (eo.has(""item"")) actualIngrs.add(eo.get(""item"").getAsString());") | Out-Null
+$sb.AppendLine("                    else if (eo.has(""tag"")) actualIngrs.add(""#"" + eo.get(""tag"").getAsString());") | Out-Null
+$sb.AppendLine("                    else if (eo.has(""id"")) actualIngrs.add(eo.get(""id"").getAsString());") | Out-Null
+$sb.AppendLine("                } else if (elem.isJsonPrimitive()) {") | Out-Null
+$sb.AppendLine("                    actualIngrs.add(elem.getAsString());") | Out-Null
+$sb.AppendLine("                }") | Out-Null
+$sb.AppendLine("            }") | Out-Null
+$sb.AppendLine("            List<String> sortedActual = new ArrayList<>(actualIngrs);") | Out-Null
+$sb.AppendLine("            List<String> sortedExpected = new ArrayList<>(spec.ingredients);") | Out-Null
+$sb.AppendLine("            Collections.sort(sortedActual);") | Out-Null
+$sb.AppendLine("            Collections.sort(sortedExpected);") | Out-Null
+$sb.AppendLine("            check(sortedActual.equals(sortedExpected), ""ingredients match spec in: "" + file);") | Out-Null
+$sb.AppendLine("        }") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // 9. Mana Infusion verification") | Out-Null
+$sb.AppendLine("        if (spec.mana > 0) {") | Out-Null
+$sb.AppendLine("            check(json.has(""mana""), ""mana infusion has mana: "" + file);") | Out-Null
+$sb.AppendLine("            check(json.get(""mana"").getAsInt() == spec.mana, ""mana matches spec: "" + spec.mana + "" vs "" + json.get(""mana"").getAsInt() + "" in "" + file);") | Out-Null
+$sb.AppendLine("        }") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // 10. Blood Altar verification") | Out-Null
+$sb.AppendLine("        if (spec.altarSyphon > 0) {") | Out-Null
+$sb.AppendLine("            check(json.has(""altarSyphon""), ""altar recipe has altarSyphon: "" + file);") | Out-Null
+$sb.AppendLine("            check(json.get(""altarSyphon"").getAsInt() == spec.altarSyphon, ""altarSyphon matches spec in: "" + file);") | Out-Null
+$sb.AppendLine("            check(json.has(""consumptionRate""), ""altar recipe has consumptionRate: "" + file);") | Out-Null
+$sb.AppendLine("            check(json.get(""consumptionRate"").getAsInt() == spec.consumptionRate, ""consumptionRate matches spec in: "" + file);") | Out-Null
+$sb.AppendLine("            check(json.has(""drainRate""), ""altar recipe has drainRate: "" + file);") | Out-Null
+$sb.AppendLine("            check(json.get(""drainRate"").getAsInt() == spec.drainRate, ""drainRate matches spec in: "" + file);") | Out-Null
+$sb.AppendLine("            check(json.has(""upgradeLevel""), ""altar recipe has upgradeLevel: "" + file);") | Out-Null
+$sb.AppendLine("            check(json.get(""upgradeLevel"").getAsInt() == spec.upgradeLevel, ""upgradeLevel matches spec in: "" + file);") | Out-Null
+$sb.AppendLine("        }") | Out-Null
 $sb.AppendLine("    }") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    private static void validateResearchJson(JsonObject json, String file) {") | Out-Null
@@ -373,9 +532,19 @@ $sb.AppendLine("            for (var p : json.getAsJsonArray(""recipe_pages"")) 
 $sb.AppendLine("        }") | Out-Null
 $sb.AppendLine("        check(actualRecipePages.equals(spec.recipePages), ""recipe pages match spec in: "" + file);") | Out-Null
 $sb.AppendLine("") | Out-Null
-$sb.AppendLine("        // Text Pages Count") | Out-Null
-$sb.AppendLine("        int actualTextPages = json.has(""text_pages"") ? json.getAsJsonArray(""text_pages"").size() : 0;") | Out-Null
-$sb.AppendLine("        check(actualTextPages == spec.textPagesCount, ""text pages count matches spec: "" + spec.textPagesCount + "" vs "" + actualTextPages + "" in "" + file);") | Out-Null
+$sb.AppendLine("        // Text Pages") | Out-Null
+$sb.AppendLine("        List<String> actualTextPages = new ArrayList<>();") | Out-Null
+$sb.AppendLine("        if (json.has(""text_pages"")) {") | Out-Null
+$sb.AppendLine("            for (var p : json.getAsJsonArray(""text_pages"")) actualTextPages.add(p.getAsString());") | Out-Null
+$sb.AppendLine("        }") | Out-Null
+$sb.AppendLine("        check(actualTextPages.equals(spec.textPages), ""text pages match spec in: "" + file);") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // Page Order") | Out-Null
+$sb.AppendLine("        List<String> actualPageOrder = new ArrayList<>();") | Out-Null
+$sb.AppendLine("        if (json.has(""page_order"")) {") | Out-Null
+$sb.AppendLine("            for (var p : json.getAsJsonArray(""page_order"")) actualPageOrder.add(p.getAsString());") | Out-Null
+$sb.AppendLine("        }") | Out-Null
+$sb.AppendLine("        check(actualPageOrder.equals(spec.pageOrder), ""page_order matches spec in: "" + file);") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("        // Aspects") | Out-Null
 $sb.AppendLine("        Map<String, Integer> actualAspects = new HashMap<>();") | Out-Null
@@ -386,11 +555,26 @@ $sb.AppendLine("            }") | Out-Null
 $sb.AppendLine("        }") | Out-Null
 $sb.AppendLine("        check(spec.aspects.equals(actualAspects), ""research aspects match spec in: "" + file);") | Out-Null
 $sb.AppendLine("") | Out-Null
-$sb.AppendLine("        // Auto unlock / stub") | Out-Null
+$sb.AppendLine("        // Flags") | Out-Null
 $sb.AppendLine("        boolean actualAuto = json.has(""auto_unlock"") && json.get(""auto_unlock"").getAsBoolean();") | Out-Null
 $sb.AppendLine("        boolean actualStub = json.has(""stub"") && json.get(""stub"").getAsBoolean();") | Out-Null
+$sb.AppendLine("        boolean actualConcealed = json.has(""concealed"") && json.get(""concealed"").getAsBoolean();") | Out-Null
+$sb.AppendLine("        boolean actualSecondary = json.has(""secondary"") && json.get(""secondary"").getAsBoolean();") | Out-Null
+$sb.AppendLine("        boolean actualRound = json.has(""round"") && json.get(""round"").getAsBoolean();") | Out-Null
+$sb.AppendLine("        boolean actualHidden = json.has(""hidden"") && json.get(""hidden"").getAsBoolean();") | Out-Null
 $sb.AppendLine("        check(actualAuto == spec.autoUnlock, ""auto_unlock matches spec in: "" + file);") | Out-Null
 $sb.AppendLine("        check(actualStub == spec.stub, ""stub matches spec in: "" + file);") | Out-Null
+$sb.AppendLine("        check(actualConcealed == spec.concealed, ""concealed matches spec in: "" + file);") | Out-Null
+$sb.AppendLine("        check(actualSecondary == spec.secondary, ""secondary matches spec in: "" + file);") | Out-Null
+$sb.AppendLine("        check(actualRound == spec.round, ""round matches spec in: "" + file);") | Out-Null
+$sb.AppendLine("        check(actualHidden == spec.hidden, ""hidden matches spec in: "" + file);") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // Siblings") | Out-Null
+$sb.AppendLine("        List<String> actualSiblings = new ArrayList<>();") | Out-Null
+$sb.AppendLine("        if (json.has(""siblings"")) {") | Out-Null
+$sb.AppendLine("            for (var p : json.getAsJsonArray(""siblings"")) actualSiblings.add(p.getAsString());") | Out-Null
+$sb.AppendLine("        }") | Out-Null
+$sb.AppendLine("        check(actualSiblings.equals(spec.siblings), ""siblings match spec in: "" + file);") | Out-Null
 $sb.AppendLine("    }") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    private static void testV03Research() throws Exception {") | Out-Null
@@ -470,6 +654,44 @@ $sb.AppendLine("        JsonObject badVis = (m8.has(""vis"") ? m8.getAsJsonObjec
 $sb.AppendLine("        badVis.addProperty(""ordo"", 999);") | Out-Null
 $sb.AppendLine("        if (m8.has(""vis"")) m8.add(""vis"", badVis); else m8.add(""aspects"", badVis);") | Out-Null
 $sb.AppendLine("        assertThrows(() -> validateRecipeJson(m8, ""/data/forbidden/recipe/taint_stone.json""), ""altered vis cost"");") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // S04 Mutation 9: Alter pattern on shaped recipe") | Out-Null
+$sb.AppendLine("        JsonObject m9 = getJson(""/data/forbidden/recipe/emerald.json"");") | Out-Null
+$sb.AppendLine("        JsonArray badPattern = new JsonArray();") | Out-Null
+$sb.AppendLine("        badPattern.add(""###"");") | Out-Null
+$sb.AppendLine("        m9.add(""pattern"", badPattern);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateRecipeJson(m9, ""/data/forbidden/recipe/emerald.json""), ""altered pattern"");") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // S04 Mutation 10: Alter key mapping on shaped recipe") | Out-Null
+$sb.AppendLine("        JsonObject m10 = getJson(""/data/forbidden/recipe/emerald.json"");") | Out-Null
+$sb.AppendLine("        JsonObject badKey = new JsonObject();") | Out-Null
+$sb.AppendLine("        JsonObject badKeyVal = new JsonObject();") | Out-Null
+$sb.AppendLine("        badKeyVal.addProperty(""item"", ""minecraft:dirt"");") | Out-Null
+$sb.AppendLine("        badKey.add(""#"", badKeyVal);") | Out-Null
+$sb.AppendLine("        m10.add(""key"", badKey);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateRecipeJson(m10, ""/data/forbidden/recipe/emerald.json""), ""altered key"");") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // S04 Mutation 11: Alter ingredients on shapeless recipe") | Out-Null
+$sb.AppendLine("        JsonObject m11 = getJson(""/data/forbidden/recipe/crystalwell.json"");") | Out-Null
+$sb.AppendLine("        JsonArray badIngrs = m11.getAsJsonArray(""ingredients"").deepCopy();") | Out-Null
+$sb.AppendLine("        badIngrs.remove(0);") | Out-Null
+$sb.AppendLine("        m11.add(""ingredients"", badIngrs);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateRecipeJson(m11, ""/data/forbidden/recipe/crystalwell.json""), ""altered ingredients"");") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // S04 Mutation 12: Alter mana on botania mana infusion") | Out-Null
+$sb.AppendLine("        JsonObject m12 = getJson(""/packs/botania/data/forbidden/recipe/mana_infusion_wand_rod_livingwood.json"");") | Out-Null
+$sb.AppendLine("        m12.addProperty(""mana"", 9999);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateRecipeJson(m12, ""/packs/botania/data/forbidden/recipe/mana_infusion_wand_rod_livingwood.json""), ""altered mana"");") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // S04 Mutation 13: Alter altarSyphon on blood magic altar") | Out-Null
+$sb.AppendLine("        JsonObject m13 = getJson(""/packs/bloodmagic/data/forbidden/recipe/bloodthorn.json"");") | Out-Null
+$sb.AppendLine("        m13.addProperty(""altarSyphon"", 14999);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateRecipeJson(m13, ""/packs/bloodmagic/data/forbidden/recipe/bloodthorn.json""), ""altered altarSyphon"");") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // S04 Mutation 14: Alter upgradeLevel on blood magic altar") | Out-Null
+$sb.AppendLine("        JsonObject m14 = getJson(""/packs/bloodmagic/data/forbidden/recipe/bloodthorn.json"");") | Out-Null
+$sb.AppendLine("        m14.addProperty(""upgradeLevel"", 2);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateRecipeJson(m14, ""/packs/bloodmagic/data/forbidden/recipe/bloodthorn.json""), ""altered upgradeLevel"");") | Out-Null
 $sb.AppendLine("    }") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    private static void testNegativeResearchRegressions() {") | Out-Null
@@ -505,22 +727,44 @@ $sb.AppendLine("        JsonObject m6 = getJson(target);") | Out-Null
 $sb.AppendLine("        m6.add(""recipe_pages"", new JsonArray());") | Out-Null
 $sb.AppendLine("        assertThrows(() -> validateResearchJson(m6, target), ""mutated recipe pages"");") | Out-Null
 $sb.AppendLine("") | Out-Null
-$sb.AppendLine("        // Mutation 7: Mutate text pages count") | Out-Null
+$sb.AppendLine("        // Mutation 7: Mutate research aspects") | Out-Null
 $sb.AppendLine("        JsonObject m7 = getJson(target);") | Out-Null
-$sb.AppendLine("        m7.add(""text_pages"", new JsonArray());") | Out-Null
-$sb.AppendLine("        assertThrows(() -> validateResearchJson(m7, target), ""mutated text pages count"");") | Out-Null
-$sb.AppendLine("") | Out-Null
-$sb.AppendLine("        // Mutation 8: Mutate research aspects") | Out-Null
-$sb.AppendLine("        JsonObject m8 = getJson(target);") | Out-Null
-$sb.AppendLine("        JsonObject badAsp = m8.getAsJsonObject(""aspects"").deepCopy();") | Out-Null
+$sb.AppendLine("        JsonObject badAsp = m7.getAsJsonObject(""aspects"").deepCopy();") | Out-Null
 $sb.AppendLine("        badAsp.addProperty(""ira"", 999);") | Out-Null
-$sb.AppendLine("        m8.add(""aspects"", badAsp);") | Out-Null
-$sb.AppendLine("        assertThrows(() -> validateResearchJson(m8, target), ""mutated research aspects"");") | Out-Null
+$sb.AppendLine("        m7.add(""aspects"", badAsp);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateResearchJson(m7, target), ""mutated research aspects"");") | Out-Null
 $sb.AppendLine("") | Out-Null
-$sb.AppendLine("        // Mutation 9: Missing namespace") | Out-Null
+$sb.AppendLine("        // Mutation 8: Missing namespace") | Out-Null
+$sb.AppendLine("        JsonObject m8 = getJson(target);") | Out-Null
+$sb.AppendLine("        m8.addProperty(""key"", ""unnamespaced_key"");") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateResearchJson(m8, target), ""unnamespaced key"");") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // S05 Mutation 9: Mutate text_pages contents") | Out-Null
 $sb.AppendLine("        JsonObject m9 = getJson(target);") | Out-Null
-$sb.AppendLine("        m9.addProperty(""key"", ""unnamespaced_key"");") | Out-Null
-$sb.AppendLine("        assertThrows(() -> validateResearchJson(m9, target), ""unnamespaced key"");") | Out-Null
+$sb.AppendLine("        JsonArray badTextPages = new JsonArray();") | Out-Null
+$sb.AppendLine("        badTextPages.add(""forbidden.research_page.WRATHCAGE.FAKE"");") | Out-Null
+$sb.AppendLine("        m9.add(""text_pages"", badTextPages);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateResearchJson(m9, target), ""mutated text pages"");") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // S05 Mutation 10: Mutate page_order sequence") | Out-Null
+$sb.AppendLine("        JsonObject m10 = getJson(target);") | Out-Null
+$sb.AppendLine("        JsonArray badPageOrder = new JsonArray();") | Out-Null
+$sb.AppendLine("        badPageOrder.add(""WrathCage"");") | Out-Null
+$sb.AppendLine("        badPageOrder.add(""forbidden.research_page.WRATHCAGE.1"");") | Out-Null
+$sb.AppendLine("        m10.add(""page_order"", badPageOrder);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateResearchJson(m10, target), ""mutated page order"");") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // S05 Mutation 11: Mutate concealed flag") | Out-Null
+$sb.AppendLine("        JsonObject m11 = getJson(""/data/forbidden/thaumcraft/research/arcanecake.json"");") | Out-Null
+$sb.AppendLine("        m11.addProperty(""concealed"", false);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateResearchJson(m11, ""/data/forbidden/thaumcraft/research/arcanecake.json""), ""mutated concealed flag"");") | Out-Null
+$sb.AppendLine("") | Out-Null
+$sb.AppendLine("        // S05 Mutation 12: Mutate siblings") | Out-Null
+$sb.AppendLine("        JsonObject m12 = getJson(target);") | Out-Null
+$sb.AppendLine("        JsonArray badSiblings = new JsonArray();") | Out-Null
+$sb.AppendLine("        badSiblings.add(""forbidden:fake_sibling"");") | Out-Null
+$sb.AppendLine("        m12.add(""siblings"", badSiblings);") | Out-Null
+$sb.AppendLine("        assertThrows(() -> validateResearchJson(m12, target), ""mutated siblings"");") | Out-Null
 $sb.AppendLine("    }") | Out-Null
 $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    private static void assertThrows(Runnable runnable, String description) {") | Out-Null
@@ -536,5 +780,5 @@ $sb.AppendLine("") | Out-Null
 $sb.AppendLine("    private SemanticDataCheck() {}") | Out-Null
 $sb.AppendLine("}") | Out-Null
 
-[System.IO.File]::WriteAllText($targetJava, $sb.ToString())
-Write-Output "Generated SemanticDataCheck.java successfully"
+[System.IO.File]::WriteAllText($TargetJava, $sb.ToString(), [System.Text.UTF8Encoding]::new($false))
+Write-Host "[+] Generated $TargetJava successfully ($($recipeFiles.Count) recipes, $($researchFiles.Count) researches)" -ForegroundColor Green

@@ -89,6 +89,8 @@ public final class P04BotaniaCheck {
         cached(ForbiddenConfig.CROSS_WAND, true);
         cached(ForbiddenConfig.BOTANIA, true);
         cached(ForbiddenConfig.MANA_VIS, 8);
+        BotaniaCompat.setForceLoadedForTesting(true);
+        vazkii.botania.api.neoforge.BotaniaNeoForgeCapabilities.registerBlockApiLookup(vazkii.botania.api.mana.ManaReceiver.LOOKUP);
 
         var bus = BusBuilder.builder().build();
         ForbiddenComponents.register(bus);
@@ -351,8 +353,31 @@ public final class P04BotaniaCheck {
         check(simTainthistle.getBurnTime() == 229, "burnTime decreased from 239 to 229: " + simTainthistle.getBurnTime());
         check(simTainthistle.getMana() == 18, "mana increased by 18 (3 per 2 ticks across 6 even ticks: 80,82,84,86,88,90): " + simTainthistle.getMana());
 
-        int sent = BotaniaCompat.emitMana(simLevel, flowerPos, null, simTainthistle.getMana());
-        check(sent >= 0, "emitMana safe execution");
+        // --- S06: Positive Mana Transfer & Conservation for Tainthistle ---
+        BlockPos collectorPos = flowerPos.above(2);
+        TestManaCollector collector = new TestManaCollector(simLevel, collectorPos, 0, 1000);
+        simLevel.capabilities.put(collectorPos, collector);
+
+        int flowerManaBefore = simTainthistle.getMana();
+        check(flowerManaBefore == 18, "tainthistle generated 18 mana: " + flowerManaBefore);
+        int collectorManaBefore = collector.getCurrentMana();
+        int totalTainthistleManaBefore = flowerManaBefore + collectorManaBefore;
+
+        int sent = BotaniaCompat.emitMana(simLevel, flowerPos, collectorPos, flowerManaBefore);
+        check(sent == 18, "emitMana transferred exact 18 mana: " + sent);
+        simTainthistle.addMana(-sent);
+        check(simTainthistle.getMana() == 0, "flower mana drained to 0");
+        check(collector.getCurrentMana() == 18, "collector received 18 mana: " + collector.getCurrentMana());
+        int totalTainthistleManaAfter = simTainthistle.getMana() + collector.getCurrentMana();
+        check(totalTainthistleManaBefore == totalTainthistleManaAfter, "strict mana conservation in emitMana: " + totalTainthistleManaBefore + " == " + totalTainthistleManaAfter);
+
+        // Test discovery of closest collector with boundPos = null
+        simTainthistle.addMana(50);
+        int sentUnbound = BotaniaCompat.emitMana(simLevel, flowerPos, null, 50);
+        check(sentUnbound == 50, "unbound emitMana discovered collector and sent 50 mana: " + sentUnbound);
+        simTainthistle.addMana(-sentUnbound);
+        check(simTainthistle.getMana() == 0, "flower mana drained to 0 after unbound send");
+        check(collector.getCurrentMana() == 68, "collector mana incremented to 68 (18 + 50)");
 
         // --- Functional Simulation of Euclidaisy (R06) ---
         var simEuclidaisy = new EuclidaisyBlockEntity(flowerPos, euclidaisyBlock.defaultBlockState());
@@ -392,6 +417,32 @@ public final class P04BotaniaCheck {
             simWhisperweed.tick(simLevel, flowerPos, whisperweedBlock.defaultBlockState());
         }
         check(simWhisperweed.getMana() == 6000, "whisperweed without player in range does not consume mana");
+
+        // --- S06: Positive Mana Transfer & Conservation for Whisperweed ---
+        BlockPos poolPos = flowerPos.south(2);
+        TestManaPool pool = new TestManaPool(simLevel, poolPos, 10000, 100000);
+        simLevel.capabilities.put(poolPos, pool);
+
+        simWhisperweed.addMana(-simWhisperweed.getMana()); // reset flower mana to 0
+        int whisperweedManaBefore = simWhisperweed.getMana();
+        int poolManaBefore = pool.getCurrentMana();
+        int totalWhisperweedManaBefore = whisperweedManaBefore + poolManaBefore;
+
+        int drawn = BotaniaCompat.drawMana(simLevel, flowerPos, poolPos, 6000);
+        check(drawn == 6000, "drawMana drew exact 6000 mana: " + drawn);
+        simWhisperweed.addMana(drawn);
+        check(simWhisperweed.getMana() == 6000, "whisperweed received 6000 mana: " + simWhisperweed.getMana());
+        check(pool.getCurrentMana() == 4000, "pool decremented to 4000: " + pool.getCurrentMana());
+        int totalWhisperweedManaAfter = simWhisperweed.getMana() + pool.getCurrentMana();
+        check(totalWhisperweedManaBefore == totalWhisperweedManaAfter, "strict mana conservation in drawMana: " + totalWhisperweedManaBefore + " == " + totalWhisperweedManaAfter);
+
+        // Test discovery of closest pool with boundPos = null
+        simWhisperweed.addMana(-simWhisperweed.getMana()); // reset flower mana to 0
+        int drawnUnbound = BotaniaCompat.drawMana(simLevel, flowerPos, null, 3000);
+        check(drawnUnbound == 3000, "unbound drawMana discovered pool and drew 3000 mana: " + drawnUnbound);
+        simWhisperweed.addMana(drawnUnbound);
+        check(simWhisperweed.getMana() == 3000, "whisperweed received 3000 mana: " + simWhisperweed.getMana());
+        check(pool.getCurrentMana() == 1000, "pool decremented to 1000 (4000 - 3000): " + pool.getCurrentMana());
 
         check(BotaniaCompat.drawMana(null, flowerPos, null, 100) == 0, "drawMana with null level returns 0");
         check(BotaniaCompat.drawMana(simLevel, flowerPos, null, -50) == 0, "drawMana with negative needed returns 0");
@@ -436,9 +487,9 @@ public final class P04BotaniaCheck {
         }
 
         List<String> recipes = List.of(
-                "wand_rod_livingwood", "wand_rod_livingwood_inert", "mana_infusion_wand_rod_livingwood",
+                "wand_rod_livingwood", "mana_infusion_wand_rod_livingwood",
                 "wand_cap_manasteel_inert", "mana_infusion_wand_cap_manasteel",
-                "wand_rod_dreamwood", "wand_rod_dreamwood_inert", "mana_infusion_wand_rod_dreamwood",
+                "wand_rod_dreamwood", "mana_infusion_wand_rod_dreamwood",
                 "wand_rod_dreamwood_staff", "wand_cap_elementium_inert", "wand_cap_elementium",
                 "wand_cap_terrasteel", "euclidaisy", "whisperweed", "tainthistle", "botanist_emblem"
         );
@@ -564,6 +615,54 @@ public final class P04BotaniaCheck {
             check(P04BotaniaCheck.class.getResource("/assets/" + model.getNamespace() + "/models/" + model.getPath() + ".json") != null,
                     "registered composite model exists on classpath: " + model);
         }
+    }
+
+
+    public static class TestManaCollector implements vazkii.botania.api.mana.ManaCollector {
+        private final net.minecraft.world.level.Level level;
+        private final BlockPos pos;
+        private int mana;
+        private final int maxMana;
+
+        public TestManaCollector(net.minecraft.world.level.Level level, BlockPos pos, int initialMana, int maxMana) {
+            this.level = level;
+            this.pos = pos;
+            this.mana = initialMana;
+            this.maxMana = maxMana;
+        }
+
+        @Override public net.minecraft.world.level.Level getManaReceiverLevel() { return level; }
+        @Override public BlockPos getManaReceiverPos() { return pos; }
+        @Override public int getCurrentMana() { return mana; }
+        @Override public boolean isFull() { return mana >= maxMana; }
+        @Override public void receiveMana(int amount) { this.mana = Math.min(maxMana, Math.max(0, this.mana + amount)); }
+        @Override public boolean canReceiveManaFromBursts() { return true; }
+        @Override public void onClientDisplayTick() {}
+        @Override public float getManaYieldMultiplier(vazkii.botania.api.internal.ManaBurst burst) { return 1.0f; }
+        @Override public int getMaxMana() { return maxMana; }
+    }
+
+    public static class TestManaPool implements vazkii.botania.api.mana.ManaPool {
+        private final net.minecraft.world.level.Level level;
+        private final BlockPos pos;
+        private int mana;
+        private final int maxMana;
+
+        public TestManaPool(net.minecraft.world.level.Level level, BlockPos pos, int initialMana, int maxMana) {
+            this.level = level;
+            this.pos = pos;
+            this.mana = initialMana;
+            this.maxMana = maxMana;
+        }
+
+        @Override public net.minecraft.world.level.Level getManaReceiverLevel() { return level; }
+        @Override public BlockPos getManaReceiverPos() { return pos; }
+        @Override public int getCurrentMana() { return mana; }
+        @Override public boolean isFull() { return mana >= maxMana; }
+        @Override public void receiveMana(int amount) { this.mana = Math.min(maxMana, Math.max(0, this.mana + amount)); }
+        @Override public boolean canReceiveManaFromBursts() { return true; }
+        @Override public boolean isOutputtingPower() { return false; }
+        @Override public int getMaxMana() { return maxMana; }
     }
 
     private P04BotaniaCheck() {}

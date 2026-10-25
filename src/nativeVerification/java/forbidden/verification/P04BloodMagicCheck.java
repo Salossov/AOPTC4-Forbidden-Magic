@@ -477,7 +477,7 @@ public final class P04BloodMagicCheck {
         List<String> recipes = List.of(
                 "wand_rod_blood", "wand_rod_blood_staff", "wand_cap_alchemical", "bloodwell",
                 "blood_rapier", "eldritch_orb", "boundwell", "bloodthorn",
-                "wand_rod_blood_inert", "altar_wand_rod_blood"
+                "altar_wand_rod_blood"
         );
         for (String rec : recipes) {
             String path = "/packs/bloodmagic/data/forbidden/recipe/" + rec + ".json";
