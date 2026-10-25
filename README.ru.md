@@ -17,9 +17,9 @@ NeoForge 21.1.252, Java 21, локального ядра Thaumcraft/API 1.0.0 �
 
 ## Верификация и архитектура
 
-Весь код и механики проверены офлайн через 13 специализированных JVM-наборов тестирования (12 555 проверок):
+13 JVM-наборов проходят 14 649 проверок правил и снимков данных. Независимая legacy-сверка всех рецептов/исследований остаётся открытой:
 1. `foundationRules`: Проверка комбинаций ContentGates (768 профилей, 9 216 проверок).
-2. `semanticDataCheck`: Семантическая сверка 33 рецептов и 31 исследования (1 107 проверок).
+2. `semanticDataCheck`: Снимки рецептов/исследований и отрицательные мутации (2 706 проверок).
 3. `componentCodecCheck`: Кодеки компонентов и сетевая сериализация (12 проверок).
 4. `p01ContentNormal`: Стандартный профиль регистрации (322 проверки).
 5. `p01ContentNoLust`: Профиль с отключенной похотью (322 проверки).
@@ -28,16 +28,16 @@ NeoForge 21.1.252, Java 21, локального ядра Thaumcraft/API 1.0.0 �
 8. `p02WandCheck`: Жезлы, колпачки, стержни и логика фокуса Blink (258 проверок).
 9. `p03WrathCageCheck`: Логика клетки гнева, suction и спавнера (224 проверки).
 10. `p03VillagerCheck`: Профессия жителя, сделки, POI (65 проверок).
-11. `p04CompatCheck`: Интеграции Thaumic Tinkerer, Twilight Forest, Viewers (139 проверок).
-12. `p04BloodMagicCheck`: Интеграция Blood Magic (268 проверок).
-13. `p04BotaniaCheck`: Интеграция Botania (262 проверки).
+11. `p04CompatCheck`: Интеграции Thaumic Tinkerer, Twilight Forest, Viewers (163 проверки).
+12. `p04BloodMagicCheck`: Интеграция Blood Magic (443 проверки).
+13. `p04BotaniaCheck`: Интеграция Botania (558 проверок).
 
 *Игровая приёмка не завершена. Запуск выделенного сервера и EULA для отдельных тестовых миров разрешены пользователем 25.10.2026; клиентская приёмка ещё не выполнена. В реальном мире найдены ошибки, которых не обнаружили офлайн-снимки данных. Успешные JVM-наборы не доказывают полное соответствие оригиналу.*
 
 ### Автоматическая серверная приёмка
 
 ```powershell
-.\tools\acceptance\Invoke-LiveServerAcceptance.ps1 -AcceptEula -Profiles @('no-lust','no-cage','botania','bloodmagic','tinkerer','integrations') -Lifecycle -ContinueOnFailure
+.\tools\acceptance\Invoke-LiveServerAcceptance.ps1 -AcceptEula -Profiles @('base','no-lust','no-cage','no-enchantments','gluttony-off','gluttony-hard','botania','bloodmagic','tinkerer','integrations','free-cage') -Lifecycle -ContinueOnFailure
 ```
 
 Каждый запуск создаёт новый `build/acceptance/<runId>`, принимает EULA только в нём и использует два последовательных процесса для записи/перезапуска/чтения мира. Запускается выделенный сервер `--nogui`; клиент, окно и звук отсутствуют. Проверяется происхождение кода из gameplay JAR, свежесть отчёта, ненулевое число утверждений, отсутствие ошибок загрузки и штатная остановка.
@@ -58,6 +58,12 @@ NeoForge 21.1.252, Java 21, локального ядра Thaumcraft/API 1.0.0 �
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verification\Test-FmVerificationParser.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verification\Test-FmArtifactVerification.ps1
 ```
+
+## Подготовка комплекта зависимостей
+
+`tools/acceptance/Install-ProductionJar.ps1` требует Python 3.11+ со стандартным `tomllib` для разбора настоящих TOML-таблиц. Аудит отличает объявления `[[mods]]` от ссылок `[[dependencies.*]]`, проверяет обязательные зависимости и дубликаты mod ID; optional/mandatory=false не считаются обязательными. Результат сохраняется в `dependency-audit.json`. Диапазоны версий проверяются NeoForge при реальном запуске.
+
+Серверная матрица 25.10.2026: 11 профилей, 22 процесса write/read, 1460 assertions PASS. Это покрытие перечисленных сценариев, а не завершение полной приёмки.
 
 ## Выпускные артефакты и лицензия
 

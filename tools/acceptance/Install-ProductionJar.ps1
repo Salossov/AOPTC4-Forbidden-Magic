@@ -7,7 +7,7 @@
     - Copies ForbiddenMagic release JAR.
     - Strictly stages exact pinned dependency JARs (Thaumcraft, API, TT, Botania, Blood Magic, Curios, Patchouli, Modopedia, AOP UI).
     - Prevents duplicates and incomplete runtime setups.
-    - Deeply validates transitive neoforge.mods.toml dependency closure.
+    - Validates transitive dependency presence using Python 3.11+ stdlib TOML tables.
     - Sets default server configurations.
     - Strictly creates eula.txt with eula=false (NEVER automatically accepts EULA).
     - Generates PowerShell-only launch script requiring explicit manual confirmation.
@@ -19,6 +19,10 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+# Preflight before creating directories or replacing staged JARs.
+$python = Get-Command python.exe -ErrorAction Stop
+& $python.Source -c 'import tomllib'
+if ($LASTEXITCODE -ne 0) { throw 'Production staging requires Python 3.11+ (tomllib).' }
 
 if ([string]::IsNullOrWhiteSpace($ProjectRoot)) {
     $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot '../..')).Path
@@ -48,7 +52,7 @@ if ($mainJars -and $mainJars.Count -gt 0) {
     Copy-Item -Path $mainJars[0].FullName -Destination (Join-Path $modsDir $mainJars[0].Name) -Force
     Write-Host "[+] Copied release JAR: $($mainJars[0].Name)" -ForegroundColor Green
 } else {
-    Write-Warning "Main JAR not found in $buildLibs. Run assemble/build first."
+    throw "Main JAR not found in $buildLibs. Run assemble/build first."
 }
 
 # 1b. Locate Workspace Root
@@ -117,81 +121,20 @@ foreach ($dep in $pinnedDependencies) {
 
 Write-Host "[*] Total dependency JARs staged: $copiedCount / $($pinnedDependencies.Count) (0 duplicates, full transitive set)" -ForegroundColor Cyan
 
-# 1d. Deep Transitive Dependency Verification via neoforge.mods.toml
-Write-Host "[*] Validating NeoForge mods.toml dependencies across all staged JARs..." -ForegroundColor Cyan
-Add-Type -AssemblyName System.IO.Compression.FileSystem
-
-$providedMods = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
-$providedMods.Add("minecraft") | Out-Null
-$providedMods.Add("neoforge") | Out-Null
-$providedMods.Add("forge") | Out-Null
-$providedMods.Add("java") | Out-Null
-
-$stagedJars = Get-ChildItem -Path $modsDir -Filter "*.jar"
-foreach ($jar in $stagedJars) {
-    $zip = [System.IO.Compression.ZipFile]::OpenRead($jar.FullName)
-    try {
-        $entry = $zip.GetEntry('META-INF/neoforge.mods.toml')
-        if ($entry) {
-            $reader = [System.IO.StreamReader]::new($entry.Open())
-            try {
-                $content = $reader.ReadToEnd()
-                $matches = [regex]::Matches($content, '(?m)^\s*modId\s*=\s*"([^"]+)"')
-                foreach ($m in $matches) {
-                    $providedMods.Add($m.Groups[1].Value) | Out-Null
-                }
-            } finally {
-                $reader.Close()
-            }
-        }
-    } finally {
-        $zip.Dispose()
-    }
+# 1d. Parse actual [[mods]] declarations; dependency references are not providers.
+$closureScript = Join-Path $PSScriptRoot 'fm_dependency_closure.py'
+$python = Get-Command python.exe -ErrorAction Stop
+$closureRaw = @(& $python.Source $closureScript --mods-dir $modsDir)
+$closureExit = $LASTEXITCODE
+$closureJson = $closureRaw -join [Environment]::NewLine
+[IO.File]::WriteAllText((Join-Path $InstallDir 'dependency-audit.json'), $closureJson, [Text.UTF8Encoding]::new($false))
+try { $closure = $closureJson | ConvertFrom-Json -ErrorAction Stop }
+catch { throw "Dependency audit needs Python 3.11+ and valid TOML metadata: $_" }
+if ($closureExit -ne 0 -or $closure.passed -ne $true) {
+    throw ('Staged dependency audit failed: ' + ($closure.errors -join '; '))
 }
-
-Write-Host "    Provided Mod IDs: $(-join ($providedMods | ForEach-Object { "$_, " })).TrimEnd(', ')" -ForegroundColor DarkGray
-
-$missingRequiredDeps = [System.Collections.Generic.List[string]]::new()
-foreach ($jar in $stagedJars) {
-    $zip = [System.IO.Compression.ZipFile]::OpenRead($jar.FullName)
-    try {
-        $entry = $zip.GetEntry('META-INF/neoforge.mods.toml')
-        if ($entry) {
-            $reader = [System.IO.StreamReader]::new($entry.Open())
-            try {
-                $content = $reader.ReadToEnd()
-                $depBlocks = [regex]::Matches($content, '(?s)\[\[dependencies\.[^\]]+\]\](.*?)(?=\[\[|\z)')
-                foreach ($block in $depBlocks) {
-                    $bText = $block.Groups[1].Value
-                    $targetMod = if ($bText -match '(?m)^\s*modId\s*=\s*"([^"]+)"') { $matches[1] } else { $null }
-                    $type = if ($bText -match '(?m)^\s*type\s*=\s*"([^"]+)"') { $matches[1] } else { 'required' }
-                    $mandatory = if ($bText -match '(?m)^\s*mandatory\s*=\s*(true|false)') { [bool]::Parse($matches[1]) } else { $null }
-
-                    $isRequired = ($type -eq 'required') -or ($mandatory -eq $true)
-                    if ($isRequired -and $targetMod) {
-                        if (-not $providedMods.Contains($targetMod)) {
-                            $missingRequiredDeps.Add("JAR $($jar.Name) requires '$targetMod' which is not present in staged mods")
-                        } else {
-                            Write-Host "    [+] Verified: $($jar.Name) -> $targetMod satisfied" -ForegroundColor Green
-                        }
-                    }
-                }
-            } finally {
-                $reader.Close()
-            }
-        }
-    } finally {
-        $zip.Dispose()
-    }
-}
-
-if ($missingRequiredDeps.Count -gt 0) {
-    foreach ($err in $missingRequiredDeps) {
-        Write-Host "[-] Missing Dependency: $err" -ForegroundColor Red
-    }
-    throw "Staged production JAR set fails transitive dependency verification! ($($missingRequiredDeps.Count) missing dependencies)"
-}
-Write-Host "[+] All mandatory dependencies verified and satisfied across staged JARs." -ForegroundColor Green
+Write-Host ('[+] Declared/platform Mod IDs: ' + ($closure.providedMods -join ', ')) -ForegroundColor Green
+Write-Host '[+] Required dependency presence verified from TOML tables; report: dependency-audit.json' -ForegroundColor Green
 
 # 2. Strict EULA enforcement: eula=false
 $eulaFile = Join-Path $InstallDir 'eula.txt'

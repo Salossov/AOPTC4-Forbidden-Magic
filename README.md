@@ -17,9 +17,9 @@ NeoForge 21.1.252, Java 21, local Thaumcraft/API 1.0.0 and Curios 9.5.1+1.21.1.
 
 ## Verification & Architecture
 
-All code and data mechanics are verified offline via 13 dedicated JVM test suites (12,555 assertions):
+13 JVM suites pass 14,649 checks of rules and data snapshots. Independent legacy recipe/research parity remains open:
 1. `foundationRules`: ContentGates cross-product configurations (768 profiles, 9,216 checks).
-2. `semanticDataCheck`: 33 recipe JSONs and 31 research JSONs semantic integrity (1,107 checks).
+2. `semanticDataCheck`: Recipe/research snapshots and negative mutations (2,706 checks).
 3. `componentCodecCheck`: Data component persistence and packet serialization codecs (12 checks).
 4. `p01ContentNormal`: Standard profile registration and content mechanics (322 checks).
 5. `p01ContentNoLust`: Lust-disabled profile gating (322 checks).
@@ -28,16 +28,16 @@ All code and data mechanics are verified offline via 13 dedicated JVM test suite
 8. `p02WandCheck`: Wands, caps, rods, Blink focus behavior (258 checks).
 9. `p03WrathCageCheck`: Wrath Cage logic, essentia suction, mob limits (224 checks).
 10. `p03VillagerCheck`: Heretic Villager profession, trades, POI (65 checks).
-11. `p04CompatCheck`: Thaumic Tinkerer, Twilight Forest, Viewers integration (139 checks).
-12. `p04BloodMagicCheck`: Blood Magic integration (268 checks).
-13. `p04BotaniaCheck`: Botania integration (262 checks).
+11. `p04CompatCheck`: Thaumic Tinkerer, Twilight Forest, Viewers integration (163 checks).
+12. `p04BloodMagicCheck`: Blood Magic integration (443 checks).
+13. `p04BotaniaCheck`: Botania integration (558 checks).
 
 *Gameplay acceptance is incomplete. On 2026-10-25 the user authorized dedicated-server runs and EULA acceptance in isolated test worlds. Live runs have exposed defects that the offline snapshots missed. Client/rendering and real two-player acceptance have not been performed.*
 
 ### Automated dedicated-server acceptance
 
 ```powershell
-.\tools\acceptance\Invoke-LiveServerAcceptance.ps1 -AcceptEula -Profiles @('no-lust','no-cage','botania','bloodmagic','tinkerer','integrations') -Lifecycle -ContinueOnFailure
+.\tools\acceptance\Invoke-LiveServerAcceptance.ps1 -AcceptEula -Profiles @('base','no-lust','no-cage','no-enchantments','gluttony-off','gluttony-hard','botania','bloodmagic','tinkerer','integrations','free-cage') -Lifecycle -ContinueOnFailure
 ```
 
 Each invocation uses a fresh `build/acceptance/<runId>` directory, two server processes for persistence checks, `--nogui`, the packaged gameplay JAR, nonce-tagged assertion reports and graceful shutdown. No client, desktop interaction, screenshots or audio are involved. The private `src/acceptance` mod never ships in the gameplay JAR. `base` also exercises actual world interactions and reports known failures rather than suppressing them. These checks do not establish visual or two-player network parity.
@@ -56,6 +56,12 @@ Run parser and artifact regression suites:
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verification\Test-FmVerificationParser.ps1
 powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verification\Test-FmArtifactVerification.ps1
 ```
+
+## Dependency staging
+
+`tools/acceptance/Install-ProductionJar.ps1` requires Python 3.11+ with standard-library `tomllib` to parse actual TOML tables. The audit distinguishes `[[mods]]` declarations from `[[dependencies.*]]` references, detects missing required dependencies and duplicate mod IDs, and honors optional/mandatory=false. It writes `dependency-audit.json`. NeoForge validates version ranges during live startup.
+
+Server matrix on 2026-10-25: 11 profiles, 22 write/read processes, 1460 assertions PASS. This proves the named scenarios, not complete gameplay acceptance.
 
 ## Release Artifacts & Licensing
 

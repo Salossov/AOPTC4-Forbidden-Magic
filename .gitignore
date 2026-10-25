@@ -7,5 +7,7 @@ libs/
 runs/
 logs/
 *.log
+__pycache__/
+*.pyc
 .idea/
 *.iml
