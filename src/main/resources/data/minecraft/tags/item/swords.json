@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "forbidden:morph_sword", "forbidden:riding_crop", "forbidden:diabolist_fork",
+    {"id": "forbidden:blood_rapier", "required": false}
+  ]
+}

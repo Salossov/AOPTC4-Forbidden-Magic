@@ -77,11 +77,9 @@ public final class MorphToolHelper {
                 var enchHolder = registryLookup.get(ResourceKey.create(Registries.ENCHANTMENT, entry.getKey()));
                 enchHolder.ifPresent(h -> newEnchants.set(h, entry.getValue()));
             }
-            if (newEnchants.keySet().isEmpty()) {
-                stack.remove(DataComponents.ENCHANTMENTS);
-            } else {
-                stack.set(DataComponents.ENCHANTMENTS, newEnchants.toImmutable());
-            }
+            // An absent component disables modern enchantment updates entirely.
+            // Empty legacy phases must remain enchantable, with an empty component.
+            stack.set(DataComponents.ENCHANTMENTS, newEnchants.toImmutable());
 
             ForbiddenComponents.morph(level, stack, new MorphState(nextPhase, phases));
             stack.hurtAndBreak(5, player, LivingEntity.getSlotForHand(hand));

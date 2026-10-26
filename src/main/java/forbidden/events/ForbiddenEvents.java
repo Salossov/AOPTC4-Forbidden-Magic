@@ -223,6 +223,8 @@ public final class ForbiddenEvents {
         if (!(player instanceof ServerPlayer serverPlayer)) return;
 
         ItemStack tool = player.getMainHandItem();
+        // Morph tools own Impact in mineBlock; running both paths mines beyond 3x3.
+        if (tool.getItem() instanceof MorphPickaxeItem || tool.getItem() instanceof MorphShovelItem) return;
         int impactLevel = DarkEnchantments.getLevel(tool, DarkEnchantments.IMPACT);
         if (impactLevel <= 0) return;
 
