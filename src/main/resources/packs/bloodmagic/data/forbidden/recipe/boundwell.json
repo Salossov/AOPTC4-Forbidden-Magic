@@ -1,11 +1,14 @@
 {
-  "type": "minecraft:crafting_shapeless",
-  "ingredients": [
-    { "item": "forbidden:crystalwell" },
-    { "item": "bloodmagic:weakbloodorb" }
-  ],
-  "result": {
-    "id": "forbidden:boundwell",
+  "type": "bloodmagic:array",
+  "baseinput": {
+    "item": "bloodmagic:reagentbinding"
+  },
+  "addedinput": {
+    "item": "forbidden:crystalwell"
+  },
+  "output": {
+    "item": "forbidden:boundwell",
     "count": 1
-  }
+  },
+  "texture": "bloodmagic:textures/models/alchemyarrays/bindingarray.png"
 }
