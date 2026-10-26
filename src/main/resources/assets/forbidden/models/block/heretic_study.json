@@ -1,10 +1,10 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "particle": "forbidden:block/taint_planks",
-    "base": "forbidden:block/taint_stone",
-    "planks": "forbidden:block/taint_planks",
-    "top": "forbidden:block/taint_plank_fancy"
+    "particle": "forbidden:blocks/taint_planks",
+    "base": "forbidden:blocks/taint_stone",
+    "planks": "forbidden:blocks/taint_planks",
+    "top": "forbidden:blocks/taint_plank_fancy"
   },
   "elements": [
     {

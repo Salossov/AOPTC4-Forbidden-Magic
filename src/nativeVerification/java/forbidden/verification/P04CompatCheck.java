@@ -194,7 +194,7 @@ public final class P04CompatCheck {
         }
 
         // Verify KAMI JSON data file format and aspect preservation
-        try (var stream = P04CompatCheck.class.getResourceAsStream("/data/forbidden/thaumcraft/tinkerer_kami_aspects.json");
+        try (var stream = P04CompatCheck.class.getResourceAsStream("/packs/tinkerer/data/forbidden/thaumcraft/tinkerer_kami_aspects.json");
              var reader = new java.io.InputStreamReader(stream, java.nio.charset.StandardCharsets.UTF_8)) {
             check(stream != null, "tinkerer_kami_aspects.json exists in resources");
             com.google.gson.JsonObject kamiJson = com.google.gson.JsonParser.parseReader(reader).getAsJsonObject();

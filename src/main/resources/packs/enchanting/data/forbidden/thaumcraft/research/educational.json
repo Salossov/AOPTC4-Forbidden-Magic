@@ -20,7 +20,7 @@
     "forbidden.research_page.EDUCATIONAL.1"
   ],
   "recipe_pages": [
-    "Educational"
+    "forbidden:enchant_educational"
   ],
   "page_order": [
     "forbidden.research_page.EDUCATIONAL.1",
@@ -39,5 +39,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "Educational": [
+      "forbidden:enchant_educational"
+    ]
+  }
 }

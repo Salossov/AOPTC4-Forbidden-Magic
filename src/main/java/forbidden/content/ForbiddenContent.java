@@ -70,6 +70,7 @@ public final class ForbiddenContent {
         TABS.register("main", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.forbidden")).icon(() -> new ItemStack(item("wrath_shard")))
             .displayItems((parameters, output) -> {
                 MAIN.values().forEach(i -> output.accept(i.get()));
+                ForbiddenTools.ITEMS.getEntries().forEach(i -> output.accept(i.get()));
                 BloodMagicItems.ITEMS_MAP.values().forEach(i -> output.accept(i.get()));
                 BotaniaItems.ITEMS_MAP.values().forEach(i -> output.accept(i.get()));
                 ForbiddenWands.creative(output);

@@ -24,7 +24,7 @@
     "forbidden.research_page.SUBCOLLAR.1"
   ],
   "recipe_pages": [
-    "SubCollar"
+    "forbidden:sub_collar"
   ],
   "page_order": [
     "forbidden.research_page.SUBCOLLAR.1",
@@ -43,5 +43,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "SubCollar": [
+      "forbidden:sub_collar"
+    ]
+  }
 }

@@ -22,7 +22,7 @@
     "forbidden.research_page.IMPACT.1"
   ],
   "recipe_pages": [
-    "Impact"
+    "forbidden:enchant_impact"
   ],
   "page_order": [
     "forbidden.research_page.IMPACT.1",
@@ -41,5 +41,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "Impact": [
+      "forbidden:enchant_impact"
+    ]
+  }
 }

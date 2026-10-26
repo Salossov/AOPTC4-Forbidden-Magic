@@ -15,7 +15,7 @@ public final class BloodWandUpdate implements BiConsumer<ItemStack, Player> {
     @Override
     public void accept(ItemStack wand, Player player) {
         if (player == null || wand == null || wand.isEmpty()) return;
-        if (BloodMagicCompat.isLoaded()) {
+        if (BloodMagicCompat.isLoaded() && forbidden.config.ForbiddenConfig.CROSS_WAND.get()) {
             BloodMagicBridge.updateBloodWand(wand, player);
         }
     }

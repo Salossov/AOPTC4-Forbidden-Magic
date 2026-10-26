@@ -20,7 +20,7 @@
     "forbidden.research_page.PRIMEWELL.1"
   ],
   "recipe_pages": [
-    "Primewell"
+    "forbidden:primewell"
   ],
   "page_order": [
     "forbidden.research_page.PRIMEWELL.1",
@@ -39,5 +39,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "Primewell": [
+      "forbidden:primewell"
+    ]
+  }
 }

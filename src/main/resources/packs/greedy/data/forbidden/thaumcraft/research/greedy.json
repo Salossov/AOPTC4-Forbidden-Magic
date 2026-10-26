@@ -21,7 +21,7 @@
     "forbidden.research_page.GREEDY.1"
   ],
   "recipe_pages": [
-    "Greedy"
+    "forbidden:enchant_greedy"
   ],
   "page_order": [
     "forbidden.research_page.GREEDY.1",
@@ -40,5 +40,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "Greedy": [
+      "forbidden:enchant_greedy"
+    ]
+  }
 }

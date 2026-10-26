@@ -18,8 +18,8 @@
     "forbidden.research_page.BLACKFLOWER.1"
   ],
   "recipe_pages": [
-    "BlackFlower",
-    "BlackInk"
+    "forbidden:umbral_bush",
+    "forbidden:black_ink"
   ],
   "page_order": [
     "forbidden.research_page.BLACKFLOWER.1",
@@ -39,5 +39,12 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "BlackFlower": [
+      "forbidden:umbral_bush"
+    ],
+    "BlackInk": [
+      "forbidden:black_ink"
+    ]
+  }
 }

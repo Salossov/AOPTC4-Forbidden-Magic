@@ -23,8 +23,8 @@
     "forbidden.research_page.TAINTTREE.1"
   ],
   "recipe_pages": [
-    "TaintTree",
-    "TaintPlank"
+    "forbidden:taint_sapling",
+    "forbidden:taint_planks"
   ],
   "page_order": [
     "forbidden.research_page.TAINTTREE.1",
@@ -44,5 +44,12 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "TaintTree": [
+      "forbidden:taint_sapling"
+    ],
+    "TaintPlank": [
+      "forbidden:taint_planks"
+    ]
+  }
 }

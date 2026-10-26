@@ -15,7 +15,7 @@ public final class BloodStaffUpdate implements BiConsumer<ItemStack, Player> {
     @Override
     public void accept(ItemStack staff, Player player) {
         if (player == null || staff == null || staff.isEmpty()) return;
-        if (BloodMagicCompat.isLoaded()) {
+        if (BloodMagicCompat.isLoaded() && forbidden.config.ForbiddenConfig.CROSS_WAND.get()) {
             BloodMagicBridge.updateBloodStaff(staff, player);
         }
     }

@@ -2,5 +2,11 @@
   "parent": "minecraft:item/handheld",
   "textures": {
     "layer0": "forbidden:items/fork"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": { "forbidden:spork": 1 },
+      "model": "forbidden:item/diabolist_spork"
+    }
+  ]
 }

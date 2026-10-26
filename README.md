@@ -68,3 +68,8 @@ Server matrix on 2026-10-25: 11 profiles, 22 write/read processes, 1460 assertio
 - **License:** WTFPL-2.0 (see `LICENSE`).
 - **Attribution:** Original Forbidden Magic 0.575 by SpitefulFox and contributors (see `NOTICE.md`).
 - **JAR Contents:** Release gameplay JAR contains strictly `main` and `client` classes and resources. All `rules`, `nativeVerification`, test classes, and core leaks are strictly audited and excluded.
+
+
+### Tested optional dependency set (2026-10-26)
+
+NeoForge21.1.252 / Java21; local Thaumcraft1.0.0 and AOP UI0.7.0, Curios9.5.1+1.21.1. The isolated combined test set also contains Botania456 (snapshot20260912), Blood Magic3.4.0-46-alpha, Thaumic Tinkerer1.0.0, AE2 19.2.18, Compact0.7.0 and EMI1.1.24. Optional integrations remain optional; this list records the tested versions, not full gameplay acceptance or availability of the historical blocked integrations.

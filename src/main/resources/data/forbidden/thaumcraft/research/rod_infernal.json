@@ -23,7 +23,7 @@
     "forbidden.research_page.ROD_infernal.2"
   ],
   "recipe_pages": [
-    "WandRodInfernal"
+    "forbidden:wand_rod_infernal"
   ],
   "page_order": [
     "forbidden.research_page.ROD_infernal.1",
@@ -43,5 +43,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "WandRodInfernal": [
+      "forbidden:wand_rod_infernal"
+    ]
+  }
 }

@@ -9,13 +9,10 @@
       "tag": "c:dyes/black"
     },
     {
-      "item": "thaumcraft:balanced_shard"
+      "tag": "forbidden:research_shards"
     },
     {
-      "item": "thaumcraft:balanced_shard"
-    },
-    {
-      "item": "thaumcraft:balanced_shard"
+      "tag": "forbidden:research_shards"
     }
   ],
   "vis": {

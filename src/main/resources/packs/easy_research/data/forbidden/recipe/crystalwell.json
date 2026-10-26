@@ -1,0 +1,32 @@
+{
+  "type": "thaumcraft:arcane_shapeless",
+  "research": "forbidden:crystalwell",
+  "ingredients": [
+    {
+      "item": "thaumcraft:scribing_tools"
+    },
+    {
+      "tag": "c:dyes/black"
+    },
+    {
+      "item": "thaumcraft:mixed_crystal_cluster"
+    },
+    {
+      "item": "thaumcraft:balanced_shard"
+    },
+    {
+      "item": "thaumcraft:balanced_shard"
+    },
+    {
+      "item": "thaumcraft:balanced_shard"
+    }
+  ],
+  "vis": {
+    "aqua": 1,
+    "ordo": 1
+  },
+  "result": {
+    "id": "forbidden:crystalwell",
+    "count": 1
+  }
+}

@@ -20,15 +20,15 @@
   "row": -7,
   "text_pages": [
     "forbidden.research_page.FORK.1",
-    "WRATHCAGE"
+    "forbidden.research_page.FORK.wc"
   ],
   "recipe_pages": [
-    "Fork"
+    "forbidden:fork"
   ],
   "page_order": [
     "forbidden.research_page.FORK.1",
-    "WRATHCAGE",
-    "Fork"
+    "Fork",
+    "forbidden.research_page.FORK.wc"
   ],
   "icon": "forbidden:diabolist_fork",
   "virtual": false,
@@ -41,7 +41,13 @@
   "item_triggers": [],
   "entity_triggers": [],
   "aspect_triggers": [],
-  "page_requirements": {},
+  "page_requirements": {
+    "forbidden.research_page.FORK.wc": "forbidden:wrathcage"
+  },
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "Fork": [
+      "forbidden:fork"
+    ]
+  }
 }

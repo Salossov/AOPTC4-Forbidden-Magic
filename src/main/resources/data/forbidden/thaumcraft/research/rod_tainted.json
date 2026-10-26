@@ -22,7 +22,7 @@
     "forbidden.research_page.ROD_tainted.1"
   ],
   "recipe_pages": [
-    "WandRodTainted"
+    "forbidden:wand_rod_tainted"
   ],
   "page_order": [
     "forbidden.research_page.ROD_tainted.1",
@@ -41,5 +41,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "WandRodTainted": [
+      "forbidden:wand_rod_tainted"
+    ]
+  }
 }

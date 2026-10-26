@@ -20,7 +20,7 @@
     "forbidden.research_page.CRYSTALWELL.1"
   ],
   "recipe_pages": [
-    "Crystalwell"
+    "forbidden:crystalwell"
   ],
   "page_order": [
     "forbidden.research_page.CRYSTALWELL.1",
@@ -39,5 +39,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "Crystalwell": [
+      "forbidden:crystalwell"
+    ]
+  }
 }

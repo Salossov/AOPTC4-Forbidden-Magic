@@ -23,10 +23,10 @@
     "forbidden.research_page.MORPHTOOLS.1"
   ],
   "recipe_pages": [
-    "MorphPick",
-    "MorphSword",
-    "MorphShovel",
-    "MorphAxe"
+    "forbidden:morph_pickaxe",
+    "forbidden:morph_sword",
+    "forbidden:morph_shovel",
+    "forbidden:morph_axe"
   ],
   "page_order": [
     "forbidden.research_page.MORPHTOOLS.1",
@@ -48,5 +48,18 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "MorphPick": [
+      "forbidden:morph_pickaxe"
+    ],
+    "MorphSword": [
+      "forbidden:morph_sword"
+    ],
+    "MorphShovel": [
+      "forbidden:morph_shovel"
+    ],
+    "MorphAxe": [
+      "forbidden:morph_axe"
+    ]
+  }
 }

@@ -22,7 +22,7 @@
     "forbidden.research_page.SKULLAXE.1"
   ],
   "recipe_pages": [
-    "SkullAxe"
+    "forbidden:skull_axe"
   ],
   "page_order": [
     "forbidden.research_page.SKULLAXE.1",
@@ -41,5 +41,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "SkullAxe": [
+      "forbidden:skull_axe"
+    ]
+  }
 }

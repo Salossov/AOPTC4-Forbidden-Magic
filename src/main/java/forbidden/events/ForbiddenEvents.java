@@ -535,9 +535,9 @@ public final class ForbiddenEvents {
                 }
                 var customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
                 if (parts.rod().contains("blood") && customData.contains("ownerName")) {
-                    event.getToolTip().add(Component.literal("Current Owner: " + customData.getString("ownerName")).withStyle(ChatFormatting.RED));
+                    event.getToolTip().add(Component.translatable("tooltip.currentowner").append(" ").append(customData.getString("ownerName")).withStyle(ChatFormatting.RED));
                 }
-                if (parts.rod().contains("profane") && customData.contains("contract")) {
+                if (parts.rod().contains("profane")) {
                     event.getToolTip().add(Component.literal("Contract: " + customData.getInt("contract")).withStyle(ChatFormatting.DARK_RED));
                 }
             }

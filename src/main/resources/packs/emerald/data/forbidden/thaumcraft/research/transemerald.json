@@ -20,7 +20,7 @@
     "forbidden.research_page.TRANSEMERALD.1"
   ],
   "recipe_pages": [
-    "TransEmerald"
+    "forbidden:emerald_transmutation"
   ],
   "page_order": [
     "forbidden.research_page.TRANSEMERALD.1",
@@ -39,5 +39,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "TransEmerald": [
+      "forbidden:emerald_transmutation"
+    ]
+  }
 }

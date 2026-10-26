@@ -32,21 +32,18 @@ public final class ForbiddenWands {
         for (var aspect : thaumcraft.api.aspects.Aspect.all().values()) if (aspect.isPrimal()) WandApi.set(creativeStaff, aspect, WandApi.capacity(creativeStaff));
         output.accept(creativeStaff);
 
-        var bloodWand = new ItemStack(item);
-        WandApi.parts(bloodWand, new WandParts("forbidden:blood", "forbidden:alchemical"));
-        output.accept(bloodWand);
-
-        var bloodStaff = new ItemStack(staffItem);
-        WandApi.parts(bloodStaff, new WandParts("forbidden:blood_staff", "forbidden:alchemical"));
-        output.accept(bloodStaff);
-
-        var livingwoodWand = new ItemStack(item);
-        WandApi.parts(livingwoodWand, new WandParts("forbidden:livingwood", "forbidden:manasteel"));
-        output.accept(livingwoodWand);
-
-        var dreamwoodStaff = new ItemStack(staffItem);
-        WandApi.parts(dreamwoodStaff, new WandParts("forbidden:dreamwood_staff", "forbidden:elementium"));
-        output.accept(dreamwoodStaff);
+        if(BloodMagicCompat.isAvailable()&&forbidden.config.ForbiddenConfig.CROSS_WAND.get()){
+            for(String rod:java.util.List.of("blood","blood_staff")){
+                var stack=new ItemStack(rod.endsWith("_staff")?staffItem:item);
+                WandApi.parts(stack,new WandParts("forbidden:"+rod,"forbidden:alchemical"));output.accept(stack);
+            }
+        }
+        if(BotaniaCompat.isAvailable()&&forbidden.config.ForbiddenConfig.CROSS_WAND.get()){
+            for(String rod:java.util.List.of("livingwood","dreamwood","dreamwood_staff")){
+                var stack=new ItemStack(rod.endsWith("_staff")?staffItem:item);
+                WandApi.parts(stack,new WandParts("forbidden:"+rod,"forbidden:"+(rod.equals("livingwood")?"manasteel":"elementium")));output.accept(stack);
+            }
+        }
     }
     private ForbiddenWands(){}
 }

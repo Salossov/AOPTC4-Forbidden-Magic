@@ -464,7 +464,7 @@ public final class P04BloodMagicCheck {
                 "bloodwell", "bloodrapier", "eldritch_orb", "bloodthorn"
         );
         for (String r : researches) {
-            String pack = r.equals("bloodthorn") ? "bloodthorn" : "bloodmagic";
+            String pack = r.equals("bloodthorn") ? "bloodthorn" : (r.startsWith("rod_")||r.startsWith("cap_")?"bloodmagic_wands":"bloodmagic");
             String path = "/packs/" + pack + "/data/forbidden/thaumcraft/research/" + r + ".json";
             var stream = P04BloodMagicCheck.class.getResourceAsStream(path);
             check(stream != null, "Blood Magic research exists: " + path);
@@ -481,7 +481,7 @@ public final class P04BloodMagicCheck {
                 "altar_wand_rod_blood"
         );
         for (String rec : recipes) {
-            String path = "/packs/bloodmagic/data/forbidden/recipe/" + rec + ".json";
+            String path = "/packs/" + (rec.contains("wand_rod_")||rec.contains("wand_cap_")?"bloodmagic_wands":"bloodmagic") + "/data/forbidden/recipe/" + rec + ".json";
             var stream = P04BloodMagicCheck.class.getResourceAsStream(path);
             check(stream != null, "Blood Magic recipe exists: " + path);
             try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {

@@ -23,7 +23,7 @@
     "forbidden.research_page.TAINTSHOVEL.2"
   ],
   "recipe_pages": [
-    "TaintShovel"
+    "forbidden:taint_shovel"
   ],
   "page_order": [
     "forbidden.research_page.TAINTSHOVEL.1",
@@ -43,5 +43,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "TaintShovel": [
+      "forbidden:taint_shovel"
+    ]
+  }
 }

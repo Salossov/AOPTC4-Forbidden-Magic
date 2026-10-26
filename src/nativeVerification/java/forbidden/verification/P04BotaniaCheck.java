@@ -476,7 +476,7 @@ public final class P04BotaniaCheck {
                 "cap_elementium", "cap_terrasteel", "euclidaisy", "whisperweed", "tainthistle"
         );
         for (String r : researches) {
-            String path = "/packs/botania/data/forbidden/thaumcraft/research/" + r + ".json";
+            String path = "/packs/" + (r.startsWith("rod_")||r.startsWith("cap_")?"botania_wands":"botania") + "/data/forbidden/thaumcraft/research/" + r + ".json";
             var stream = P04BotaniaCheck.class.getResourceAsStream(path);
             check(stream != null, "Botania research exists: " + path);
             try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
@@ -494,7 +494,7 @@ public final class P04BotaniaCheck {
                 "wand_cap_terrasteel", "euclidaisy", "whisperweed", "tainthistle", "botanist_emblem"
         );
         for (String rec : recipes) {
-            String path = "/packs/botania/data/forbidden/recipe/" + rec + ".json";
+            String path = "/packs/" + (rec.contains("wand_rod_")||rec.contains("wand_cap_")?"botania_wands":"botania") + "/data/forbidden/recipe/" + rec + ".json";
             var stream = P04BotaniaCheck.class.getResourceAsStream(path);
             check(stream != null, "Botania recipe exists: " + path);
             try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {

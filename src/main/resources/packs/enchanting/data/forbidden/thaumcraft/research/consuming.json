@@ -20,7 +20,7 @@
     "forbidden.research_page.CONSUMING.1"
   ],
   "recipe_pages": [
-    "Consuming"
+    "forbidden:enchant_consuming"
   ],
   "page_order": [
     "forbidden.research_page.CONSUMING.1",
@@ -39,5 +39,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "Consuming": [
+      "forbidden:enchant_consuming"
+    ]
+  }
 }

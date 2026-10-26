@@ -21,7 +21,7 @@
     "forbidden.research_page.CORRUPTING.1"
   ],
   "recipe_pages": [
-    "Corrupting"
+    "forbidden:enchant_corrupting"
   ],
   "page_order": [
     "forbidden.research_page.CORRUPTING.1",
@@ -40,5 +40,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "Corrupting": [
+      "forbidden:enchant_corrupting"
+    ]
+  }
 }

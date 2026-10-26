@@ -22,7 +22,7 @@
     "forbidden.research_page.VOIDTOUCHED.1"
   ],
   "recipe_pages": [
-    "Voidtouched"
+    "forbidden:enchant_voidtouched"
   ],
   "page_order": [
     "forbidden.research_page.VOIDTOUCHED.1",
@@ -41,5 +41,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "Voidtouched": [
+      "forbidden:enchant_voidtouched"
+    ]
+  }
 }

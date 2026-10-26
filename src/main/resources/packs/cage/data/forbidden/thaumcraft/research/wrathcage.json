@@ -26,8 +26,8 @@
     "forbidden.research_page.WRATHCAGE.3"
   ],
   "recipe_pages": [
-    "WrathCage",
-    "MobCrystal"
+    "forbidden:wrath_cage",
+    "forbidden:mob_crystal"
   ],
   "page_order": [
     "forbidden.research_page.WRATHCAGE.1",
@@ -49,5 +49,12 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "WrathCage": [
+      "forbidden:wrath_cage"
+    ],
+    "MobCrystal": [
+      "forbidden:mob_crystal"
+    ]
+  }
 }

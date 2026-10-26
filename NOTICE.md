@@ -6,6 +6,6 @@ This is an unofficial port, not an endorsement by the original authors.
 
 The original project LICENSE states WTFPL version 2. Original Botania-derived
 flower source headers additionally credit Vazkii and state CC BY-NC-SA 3.0;
-retain those headers and terms when adapting that code. The Botania flower
-implementations remain outside this first implementation batch. Third-party
+retain those headers and terms when adapting that code. The adapted Botania flower
+implementations retain their original source headers and applicable terms. Third-party
 libraries are not redistributed in this addon.

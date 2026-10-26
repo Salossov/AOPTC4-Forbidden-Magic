@@ -66,20 +66,5 @@ public final class ForbiddenWandEvents {
         }
     }
 
-    @SubscribeEvent
-    public static void onItemTooltip(ItemTooltipEvent event) {
-        ItemStack stack = event.getItemStack();
-        if (WandApi.kind(stack) == WandApi.Kind.NONE) return;
-        var parts = WandApi.parts(stack);
-        String rod = parts.rod();
-        if (rod.startsWith("forbidden:neutronium") || rod.equals("neutronium")) {
-            event.getToolTip().add(Component.translatable("tooltip.creativeonly"));
-        } else if (rod.startsWith("forbidden:profane") || rod.equals("profane")) {
-            var customData = stack.getOrDefault(DataComponents.CUSTOM_DATA, CustomData.EMPTY).copyTag();
-            int contract = customData.getInt("contract");
-            event.getToolTip().add(Component.literal("Contract: " + contract));
-        }
-    }
-
     private ForbiddenWandEvents() {}
 }

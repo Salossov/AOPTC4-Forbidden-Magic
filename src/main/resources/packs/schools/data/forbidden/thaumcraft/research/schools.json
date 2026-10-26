@@ -17,7 +17,7 @@
   "page_order": [
     "forbidden.research_page.SCHOOLS.1"
   ],
-  "icon": "forbidden:textures/misc/schools.png",
+  "icon": "minecraft:enchanting_table",
   "virtual": false,
   "round": true,
   "stub": true,

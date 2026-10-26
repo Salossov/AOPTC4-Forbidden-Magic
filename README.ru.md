@@ -70,3 +70,8 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verification\Test-Fm
 - **Лицензия:** WTFPL-2.0 (см. `LICENSE`).
 - **Авторы:** Исходный мод Forbidden Magic 0.575 создан SpitefulFox при участии контрибьюторов (см. `NOTICE.md`).
 - **Состав JAR:** Выпускной JAR содержит исключительно классы и ресурсы `main` и `client`. Все тестовые пакеты (`rules`, `nativeVerification`) и классы ядра строго отфильтрованы.
+
+
+### Tested optional dependency set (2026-10-26)
+
+NeoForge21.1.252 / Java21; local Thaumcraft1.0.0 and AOP UI0.7.0, Curios9.5.1+1.21.1. The isolated combined test set also contains Botania456 (snapshot20260912), Blood Magic3.4.0-46-alpha, Thaumic Tinkerer1.0.0, AE2 19.2.18, Compact0.7.0 and EMI1.1.24. Optional integrations remain optional; this list records the tested versions, not full gameplay acceptance or availability of the historical blocked integrations.

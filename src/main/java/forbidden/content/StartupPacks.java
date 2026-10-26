@@ -14,6 +14,8 @@ public final class StartupPacks {
         if(ForbiddenConfig.ENCHANTING.get())add(event,"enchanting");
         if(ForbiddenConfig.ENCHANTING.get()&&ForbiddenConfig.GREEDY.get())add(event,"greedy");
         if(ForbiddenConfig.WRATH_CAGE.get())add(event,"cage");
+        if(ForbiddenConfig.WRATH_CAGE.get()&&ForbiddenConfig.WRATH_COST.get()<=0)add(event,"free_cage");
+        if(thaumcraft.api.research.ResearchApi.serverEasyMode())add(event,"easy_research");
         if(ForbiddenConfig.GLUTTONY.get()!=1)add(event,"gluttony");
         if(ForbiddenConfig.GLUTTONY.get()==2)add(event,"gluttony_hard");
         if(ForbiddenConfig.EMERALD_TRANSMUTATION.get())add(event,"emerald");
@@ -23,6 +25,11 @@ public final class StartupPacks {
         if(ForbiddenConfig.CROSS_MOD.get()&&ForbiddenConfig.BOTANIA.get()&&net.neoforged.fml.ModList.get().isLoaded("botania"))add(event,"botania");
         if(ForbiddenConfig.CROSS_MOD.get()&&ForbiddenConfig.BLOOD_MAGIC.get()&&net.neoforged.fml.ModList.get().isLoaded("bloodmagic"))add(event,"bloodmagic");
         if(forbidden.compat.botania.BotaniaCompat.isAvailable()&&forbidden.compat.bloodmagic.BloodMagicCompat.isAvailable())add(event,"bloodthorn");
+        if(forbidden.compat.tinkerer.TinkererCompat.isAvailable())add(event,"tinkerer");
+        if(ForbiddenConfig.CROSS_WAND.get()){
+            if(forbidden.compat.botania.BotaniaCompat.isAvailable())add(event,"botania_wands");
+            if(forbidden.compat.bloodmagic.BloodMagicCompat.isAvailable())add(event,"bloodmagic_wands");
+        }
     }
     private static void add(AddPackFindersEvent event,String name){event.addPackFinders(ResourceLocation.fromNamespaceAndPath("forbidden","packs/"+name),event.getPackType(),Component.literal("Forbidden Magic: "+name),PackSource.BUILT_IN,true,Pack.Position.TOP);}
     private StartupPacks(){}

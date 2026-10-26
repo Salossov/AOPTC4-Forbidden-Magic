@@ -25,12 +25,46 @@ import net.neoforged.neoforge.client.model.data.*;
 
 @EventBusSubscriber(modid="forbidden",bus=EventBusSubscriber.Bus.MOD,value=Dist.CLIENT)
 public final class P01Models {
+    private static final java.util.Map<String,String> RESEARCH_PREFIXES=java.util.Map.ofEntries(
+        java.util.Map.entry("forbidden:bloodmagic","[BM] "),
+        java.util.Map.entry("forbidden:bloodrapier","[BM] "),
+        java.util.Map.entry("forbidden:bloodwell","[BM] "),
+        java.util.Map.entry("forbidden:botany","[B] "),
+        java.util.Map.entry("forbidden:cap_alchemical","[BM] "),
+        java.util.Map.entry("forbidden:cap_elementium","[B] "),
+        java.util.Map.entry("forbidden:cap_manasteel","[B] "),
+        java.util.Map.entry("forbidden:cap_terrasteel","[B] "),
+        java.util.Map.entry("forbidden:cap_vinteum","[AM2] "),
+        java.util.Map.entry("forbidden:eldritch_orb","[BM] "),
+        java.util.Map.entry("forbidden:eldritchorb","[BM] "),
+        java.util.Map.entry("forbidden:euclidaisy","[B] "),
+        java.util.Map.entry("forbidden:rod_blood","[BM] "),
+        java.util.Map.entry("forbidden:rod_blood_staff","[BM] "),
+        java.util.Map.entry("forbidden:rod_dreamwood_staff","[B] "),
+        java.util.Map.entry("forbidden:rod_livingwood","[B] "),
+        java.util.Map.entry("forbidden:rod_witchwood","[AM2] "),
+        java.util.Map.entry("forbidden:rod_witchwood_staff","[AM2] "),
+        java.util.Map.entry("forbidden:tainthistle","[B] "),
+        java.util.Map.entry("forbidden:whisperweed","[B] ")
+    );
     private static final ModelProperty<BlockPos> POSITION=new ModelProperty<>();
     private static ResourceLocation id(String path){return ResourceLocation.fromNamespaceAndPath("forbidden",path);}
 
     @SubscribeEvent
     public static void client(FMLClientSetupEvent event){
         event.enqueueWork(()->{
+            thaumcraft.api.client.ResearchTextFormatters.register("forbidden",research->{
+                var text=net.minecraft.network.chat.Component.translatable("tc.research_text."+research.key());
+                if(!forbidden.config.ForbiddenConfig.TAG_RESEARCH.get())return text;
+                String key=research.key();
+                String integration=RESEARCH_PREFIXES.getOrDefault(research.key(),"");
+                return net.minecraft.network.chat.Component.literal("[FM] "+integration).append(text);
+            });
+            // ItemDiabolistFork.registerIcons selects the original Spork texture at startup.
+            net.minecraft.client.renderer.item.ItemProperties.register(
+                ForbiddenTools.DIABOLIST_FORK.get(), id("spork"),
+                (stack,level,entity,seed)->forbidden.config.ForbiddenConfig.SPORK.get()?1:0
+            );
             if(ForbiddenContent.MOB_CRYSTAL!=null) {
                 net.minecraft.client.renderer.item.ItemProperties.register(
                     ForbiddenContent.MOB_CRYSTAL.get(),
@@ -56,9 +90,9 @@ public final class P01Models {
             var morph = stack.get(ForbiddenComponents.MORPH.get());
             int phase = morph != null ? morph.phase() : 0;
             return switch (phase) {
-                case 1 -> 0x0010CC;
-                case 2 -> 0xE5DA00;
-                default -> 0x980000;
+                case 1 -> 0xFF0010CC;
+                case 2 -> 0xFFE5DA00;
+                default -> 0xFF980000;
             };
         },
         ForbiddenTools.MORPH_PICKAXE.get(),

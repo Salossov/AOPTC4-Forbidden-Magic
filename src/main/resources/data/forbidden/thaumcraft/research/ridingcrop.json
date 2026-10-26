@@ -14,7 +14,7 @@
     "forbidden.research_page.RIDINGCROP.1"
   ],
   "recipe_pages": [
-    "RidingCrop"
+    "forbidden:riding_crop"
   ],
   "page_order": [
     "forbidden.research_page.RIDINGCROP.1",
@@ -33,5 +33,9 @@
   "aspect_triggers": [],
   "page_requirements": {},
   "special": false,
-  "recipe_groups": {}
+  "recipe_groups": {
+    "RidingCrop": [
+      "forbidden:riding_crop"
+    ]
+  }
 }
