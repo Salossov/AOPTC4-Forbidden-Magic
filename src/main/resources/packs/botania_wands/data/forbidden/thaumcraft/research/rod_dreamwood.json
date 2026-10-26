@@ -2,28 +2,18 @@
   "kind": "research",
   "key": "forbidden:rod_dreamwood",
   "category": "forbidden:forbidden",
-  "parents": [
-    "forbidden:rod_livingwood"
-  ],
+  "parents": [],
   "hidden_parents": [],
-  "aspects": {
-    "arbor": 8,
-    "praecantatio": 4,
-    "alienis": 6
-  },
-  "complexity": 2,
+  "aspects": {},
+  "complexity": 0,
   "auto_unlock": false,
   "concealed": false,
-  "column": 1,
-  "row": 4,
+  "column": 0,
+  "row": 0,
   "text_pages": [],
-  "recipe_pages": [
-    "forbidden:wand_rod_dreamwood"
-  ],
-  "page_order": [
-    "forbidden:wand_rod_dreamwood"
-  ],
-  "icon": "forbidden:wand_rod_dreamwood",
+  "recipe_pages": [],
+  "page_order": [],
+  "icon": "",
   "virtual": true,
   "round": false,
   "stub": false,

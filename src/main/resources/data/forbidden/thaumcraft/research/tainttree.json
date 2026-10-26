@@ -24,12 +24,14 @@
   ],
   "recipe_pages": [
     "forbidden:taint_sapling",
-    "forbidden:taint_planks"
+    "forbidden:taint_planks",
+    "forbidden:taint_coal"
   ],
   "page_order": [
     "forbidden.research_page.TAINTTREE.1",
     "TaintTree",
-    "TaintPlank"
+    "TaintPlank",
+    "forbidden:taint_coal"
   ],
   "icon": "forbidden:taint_sapling",
   "virtual": false,
