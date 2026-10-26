@@ -219,6 +219,11 @@
       },
       {
         "type": "projecte:item",
+        "id": "thaumcraft:crucible",
+        "emc_value": 1792
+      },
+      {
+        "type": "projecte:item",
         "id": "thaumcraft:table",
         "emc_value": 28
       },
