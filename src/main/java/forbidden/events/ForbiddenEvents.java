@@ -122,7 +122,7 @@ public final class ForbiddenEvents {
 
         // 3. Corrupting: turns infused stone drops into sin shards.
         int corruptingLevel = DarkEnchantments.getLevel(tool, DarkEnchantments.CORRUPTING);
-        if (corruptingLevel > 0 && isInfusedStone(event.getState()) && rand.nextInt(3) == 1) {
+        if (corruptingLevel > 0 && isCorruptibleOre(event.getState()) && rand.nextInt(3) == 1) {
             List<ItemEntity> newDrops = new ArrayList<>();
             for (ItemEntity entity : event.getDrops()) {
                 ItemStack is = entity.getItem();
@@ -175,16 +175,15 @@ public final class ForbiddenEvents {
         return false;
     }
 
-    private static boolean isInfusedStone(BlockState state) {
-        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(state.getBlock());
-        return id.getNamespace().equals("thaumcraft") && id.getPath().contains("stone_")
-            || state.is(BlockTags.create(ResourceLocation.parse("c:ores/infused")))
-            || state.is(BlockTags.create(ResourceLocation.parse("thaumcraft:infused_stone")));
+    private static boolean isCorruptibleOre(BlockState state) {
+        // The release checks blockCustomOre by identity, including its cinnabar
+        // and amber variants. A name substring also matched unrelated masonry.
+        return state.is(BlockTags.create(ResourceLocation.parse("forbidden:corruptible_ores")));
     }
 
     private static boolean isThaumcraftShard(ItemStack stack) {
-        ResourceLocation id = BuiltInRegistries.ITEM.getKey(stack.getItem());
-        return id.getNamespace().equals("thaumcraft") && id.getPath().endsWith("_shard");
+        // The seven flattened variants of the release's itemShard.
+        return stack.is(TagKey.create(Registries.ITEM, ResourceLocation.parse("forbidden:research_shards")));
     }
 
     public static ItemStack getSinShard(RandomSource rand) {
@@ -266,30 +265,9 @@ public final class ForbiddenEvents {
     public static void onLivingDamage(LivingDamageEvent.Pre event) {
         LivingEntity victim = event.getEntity();
 
-        // Infernal wand immunity to wither and fire damage
-        if (victim instanceof Player player) {
-            ItemStack held = player.getMainHandItem();
-            if (WandApi.kind(held) != WandApi.Kind.NONE) {
-                var parts = WandApi.parts(held);
-                if (parts != null && parts.rod() != null && parts.rod().contains("infernal")) {
-                    var damageType = event.getSource().typeHolder().getRegisteredName();
-                    if (event.getSource().is(net.minecraft.tags.DamageTypeTags.IS_FIRE) || damageType.contains("wither")) {
-                        event.setNewDamage(0.0F);
-                        return;
-                    }
-                }
-                if (parts != null && parts.rod() != null && parts.rod().contains("tainted")) {
-                    var damageType = event.getSource().typeHolder().getRegisteredName();
-                    if (damageType.contains("taint") || damageType.contains("magic")) {
-                        for (int i = 0; i < 3; i++) {
-                            var primals = thaumcraft.api.aspects.Aspects.PRIMALS;
-                            var chosen = primals.get(player.getRandom().nextInt(primals.size()));
-                            WandApi.set(held, chosen, Math.min(WandApi.capacity(held), WandApi.stored(held, chosen) + 1));
-                        }
-                    }
-                }
-            }
-        }
+        // Defensive wand effects are handled once by ForbiddenWandEvents at
+        // LivingIncomingDamageEvent. Repeating them here charged tainted rods
+        // twice and also incorrectly charged them for ordinary magic damage.
 
         // Attacker processing
         if (event.getSource().getEntity() instanceof ServerPlayer player) {

@@ -122,17 +122,11 @@ public final class ToolEvents {
             }
         }
 
+        // The release adds this bonus independently of natural head drops.
         if (customSkull != null) {
-            boolean duplicate = event.getDrops().stream().anyMatch(e -> e.getItem().is(Items.PLAYER_HEAD));
-            if (!duplicate) {
-                event.getDrops().add(new ItemEntity(server, victim.getX(), victim.getY() + victim.getEyeHeight(), victim.getZ(), customSkull));
-            }
+            event.getDrops().add(new ItemEntity(server, victim.getX(), victim.getY() + victim.getEyeHeight(), victim.getZ(), customSkull));
         } else if (skullItem != null) {
-            final Item finalItem = skullItem;
-            boolean duplicate = event.getDrops().stream().anyMatch(e -> e.getItem().is(finalItem));
-            if (!duplicate) {
-                event.getDrops().add(new ItemEntity(server, victim.getX(), victim.getY() + victim.getEyeHeight(), victim.getZ(), new ItemStack(skullItem)));
-            }
+            event.getDrops().add(new ItemEntity(server, victim.getX(), victim.getY() + victim.getEyeHeight(), victim.getZ(), new ItemStack(skullItem)));
         }
     }
 
@@ -211,16 +205,6 @@ public final class ToolEvents {
                 .orElse(false);
             if (hasRing) {
                 player.getFoodData().eat(2, 2.0F);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onItemCrafted(PlayerEvent.ItemCraftedEvent event) {
-        if (event.getCrafting().is(ForbiddenTools.PRIMEWELL.get()) && event.getEntity() instanceof ServerPlayer player) {
-            Item pearl = BuiltInRegistries.ITEM.get(ResourceLocation.parse("thaumcraft:primal_pearl"));
-            if (pearl != Items.AIR) {
-                player.getInventory().placeItemBackInInventory(new ItemStack(pearl));
             }
         }
     }
