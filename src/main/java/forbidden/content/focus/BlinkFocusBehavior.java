@@ -141,7 +141,12 @@ public class BlinkFocusBehavior implements FocusBehavior {
                         player.serverLevel().sendParticles(ParticleTypes.FLAME, ex2, ey2, ez2, 1, 0, 0, 0, 0);
                     }
                     int dmg = 3 + 3 * potency;
-                    entity.hurt(player.damageSources().playerAttack(player), dmg);
+                    // Release uses EntityDamageSource("fireball", player).setFireDamage().
+                    // Keep fire immunity and damage-type hooks in the native pipeline.
+                    var fireball = player.registryAccess()
+                            .registryOrThrow(net.minecraft.core.registries.Registries.DAMAGE_TYPE)
+                            .getHolderOrThrow(net.minecraft.world.damagesource.DamageTypes.FIREBALL);
+                    entity.hurt(new net.minecraft.world.damagesource.DamageSource(fireball, player), dmg);
                     entity.igniteForSeconds(dmg);
                 }
             }

@@ -185,8 +185,8 @@ public final class P04BloodMagicCheck {
         WandRod bloodStaff = WandRod.rods.get("forbidden:blood_staff");
         check(bloodStaff != null, "forbidden:blood_staff registered");
         check(bloodStaff instanceof StaffRod, "blood_staff is instance of StaffRod");
-        check(bloodStaff.getCapacity() == 250, "blood staff capacity is 250");
-        check(bloodStaff.getCraftCost() == 25, "blood staff cost is 25");
+        check(bloodStaff.getCapacity() == 50, "release blood staff capacity is 50");
+        check(bloodStaff.getCraftCost() == 24, "release blood staff cost is 24");
         check("forbidden:rod_blood_staff".equals(bloodStaff.getResearch()), "blood staff research is forbidden:rod_blood_staff");
         check(WandRod.rods.get("blood_staff") == bloodStaff, "blood staff also accessible via 'blood_staff'");
 

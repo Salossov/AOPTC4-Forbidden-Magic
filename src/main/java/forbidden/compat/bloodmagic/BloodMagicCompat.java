@@ -65,13 +65,13 @@ public final class BloodMagicCompat {
         );
         WandRod.rods.putIfAbsent("blood", blood);
 
-        // C06: Blood Staff (cap 250, cost 25, BloodStaffUpdate)
+        // Release ForbiddenItems: blood staff capacity 50, crafting cost 24.
         var bloodStaff = new StaffRod(
                 ResourceLocation.fromNamespaceAndPath("forbidden", "blood"),
                 "forbidden:rod_blood_staff",
-                250,
+                50,
                 () -> new ItemStack(ForbiddenContent.item("wand_rod_blood_staff")),
-                25,
+                24,
                 BloodStaffUpdate.INSTANCE
         );
         WandRod.rods.putIfAbsent("blood_staff", bloodStaff);
