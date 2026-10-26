@@ -88,6 +88,14 @@ public final class BloodMagicBridge {
         return network != null ? network.getCurrentEssence() : 0;
     }
 
+    /** Legacy recharge uses the stack's bound owner, accepting any positive partial debit. */
+    private static int syphonBoundNetwork(ItemStack stack, int amount) {
+        Binding binding = Binding.fromStack(stack);
+        if (binding == null) return 0;
+        SoulNetwork network = NetworkHelper.getSoulNetwork(binding);
+        return network == null ? 0 : network.syphon(amount);
+    }
+
     public static void bindItem(ItemStack stack, Player player) {
         if (stack == null || stack.isEmpty() || player == null) return;
         Binding binding = new Binding(player.getGameProfile().getId(), player.getGameProfile().getName());
@@ -147,7 +155,7 @@ public final class BloodMagicBridge {
                 int lpCost = cost * toAdd;
                 if (player.isCreative()) {
                     WandApi.set(wand, aspect, WandApi.stored(wand, aspect) + toAdd);
-                } else if (syphonFromPlayerNetwork(player, lpCost)) {
+                } else if (syphonBoundNetwork(wand, lpCost) > 0) {
                     WandApi.set(wand, aspect, WandApi.stored(wand, aspect) + toAdd);
                 } else if (player.getHealth() > 6.0f) {
                     player.setHealth(player.getHealth() - 3.0f);
@@ -176,7 +184,7 @@ public final class BloodMagicBridge {
                 int lpCost = cost * toAdd;
                 if (player.isCreative()) {
                     WandApi.set(staff, aspect, WandApi.stored(staff, aspect) + toAdd);
-                } else if (syphonFromPlayerNetwork(player, lpCost)) {
+                } else if (syphonBoundNetwork(staff, lpCost) > 0) {
                     WandApi.set(staff, aspect, WandApi.stored(staff, aspect) + toAdd);
                 } else if (player.getHealth() > 3.0f) {
                     player.setHealth(player.getHealth() - 3.0f);
