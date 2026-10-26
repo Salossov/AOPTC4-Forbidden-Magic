@@ -5,11 +5,21 @@
     "item": "forbidden:wand_cap_elementium_inert"
   },
   "components": [
-    { "item": "botania:pixie_dust" },
-    { "item": "botania:rune_of_water" },
-    { "item": "botania:rune_of_fire" },
-    { "item": "botania:rune_of_earth" },
-    { "item": "botania:rune_of_air" }
+    {
+      "item": "botania:gaia_spirit"
+    },
+    {
+      "item": "botania:rune_of_water"
+    },
+    {
+      "item": "botania:rune_of_fire"
+    },
+    {
+      "item": "botania:rune_of_earth"
+    },
+    {
+      "item": "botania:rune_of_air"
+    }
   ],
   "aspects": {
     "terra": 18,

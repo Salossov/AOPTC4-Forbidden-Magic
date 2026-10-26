@@ -2,14 +2,30 @@
   "type": "thaumcraft:arcane_shapeless",
   "research": "forbidden:whisperweed",
   "ingredients": [
-    { "item": "minecraft:short_grass" },
-    { "item": "forbidden:manasteel_nugget" },
-    { "item": "botania:mana_diamond" },
-    { "item": "thaumcraft:amber" },
-    { "item": "botania:gray_mystical_petal" },
-    { "item": "botania:magenta_mystical_petal" },
-    { "item": "botania:rune_of_greed" },
-    { "item": "thaumcraft:tallow" }
+    {
+      "item": "botania:gray_mystical_petal"
+    },
+    {
+      "item": "botania:mana_diamond"
+    },
+    {
+      "item": "botania:purple_mystical_petal"
+    },
+    {
+      "item": "botania:redstone_root"
+    },
+    {
+      "item": "botania:rune_of_envy"
+    },
+    {
+      "item": "minecraft:short_grass"
+    },
+    {
+      "item": "thaumcraft:amber"
+    },
+    {
+      "item": "thaumcraft:knowledge_fragment"
+    }
   ],
   "vis": {
     "aer": 10,

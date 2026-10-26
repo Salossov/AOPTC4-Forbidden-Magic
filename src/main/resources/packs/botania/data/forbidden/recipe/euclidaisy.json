@@ -2,16 +2,30 @@
   "type": "thaumcraft:infusion",
   "research": "forbidden:euclidaisy",
   "input": {
-    "item": "botania:cyan_mystical_flower"
+    "item": "botania:pink_mystical_flower"
   },
   "components": [
-    { "item": "thaumcraft:salis_mundus" },
-    { "item": "botania:mana_pearl" },
-    { "item": "botania:mana_diamond" },
-    { "item": "botania:cyan_mystical_petal" },
-    { "item": "botania:cyan_mystical_petal" },
-    { "item": "botania:rune_of_autumn" },
-    { "item": "botania:rune_of_winter" }
+    {
+      "item": "thaumcraft:salis_mundus"
+    },
+    {
+      "item": "botania:mana_pearl"
+    },
+    {
+      "item": "botania:redstone_root"
+    },
+    {
+      "item": "botania:pink_mystical_petal"
+    },
+    {
+      "item": "botania:pink_mystical_petal"
+    },
+    {
+      "item": "botania:rune_of_sloth"
+    },
+    {
+      "item": "botania:rune_of_greed"
+    }
   ],
   "aspects": {
     "auram": 8,

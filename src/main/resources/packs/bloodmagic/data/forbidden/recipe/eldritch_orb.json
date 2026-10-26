@@ -5,10 +5,36 @@
     "item": "bloodmagic:archmagebloodorb"
   },
   "components": [
-    { "item": "thaumcraft:primal_pearl" },
-    { "item": "thaumcraft:void_seed" },
-    { "item": "minecraft:nether_star" },
-    { "item": "forbidden:taint_coal" }
+    {
+      "item": "thaumcraft:primal_pearl"
+    },
+    {
+      "item": "thaumcraft:eldritch_eye"
+    },
+    {
+      "item": "thaumcraft:balanced_shard"
+    },
+    {
+      "item": "thaumcraft:void_ingot"
+    },
+    {
+      "item": "thaumcraft:void_ingot"
+    },
+    {
+      "item": "minecraft:nether_star"
+    },
+    {
+      "item": "thaumcraft:void_ingot"
+    },
+    {
+      "item": "thaumcraft:void_ingot"
+    },
+    {
+      "item": "thaumcraft:balanced_shard"
+    },
+    {
+      "item": "thaumcraft:eldritch_eye"
+    }
   ],
   "aspects": {
     "victus": 64,
