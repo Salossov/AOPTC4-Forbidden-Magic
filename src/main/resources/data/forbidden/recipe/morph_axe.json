@@ -2,31 +2,31 @@
   "type": "thaumcraft:infusion",
   "research": "forbidden:morphtools",
   "input": {
-    "item": "thaumcraft:elemental_axe"
+    "item": "thaumcraft:thaumium_axe"
   },
   "components": [
     {
-      "item": "forbidden:sloth_shard"
+      "item": "forbidden:envy_shard"
     },
     {
-      "item": "forbidden:sloth_shard"
+      "item": "forbidden:envy_shard"
     },
     {
-      "item": "thaumcraft:fire_shard"
+      "item": "minecraft:diamond"
     },
     {
-      "item": "thaumcraft:air_shard"
+      "item": "thaumcraft:quicksilver"
     },
     {
-      "item": "minecraft:quartz"
+      "item": "thaumcraft:silverwood_log"
     }
   ],
   "aspects": {
-    "permutatio": 16,
-    "instrumentum": 8,
-    "arbor": 8
+    "permutatio": 32,
+    "forbidden:invidia": 16,
+    "instrumentum": 16
   },
-  "instability": 2,
+  "instability": 6,
   "result": {
     "id": "forbidden:morph_axe",
     "count": 1

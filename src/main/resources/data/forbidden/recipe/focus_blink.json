@@ -2,26 +2,33 @@
   "type": "thaumcraft:infusion",
   "research": "forbidden:focusblink",
   "input": {
-    "item": "thaumcraft:focus_warding"
+    "item": "minecraft:ender_pearl"
   },
   "components": [
     {
-      "item": "minecraft:ender_eye"
+      "item": "minecraft:quartz"
     },
     {
-      "item": "minecraft:ender_pearl"
+      "item": "forbidden:sloth_shard"
     },
     {
-      "item": "minecraft:ender_pearl"
+      "item": "minecraft:quartz"
+    },
+    {
+      "item": "forbidden:sloth_shard"
+    },
+    {
+      "item": "minecraft:quartz"
     },
     {
       "item": "forbidden:sloth_shard"
     }
   ],
   "aspects": {
-    "iter": 16,
-    "motus": 16,
-    "praecantatio": 8
+    "iter": 25,
+    "forbidden:infernus": 10,
+    "forbidden:desidia": 10,
+    "perditio": 25
   },
   "instability": 3,
   "result": {

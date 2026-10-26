@@ -12,21 +12,22 @@
       "item": "forbidden:lust_shard"
     },
     {
+      "item": "forbidden:lust_shard"
+    },
+    {
       "item": "minecraft:lead"
     },
     {
-      "item": "minecraft:leather"
-    },
-    {
-      "item": "minecraft:iron_bars"
+      "item": "thaumcraft:belt_blank"
     }
   ],
   "aspects": {
-    "forbidden:luxuria": 16,
-    "vinculum": 16,
-    "auram": 8
+    "forbidden:luxuria": 8,
+    "vinculum": 8,
+    "forbidden:infernus": 4,
+    "corpus": 4
   },
-  "instability": 2,
+  "instability": 1,
   "result": {
     "id": "forbidden:sub_collar",
     "count": 1

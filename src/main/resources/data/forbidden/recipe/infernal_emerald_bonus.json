@@ -1,0 +1,11 @@
+{
+  "type": "thaumcraft:infernal_bonus",
+  "ingredient": {
+    "item": "minecraft:emerald"
+  },
+  "result": {
+    "id": "forbidden:emerald_nugget",
+    "count": 1
+  },
+  "base_count": 0
+}
