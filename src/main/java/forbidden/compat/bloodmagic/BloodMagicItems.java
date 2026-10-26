@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -44,30 +45,38 @@ public final class BloodMagicItems {
 
     // Items
     public static final DeferredHolder<Item, Item> BLOODTHORN_ITEM = registerItem("bloodthorn", () -> new BlockItem(BLOODTHORN.get(), new Item.Properties()));
-    public static final DeferredHolder<Item, Item> BLOODWELL = registerItem("bloodwell", () -> {
+    public static final DeferredHolder<Item, Item> BLOODWELL = registerBloodMagicItem("bloodwell", () -> {
         if (BloodMagicCompat.isLoaded()) {
             return BloodMagicItemBridge.createBloodwell();
         }
         return new BaseBloodwellItem();
     });
-    public static final DeferredHolder<Item, Item> BOUNDWELL = registerItem("boundwell", () -> {
+    public static final DeferredHolder<Item, Item> BOUNDWELL = registerBloodMagicItem("boundwell", () -> {
         if (BloodMagicCompat.isLoaded()) {
             return BloodMagicItemBridge.createBoundwell();
         }
         return new BaseBoundwellItem();
     });
-    public static final DeferredHolder<Item, Item> BLOOD_RAPIER = registerItem("blood_rapier", () -> {
+    public static final DeferredHolder<Item, Item> BLOOD_RAPIER = registerBloodMagicItem("blood_rapier", () -> {
         if (BloodMagicCompat.isLoaded()) {
             return BloodMagicItemBridge.createBloodRapier();
         }
         return new BaseBloodRapierItem();
     });
-    public static final DeferredHolder<Item, Item> ELDRITCH_ORB = registerItem("eldritch_orb", () -> {
+    public static final DeferredHolder<Item, Item> ELDRITCH_ORB = registerBloodMagicItem("eldritch_orb", () -> {
         if (BloodMagicCompat.isLoaded()) {
             return BloodMagicItemBridge.createEldritchOrb();
         }
         return new BaseEldritchOrbItem();
     });
+
+    private static DeferredHolder<Item, Item> registerBloodMagicItem(String name, Supplier<Item> supplier) {
+        // The release registers these four items only inside the Compat.bm branch.
+        if (!BloodMagicCompat.isAvailable()) {
+            return DeferredHolder.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, name));
+        }
+        return registerItem(name, supplier);
+    }
 
     private static DeferredHolder<Item, Item> registerItem(String name, Supplier<Item> supplier) {
         var holder = ITEMS.register(name, supplier);
