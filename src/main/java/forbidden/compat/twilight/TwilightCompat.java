@@ -8,7 +8,7 @@ import thaumcraft.api.aspects.Aspect;
 
 /**
  * Integration for Twilight Forest (Task C10).
- * Safely registers all 36 mob entries for the Wrath Cage spawner according to 1.7.10 Compat.java.
+ * Registers the 35 mobs (36 source writes including the No Lust alternative).
  * Zero hard dependency: will never throw NoClassDefFoundError or NoSuchElementException if Twilight Forest is absent.
  */
 public final class TwilightCompat {
@@ -17,6 +17,7 @@ public final class TwilightCompat {
     public static boolean isAvailable() {
         try {
             return ForbiddenConfig.CROSS_MOD.get()
+                    && ForbiddenConfig.WRATH_CAGE.get()
                     && ForbiddenConfig.TWILIGHT_FOREST.get()
                     && isModLoaded(MODID);
         } catch (Throwable t) {
@@ -25,17 +26,13 @@ public final class TwilightCompat {
     }
 
     public static void init() {
-        // Safe registration into Wrath Cage catalog
-        try {
-            boolean noLust = ForbiddenConfig.NO_LUST.get();
-            for (TwilightMobEntry entry : TwilightCageMobRegistry.getAll()) {
-                Aspect aspect = entry.getAspect(noLust);
-                if (aspect != null) {
-                    CageMobCatalog.registerMob(entry.entityId(), aspect, entry.spawnCondition());
-                }
+        if (!isAvailable()) return;
+        boolean noLust = ForbiddenConfig.NO_LUST.get();
+        for (TwilightMobEntry entry : TwilightCageMobRegistry.getAll()) {
+            Aspect aspect = entry.getAspect(noLust);
+            if (aspect != null) {
+                CageMobCatalog.registerMob(entry.entityId(), aspect, entry.spawnCondition());
             }
-        } catch (Throwable t) {
-            // Guard against any runtime absence or reflection issues
         }
     }
 

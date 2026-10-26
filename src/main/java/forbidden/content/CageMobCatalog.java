@@ -2,6 +2,7 @@ package forbidden.content;
 
 import com.google.gson.*;
 import forbidden.config.ForbiddenConfig;
+import forbidden.compat.twilight.TwilightCompat;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -70,7 +71,7 @@ public final class CageMobCatalog {
             }
             if (row.has("config")) {
                 String cfg = row.get("config").getAsString();
-                if ("twilightForest".equals(cfg) && !ForbiddenConfig.TWILIGHT_FOREST.get()) continue;
+                if ("twilightForest".equals(cfg) && !TwilightCompat.isAvailable()) continue;
                 if ("specialMobs".equals(cfg) && !ForbiddenConfig.SPECIAL_MOBS.get()) continue;
             }
             var aspect = Aspect.getAspect(row.get("aspect").getAsString());
@@ -78,7 +79,11 @@ public final class CageMobCatalog {
             result.put(ResourceLocation.parse(row.get("mob").getAsString()), aspect);
         }
         synchronized (CageMobCatalog.class) {
-            result.putAll(DYNAMIC_ENTRIES);
+            DYNAMIC_ENTRIES.forEach((id, aspect) -> {
+                if (!TwilightCompat.MODID.equals(id.getNamespace()) || TwilightCompat.isAvailable()) {
+                    result.put(id, aspect);
+                }
+            });
         }
         return Collections.unmodifiableMap(result);
     }

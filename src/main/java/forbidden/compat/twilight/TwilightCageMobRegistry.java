@@ -6,7 +6,7 @@ import net.minecraft.resources.ResourceLocation;
 import thaumcraft.api.aspects.Aspect;
 
 /**
- * Registry of the 36 Twilight Forest mob entries for the Wrath Cage spawner.
+ * Registry of the 35 Twilight Forest mobs (36 source writes including the No Lust alternative) for the Wrath Cage spawner.
  * Faithfully mirrors 1.7.10 Compat.java (lines 343–381) with modern namespaced ResourceLocations.
  */
 public final class TwilightCageMobRegistry {
@@ -19,7 +19,7 @@ public final class TwilightCageMobRegistry {
         return new TwilightMobEntry(ResourceLocation.parse("twilightforest:" + path), defaultAspect, condition, true, noLustAspect);
     }
 
-    public static final TwilightMobEntry WILD_BOAR = mob("wild_boar", "bestia", SpawnCondition.GROUND);
+    public static final TwilightMobEntry WILD_BOAR = mob("boar", "bestia", SpawnCondition.GROUND);
     public static final TwilightMobEntry BIGHORN_SHEEP = mob("bighorn_sheep", "pannus", SpawnCondition.GROUND);
     public static final TwilightMobEntry WILD_DEER = mob("deer", "bestia", SpawnCondition.GROUND);
     public static final TwilightMobEntry REDCAP = mob("redcap", "metallum", SpawnCondition.GROUND);
@@ -31,7 +31,7 @@ public final class TwilightCageMobRegistry {
     public static final TwilightMobEntry PENGUIN = mob("penguin", "volatus", SpawnCondition.GROUND);
     public static final TwilightMobEntry TINY_BIRD = mob("tiny_bird", "volatus", SpawnCondition.AIR);
     public static final TwilightMobEntry FOREST_SQUIRREL = mob("squirrel", "bestia", SpawnCondition.GROUND);
-    public static final TwilightMobEntry FOREST_BUNNY = mob("bunny", "bestia", SpawnCondition.GROUND);
+    public static final TwilightMobEntry FOREST_BUNNY = mob("dwarf_rabbit", "bestia", SpawnCondition.GROUND);
     public static final TwilightMobEntry FOREST_RAVEN = mob("raven", "volatus", SpawnCondition.AIR);
     public static final TwilightMobEntry TWILIGHT_KOBOLD = mob("kobold", "lucrum", SpawnCondition.GROUND);
     public static final TwilightMobEntry MOSQUITO_SWARM = mob("mosquito_swarm", "forbidden:gula", SpawnCondition.AIR);
@@ -44,10 +44,10 @@ public final class TwilightCageMobRegistry {
     public static final TwilightMobEntry MAZE_SLIME = mob("maze_slime", "limus", SpawnCondition.GROUND);
     public static final TwilightMobEntry MIST_WOLF = mob("mist_wolf", "bestia", SpawnCondition.GROUND);
     public static final TwilightMobEntry KING_SPIDER = mob("king_spider", "forbidden:superbia", SpawnCondition.GROUND);
-    public static final TwilightMobEntry MINI_GHAST = mob("mini_ghast", "forbidden:infernus", SpawnCondition.AIR);
-    public static final TwilightMobEntry TOWER_GHAST = mob("tower_ghast", "forbidden:infernus", SpawnCondition.AIR);
-    public static final TwilightMobEntry TOWER_GOLEM = mob("tower_golem", "metallum", SpawnCondition.GROUND);
-    public static final TwilightMobEntry TOWER_TERMITE = mob("tower_termite", "praecantatio", SpawnCondition.GROUND);
+    public static final TwilightMobEntry MINI_GHAST = mob("carminite_ghastling", "forbidden:infernus", SpawnCondition.AIR);
+    public static final TwilightMobEntry TOWER_GHAST = mob("carminite_ghastguard", "forbidden:infernus", SpawnCondition.AIR);
+    public static final TwilightMobEntry TOWER_GOLEM = mob("carminite_golem", "metallum", SpawnCondition.GROUND);
+    public static final TwilightMobEntry TOWER_TERMITE = mob("towerwood_borer", "praecantatio", SpawnCondition.GROUND);
     public static final TwilightMobEntry UPPER_GOBLIN_KNIGHT = mob("upper_goblin_knight", "metallum", SpawnCondition.GROUND);
     public static final TwilightMobEntry LOWER_GOBLIN_KNIGHT = mob("lower_goblin_knight", "metallum", SpawnCondition.GROUND);
     public static final TwilightMobEntry HELMET_CRAB = mob("helmet_crab", "metallum", SpawnCondition.GROUND);

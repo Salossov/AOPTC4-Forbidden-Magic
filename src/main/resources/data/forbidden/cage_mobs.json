@@ -217,7 +217,7 @@
     "condition": "ground"
   },
   {
-    "mob": "twilightforest:wild_boar",
+    "mob": "twilightforest:boar",
     "aspect": "bestia",
     "config": "twilightForest",
     "condition": "ground"
@@ -289,7 +289,7 @@
     "condition": "ground"
   },
   {
-    "mob": "twilightforest:bunny",
+    "mob": "twilightforest:dwarf_rabbit",
     "aspect": "bestia",
     "config": "twilightForest",
     "condition": "ground"
@@ -375,25 +375,25 @@
     "condition": "ground"
   },
   {
-    "mob": "twilightforest:mini_ghast",
+    "mob": "twilightforest:carminite_ghastling",
     "aspect": "forbidden:infernus",
     "config": "twilightForest",
     "condition": "air"
   },
   {
-    "mob": "twilightforest:tower_ghast",
+    "mob": "twilightforest:carminite_ghastguard",
     "aspect": "forbidden:infernus",
     "config": "twilightForest",
     "condition": "air"
   },
   {
-    "mob": "twilightforest:tower_golem",
+    "mob": "twilightforest:carminite_golem",
     "aspect": "metallum",
     "config": "twilightForest",
     "condition": "ground"
   },
   {
-    "mob": "twilightforest:tower_termite",
+    "mob": "twilightforest:towerwood_borer",
     "aspect": "praecantatio",
     "config": "twilightForest",
     "condition": "ground"
