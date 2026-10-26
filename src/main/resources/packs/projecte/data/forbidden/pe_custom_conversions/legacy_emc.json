@@ -1,5 +1,5 @@
 {
-  "comment": "Forbidden Magic 0.575 active EE3 table, adapted to ProjectE. Coin EMC 227 approved on 2026-10-26.",
+  "comment": "Forbidden Magic 0.575 active EE3 table, adapted to ProjectE. Coin EMC 227 approved on 2026-10-26. Star Block derives EMC from its nine Nether Stars recipe, approved on 2026-10-26.",
   "values": {
     "before": [
       {
@@ -281,11 +281,6 @@
         "type": "projecte:item",
         "id": "thaumcraft:silverwood_leaves",
         "emc_value": 1
-      },
-      {
-        "type": "projecte:item",
-        "id": "forbidden:star_block",
-        "emc_value": 221184
       },
       {
         "type": "projecte:item",
