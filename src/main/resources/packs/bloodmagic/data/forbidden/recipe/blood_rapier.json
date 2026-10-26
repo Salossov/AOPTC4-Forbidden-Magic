@@ -5,11 +5,11 @@
     "item": "thaumcraft:void_sword"
   },
   "components": [
-    { "item": "thaumcraft:void_seed" },
+    { "item": "thaumcraft:taint_tendril" },
     { "item": "forbidden:wrath_shard" },
     { "item": "forbidden:gluttony_shard" },
     { "item": "minecraft:feather" },
-    { "item": "thaumcraft:quicksilver" }
+    { "item": "thaumcraft:amber" }
   ],
   "aspects": {
     "victus": 18,

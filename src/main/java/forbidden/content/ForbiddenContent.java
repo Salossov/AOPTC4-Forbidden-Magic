@@ -45,7 +45,11 @@ public final class ForbiddenContent {
 
     private static Supplier<Block> block(String id, Supplier<Block> factory) {
         var block = BLOCKS.register(id, factory);
-        item(id, () -> new BlockItem(block.get(), new Item.Properties()));
+        item(id, () -> switch (id) {
+            case "wrath_cage" -> new WarpingBlockItem(block.get(), new Item.Properties(), 5);
+            case "taint_sapling" -> new WarpingBlockItem(block.get(), new Item.Properties(), 1);
+            default -> new BlockItem(block.get(), new Item.Properties());
+        });
         return block;
     }
     private static Supplier<Item> item(String id, Supplier<Item> factory) {
