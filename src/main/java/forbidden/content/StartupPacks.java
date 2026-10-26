@@ -26,6 +26,7 @@ public final class StartupPacks {
         if(ForbiddenConfig.CROSS_MOD.get()&&ForbiddenConfig.BLOOD_MAGIC.get()&&net.neoforged.fml.ModList.get().isLoaded("bloodmagic"))add(event,"bloodmagic");
         if(forbidden.compat.botania.BotaniaCompat.isAvailable()&&forbidden.compat.bloodmagic.BloodMagicCompat.isAvailable())add(event,"bloodthorn");
         if(forbidden.compat.tinkerer.TinkererCompat.isAvailable())add(event,"tinkerer");
+        if(ForbiddenConfig.CROSS_MOD.get()&&ForbiddenConfig.EE3.get()&&net.neoforged.fml.ModList.get().isLoaded("projecte"))add(event,"projecte");
         if(ForbiddenConfig.CROSS_WAND.get()){
             if(forbidden.compat.botania.BotaniaCompat.isAvailable())add(event,"botania_wands");
             if(forbidden.compat.bloodmagic.BloodMagicCompat.isAvailable())add(event,"bloodmagic_wands");

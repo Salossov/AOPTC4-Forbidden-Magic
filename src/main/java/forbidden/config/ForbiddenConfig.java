@@ -42,7 +42,8 @@ public final class ForbiddenConfig {
         TINKERS_CONSTRUCT = b.comment("Legacy unused flag; does not enable invented integrations.").define("tinkersConstruct", true);
         SPECIAL_MOBS = b.define("specialMobs", true);
         TWILIGHT_FOREST = b.define("twilightForest", true);
-        EE3 = b.define("equivalentExchange3", true);
+        EE3 = b.comment("Legacy EMC integration switch; now supplies the release EMC table to optional ProjectE.")
+            .define("equivalentExchange3", true);
         b.pop().push("powerConverters");
         BLOOD_VIS = b.defineInRange("lpPerCentivis", 5, Integer.MIN_VALUE, Integer.MAX_VALUE);
         MANA_VIS = b.defineInRange("manaPerCentivis", 8, Integer.MIN_VALUE, Integer.MAX_VALUE);

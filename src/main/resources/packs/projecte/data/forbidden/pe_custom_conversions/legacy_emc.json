@@ -1,0 +1,332 @@
+{
+  "comment": "Forbidden Magic 0.575 active EE3 table, adapted to ProjectE. Coin EMC 227 approved on 2026-10-26.",
+  "values": {
+    "before": [
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:air_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:fire_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:water_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:earth_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:order_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:entropy_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:quicksilver",
+        "emc_value": 64
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:tallow",
+        "emc_value": 32
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:amber",
+        "emc_value": 32
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:enchanted_fabric",
+        "emc_value": 112
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:vis_filter",
+        "emc_value": 2056
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:knowledge_fragment",
+        "emc_value": 5120
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:taint_goo",
+        "emc_value": 32
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:taint_tendril",
+        "emc_value": 32
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:coin",
+        "emc_value": 227
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:zombie_brain",
+        "emc_value": 1024
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:wisp_essence",
+        "emc_value": 1024
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:mana_bean",
+        "emc_value": 32
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:crimson_sword",
+        "emc_value": 24580
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cultist_leader_helmet",
+        "emc_value": 49152
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cultist_leader_chestplate",
+        "emc_value": 73728
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cultist_leader_leggings",
+        "emc_value": 65536
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cultist_boots",
+        "emc_value": 1280
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cultist_plate_chestplate",
+        "emc_value": 2048
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cultist_plate_helmet",
+        "emc_value": 1280
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cultist_plate_leggings",
+        "emc_value": 1792
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cultist_robe_chestplate",
+        "emc_value": 2304
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cultist_robe_helmet",
+        "emc_value": 1536
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cultist_robe_leggings",
+        "emc_value": 2048
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:obsidian_totem",
+        "emc_value": 64
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:paving_stone_travel",
+        "emc_value": 392
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:paving_stone_warding",
+        "emc_value": 392
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:arcane_pedestal",
+        "emc_value": 264
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:arcane_stone",
+        "emc_value": 264
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:eldritch_stone",
+        "emc_value": 1
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:eldritch_rock",
+        "emc_value": 1
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:ancient_stone",
+        "emc_value": 1
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:eldritch_pillar",
+        "emc_value": 1
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:greatwood_sapling",
+        "emc_value": 64
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:silverwood_sapling",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:shimmerleaf",
+        "emc_value": 64
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:cinderpearl",
+        "emc_value": 768
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:vishroom",
+        "emc_value": 16
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:table",
+        "emc_value": 28
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:arcane_workbench",
+        "emc_value": 28
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:carved_eldritch_stone",
+        "emc_value": 4
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:air_crystal_cluster",
+        "emc_value": 1536
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:fire_crystal_cluster",
+        "emc_value": 1536
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:water_crystal_cluster",
+        "emc_value": 1536
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:earth_crystal_cluster",
+        "emc_value": 1536
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:order_crystal_cluster",
+        "emc_value": 1536
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:entropy_crystal_cluster",
+        "emc_value": 1536
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:mixed_crystal_cluster",
+        "emc_value": 1536
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:silverwood_log",
+        "emc_value": 64
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:greatwood_leaves",
+        "emc_value": 1
+      },
+      {
+        "type": "projecte:item",
+        "id": "thaumcraft:silverwood_leaves",
+        "emc_value": 1
+      },
+      {
+        "type": "projecte:item",
+        "id": "forbidden:star_block",
+        "emc_value": 221184
+      },
+      {
+        "type": "projecte:item",
+        "id": "forbidden:wrath_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "forbidden:envy_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "forbidden:taint_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "forbidden:pride_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "forbidden:lust_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "forbidden:sloth_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "forbidden:greed_shard",
+        "emc_value": 256
+      },
+      {
+        "type": "projecte:item",
+        "id": "forbidden:gluttony_shard",
+        "emc_value": 256
+      }
+    ]
+  }
+}

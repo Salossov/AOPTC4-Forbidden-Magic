@@ -23,7 +23,7 @@ public final class Compat {
     // Archival and deferred integration statuses
     public static final String SPECIAL_MOBS_STATUS = "Deferred: Special Mobs not ported; reserved for future porting";
     public static final String ARS_MAGICA_STATUS = "Blocked: target mod unavailable on 1.21.1 NeoForge (D8)";
-    public static final String EE3_STATUS = "Blocked: target mod unavailable on 1.21.1 NeoForge (D8)";
+    public static final String EE3_STATUS = "Replaced by optional ProjectE custom conversions on 1.21.1";
     public static final String NATURA_STATUS = "Blocked: target mod unavailable on 1.21.1 NeoForge (D8)";
     public static final String WITCHERY_STATUS = "Blocked: target mod unavailable on 1.21.1 NeoForge (D8)";
     public static final String TINKERS_CONSTRUCT_STATUS = "Blocked: target mod unavailable on 1.21.1 NeoForge (D8)";
