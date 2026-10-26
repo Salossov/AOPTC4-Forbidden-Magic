@@ -2,7 +2,7 @@
   "type": "thaumcraft:infusion",
   "research": "forbidden:cap_alchemical",
   "input": {
-    "item": "thaumcraft:iron_wand_cap"
+    "item": "thaumcraft:gold_wand_cap"
   },
   "components": [
     { "item": "bloodmagic:reagentbinding" },
