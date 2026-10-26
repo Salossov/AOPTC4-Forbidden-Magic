@@ -27,8 +27,8 @@
   ],
   "page_order": [
     "forbidden.research_page.ROD_infernal.1",
-    "forbidden.research_page.ROD_infernal.2",
-    "WandRodInfernal"
+    "WandRodInfernal",
+    "forbidden.research_page.ROD_infernal.2"
   ],
   "icon": "forbidden:wand_rod_infernal",
   "virtual": false,

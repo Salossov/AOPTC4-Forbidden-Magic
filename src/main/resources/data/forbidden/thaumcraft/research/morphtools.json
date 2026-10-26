@@ -35,7 +35,7 @@
     "MorphShovel",
     "MorphAxe"
   ],
-  "icon": "forbidden:morph_shovel",
+  "icon": "forbidden:morph_pickaxe",
   "virtual": false,
   "round": false,
   "stub": false,

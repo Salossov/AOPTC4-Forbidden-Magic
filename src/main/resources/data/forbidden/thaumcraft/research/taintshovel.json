@@ -27,8 +27,8 @@
   ],
   "page_order": [
     "forbidden.research_page.TAINTSHOVEL.1",
-    "forbidden.research_page.TAINTSHOVEL.2",
-    "TaintShovel"
+    "TaintShovel",
+    "forbidden.research_page.TAINTSHOVEL.2"
   ],
   "icon": "forbidden:taint_shovel",
   "virtual": false,

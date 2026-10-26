@@ -30,8 +30,8 @@
   ],
   "page_order": [
     "forbidden.research_page.WRATHCAGE.1",
-    "forbidden.research_page.WRATHCAGE.3",
     "WrathCage",
+    "forbidden.research_page.WRATHCAGE.3",
     "MobCrystal"
   ],
   "icon": "forbidden:wrath_cage",

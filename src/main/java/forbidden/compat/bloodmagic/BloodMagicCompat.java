@@ -76,13 +76,13 @@ public final class BloodMagicCompat {
         );
         WandRod.rods.putIfAbsent("blood_staff", bloodStaff);
 
-        // C06: Alchemical Cap (discount 15% -> 0.85f base modifier, cost 7)
+        // Release ForbiddenItems:144: 0.9 normally, 0.8 for Aqua, craft cost 7.
         var alchemical = new WandCap(
                 ResourceLocation.fromNamespaceAndPath("forbidden", "alchemical"),
                 "forbidden:cap_alchemical",
-                0.85f,
-                Set.of(),
-                0.0f,
+                0.9f,
+                Set.of(thaumcraft.api.aspects.Aspects.WATER),
+                0.8f,
                 () -> new ItemStack(ForbiddenContent.item("wand_cap_alchemical")),
                 7
         );

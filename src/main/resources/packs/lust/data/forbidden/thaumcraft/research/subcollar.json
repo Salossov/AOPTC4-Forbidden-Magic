@@ -36,11 +36,13 @@
   "stub": false,
   "secondary": false,
   "siblings": [],
-  "hidden": false,
+  "hidden": true,
   "warp": 0,
   "item_triggers": [],
   "entity_triggers": [],
-  "aspect_triggers": [],
+  "aspect_triggers": [
+    "forbidden:luxuria"
+  ],
   "page_requirements": {},
   "special": false,
   "recipe_groups": {

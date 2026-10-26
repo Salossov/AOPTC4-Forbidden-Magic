@@ -67,7 +67,7 @@ import wayoftime.bloodmagic.ritual.RitualComponent;
  * Tests:
  * - C05: Pinned dependency, ClassLoader isolation, mod bridge.
  * - C06: Blood Rod (cap 100, cost 12, BloodWandUpdate), Blood Staff (cap 250, cost 25, BloodStaffUpdate),
- *        Alchemical Cap (0.85f base modifier, 15% discount), composite models.
+ *        Alchemical Cap (0.9f base, 0.8f Aqua), composite models.
  * - C07: Bloodwell (IScribeTools, durability 5), Boundwell (IScribeTools, durability 100),
  *        Blood Rapier (durability 700, 2 warp), Eldritch Orb (Tier 6, 80M LP, 5 warp, EPIC rarity, reusable).
  * - C08: Ritual "Plea of Delayed Insanity" (spite_sanity, 20k act, 15k refresh, 600 interval, 28 runes),
@@ -193,7 +193,11 @@ public final class P04BloodMagicCheck {
         // Alchemical Cap
         WandCap alchemicalCap = WandCap.caps.get("forbidden:alchemical");
         check(alchemicalCap != null, "forbidden:alchemical cap registered");
-        check(Math.abs(alchemicalCap.getBaseCostModifier() - 0.85f) < 1e-5, "alchemical cap 0.85f modifier (15% discount)");
+        check(Math.abs(alchemicalCap.getBaseCostModifier() - 0.9f) < 1e-5, "release alchemical cap 0.9f base modifier");
+        for (var aspect : thaumcraft.api.aspects.Aspects.PRIMALS) {
+            check(Math.abs(alchemicalCap.modifier(aspect) - (aspect == thaumcraft.api.aspects.Aspects.WATER ? 0.8f : 0.9f)) < 1e-5,
+                    "release alchemical per-aspect modifier: " + aspect.getTag());
+        }
         check(alchemicalCap.getCraftCost() == 7, "alchemical cap cost is 7");
         check("forbidden:cap_alchemical".equals(alchemicalCap.getResearch()), "alchemical cap research is forbidden:cap_alchemical");
         check(WandCap.caps.get("alchemical") == alchemicalCap, "alchemical cap also accessible via 'alchemical'");

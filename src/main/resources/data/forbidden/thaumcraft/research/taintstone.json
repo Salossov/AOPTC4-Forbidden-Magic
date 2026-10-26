@@ -30,7 +30,7 @@
     "TaintStone",
     "TaintBrick"
   ],
-  "icon": "forbidden:taint_stone",
+  "icon": "forbidden:taint_bricks",
   "virtual": false,
   "round": false,
   "stub": false,

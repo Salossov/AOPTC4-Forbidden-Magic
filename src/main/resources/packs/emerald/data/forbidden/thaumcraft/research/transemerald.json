@@ -26,11 +26,11 @@
     "forbidden.research_page.TRANSEMERALD.1",
     "TransEmerald"
   ],
-  "icon": "minecraft:emerald",
+  "icon": "forbidden:emerald_nugget",
   "virtual": false,
   "round": false,
   "stub": false,
-  "secondary": false,
+  "secondary": true,
   "siblings": [],
   "hidden": false,
   "warp": 0,

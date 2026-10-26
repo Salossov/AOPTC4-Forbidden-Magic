@@ -31,7 +31,7 @@
   "virtual": false,
   "round": false,
   "stub": false,
-  "secondary": false,
+  "secondary": true,
   "siblings": [],
   "hidden": false,
   "warp": 0,
