@@ -312,12 +312,13 @@ public final class ForbiddenEvents {
 
         // 2. Silverfish emerald nuggets
         if (ForbiddenConfig.SILVERFISH_EMERALDS.get() && victim instanceof Silverfish) {
-            if (event.isRecentlyHit() && event.getSource().getEntity() instanceof Player && !(event.getSource().getEntity() instanceof FakePlayer)) {
+            if (event.isRecentlyHit() && event.getSource().getEntity() instanceof Player) {
                 var biome = level.getBiome(victim.blockPosition());
                 boolean isMountain = biome.is(BiomeTags.IS_MOUNTAIN);
                 int chance = isMountain ? (2 + getLootingLevel(event) * 2) : (1 + getLootingLevel(event) * 3);
                 int bound = isMountain ? 30 : 70;
-                if (rand.nextInt(bound) <= chance) {
+                // Release excludes FakePlayer only from the non-mountain branch.
+                if ((isMountain || !(event.getSource().getEntity() instanceof FakePlayer)) && rand.nextInt(bound) <= chance) {
                     addDrop(event, new ItemStack(ForbiddenContent.item("emerald_nugget")));
                 }
             }
@@ -355,7 +356,19 @@ public final class ForbiddenEvents {
                     int greed = 0;
                     ItemStack held = player.getMainHandItem();
                     if (!held.isEmpty()) {
-                        wrath += (int) player.getAttributeValue(Attributes.ATTACK_DAMAGE) - 1;
+                        // Original sword damage, plus F05's approved ItemTool modifier fix.
+                        // Read the held item, not the holder's stale/potion-modified attributes.
+                        if (held.getItem() instanceof net.minecraft.world.item.SwordItem
+                            || held.getItem() instanceof net.minecraft.world.item.DiggerItem) {
+                            final double[] weaponDamage = {0};
+                            held.forEachModifier(EquipmentSlot.MAINHAND, (attribute, modifier) -> {
+                                if (attribute.equals(Attributes.ATTACK_DAMAGE)
+                                    && modifier.operation() == net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE) {
+                                    weaponDamage[0] += modifier.amount();
+                                }
+                            });
+                            wrath += (int) (weaponDamage[0] + (held.getItem() instanceof net.minecraft.world.item.SwordItem ? 1 : 0));
+                        }
 
                         var registry = level.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
                         wrath += held.getEnchantmentLevel(registry.getOrThrow(Enchantments.SHARPNESS));
@@ -367,10 +380,16 @@ public final class ForbiddenEvents {
                         if (victim.isInvertedHealAndHarm()) {
                             wrath += held.getEnchantmentLevel(registry.getOrThrow(Enchantments.SMITE));
                         }
-                        if (victim.getType().is(Tags.EntityTypes.CAPTURING_NOT_SUPPORTED)) {
+                        if (victim.getType().is(net.minecraft.tags.EntityTypeTags.ARTHROPOD)) {
                             wrath += held.getEnchantmentLevel(registry.getOrThrow(Enchantments.BANE_OF_ARTHROPODS));
                         }
                         greed += held.getEnchantmentLevel(registry.getOrThrow(Enchantments.LOOTING));
+                        if (WandApi.kind(held) != WandApi.Kind.NONE
+                            && WandApi.focus(held).getItem() instanceof thaumcraft.api.wands.ItemFocusBasic focus) {
+                            var focusStack = WandApi.focus(held);
+                            wrath += focus.getUpgradeLevel(focusStack, thaumcraft.api.wands.FocusUpgradeType.potency);
+                            greed += focus.getUpgradeLevel(focusStack, thaumcraft.api.wands.FocusUpgradeType.treasure);
+                        }
                     }
 
                     // Wrath roll
@@ -496,6 +515,18 @@ public final class ForbiddenEvents {
         if (event.getLevel().getLevel().dimension() == Level.NETHER
             && event.getEntity() instanceof ZombifiedPiglin piglin
             && event.getLevel().getRandom().nextInt(175) == 1) {
+            piglin.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ForbiddenContent.item("envy_shard")));
+            // Modern finalizeSpawn populates equipment after this event. Keep the original roll,
+            // then restore its result when the fully initialized mob actually joins the world.
+            piglin.getPersistentData().putBoolean("forbidden:envy_on_join", true);
+        }
+    }
+
+    @SubscribeEvent
+    public static void onPiglinJoin(net.neoforged.neoforge.event.entity.EntityJoinLevelEvent event) {
+        if (!event.getLevel().isClientSide() && event.getEntity() instanceof ZombifiedPiglin piglin
+            && piglin.getPersistentData().getBoolean("forbidden:envy_on_join")) {
+            piglin.getPersistentData().remove("forbidden:envy_on_join");
             piglin.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ForbiddenContent.item("envy_shard")));
         }
     }
