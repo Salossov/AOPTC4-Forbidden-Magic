@@ -98,7 +98,6 @@ public class TainthistleBlockEntity extends BlockEntity {
         for (int dx = -RANGE; dx <= RANGE; dx++) {
             for (int dy = -RANGE; dy <= RANGE; dy++) {
                 for (int dz = -RANGE; dz <= RANGE; dz++) {
-                    if (burnTime >= BURN_CAP) return;
                     BlockPos target = pos.offset(dx, dy, dz);
                     if (target.equals(pos)) continue; // STRICT: never consume self!
                     BlockState targetState = level.getBlockState(target);

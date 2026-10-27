@@ -78,7 +78,8 @@ public class BloodthornBlockEntity extends BlockEntity {
             }
         }
 
-        AABB box = new AABB(pos).inflate(RANGE);
+        AABB box = new AABB(pos.getX() - RANGE, pos.getY() - RANGE, pos.getZ() - RANGE,
+                pos.getX() + RANGE, pos.getY() + RANGE, pos.getZ() + RANGE);
         List<LivingEntity> targets = level.getEntitiesOfClass(
                 LivingEntity.class,
                 box,
