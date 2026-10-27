@@ -106,6 +106,9 @@ public final class P04BloodMagicCheck {
         cached(ForbiddenConfig.BLOOD_MAGIC, true);
         cached(ForbiddenConfig.BLOOD_VIS, 5);
 
+        // Explicit JVM fixture: enabled dependencies, not a claim of loaded-server gameplay.
+        BloodMagicCompat.setForceLoadedForTesting(true);
+        forbidden.compat.botania.BotaniaCompat.setForceLoadedForTesting(true);
         var bus = BusBuilder.builder().build();
         ForbiddenComponents.register(bus);
         ForbiddenContent.register(bus);
@@ -465,8 +468,9 @@ public final class P04BloodMagicCheck {
 
         List<String> researches = List.of(
                 "bloodmagic", "rod_blood", "rod_blood_staff", "cap_alchemical",
-                "bloodwell", "bloodrapier", "eldritch_orb", "bloodthorn"
+                "bloodwell", "bloodrapier", "eldritch_orb"
         );
+        check(P04BloodMagicCheck.class.getResource("/packs/bloodthorn/data/forbidden/thaumcraft/research/bloodthorn.json") == null, "release has no separate Bloodthorn research");
         for (String r : researches) {
             String pack = r.equals("bloodthorn") ? "bloodthorn" : (r.startsWith("rod_")||r.startsWith("cap_")?"bloodmagic_wands":"bloodmagic");
             String path = "/packs/" + pack + "/data/forbidden/thaumcraft/research/" + r + ".json";

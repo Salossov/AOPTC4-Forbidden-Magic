@@ -169,7 +169,6 @@ public final class SemanticDataCheck {
             "/packs/cage/data/forbidden/thaumcraft/research/wrathcage.json",
             "/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodmagic.json",
             "/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodrapier.json",
-            "/packs/bloodthorn/data/forbidden/thaumcraft/research/bloodthorn.json",
             "/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodwell.json",
             "/packs/bloodmagic_wands/data/forbidden/thaumcraft/research/cap_alchemical.json",
             "/packs/bloodmagic/data/forbidden/thaumcraft/research/eldritch_orb.json",
@@ -227,9 +226,9 @@ public final class SemanticDataCheck {
             Map.entry("/packs/bloodmagic/data/forbidden/recipe/blood_rapier.json", new RecipeSpec("thaumcraft:infusion", "forbidden:bloodrapier", "forbidden:blood_rapier", 1, 8, "thaumcraft:void_sword", List.of("thaumcraft:taint_tendril", "forbidden:wrath_shard", "forbidden:gluttony_shard", "minecraft:feather", "thaumcraft:amber"), Map.ofEntries(Map.entry("victus", 18), Map.entry("fames", 32), Map.entry("telum", 8)), Map.of(), List.of(), Map.of(), List.of(), 0, 0, 0, 0, 0)),
             Map.entry("/packs/bloodmagic/data/forbidden/recipe/bloodthorn.json", new RecipeSpec("bloodmagic:altar", null, "forbidden:bloodthorn", 1, 0, "botania:red_mystical_flower", List.of(), Map.of(), Map.of(), List.of(), Map.of(), List.of(), 0, 15000, 25, 50, 3)),
             Map.entry("/packs/bloodmagic/data/forbidden/recipe/bloodwell.json", new RecipeSpec("thaumcraft:arcane_shapeless", "forbidden:bloodwell", "forbidden:bloodwell", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aqua", 10), Map.entry("terra", 10)), List.of(), Map.of(), List.of("minecraft:feather", "bloodmagic:life_essence_bucket", "minecraft:glass_bottle", "bloodmagic:weakbloodorb"), 0, 0, 0, 0, 0)),
-            Map.entry("/packs/bloodmagic/data/forbidden/recipe/boundwell.json", new RecipeSpec("minecraft:crafting_shapeless", null, "forbidden:boundwell", 1, 0, null, List.of(), Map.of(), Map.of(), List.of(), Map.of(), List.of("forbidden:crystalwell", "bloodmagic:weakbloodorb"), 0, 0, 0, 0, 0)),
+            Map.entry("/packs/bloodmagic/data/forbidden/recipe/boundwell.json", new RecipeSpec("bloodmagic:array", null, "forbidden:boundwell", 1, 0, null, List.of(), Map.of(), Map.of(), List.of(), Map.of(), List.of(), 0, 0, 0, 0, 0)),
             Map.entry("/packs/bloodmagic/data/forbidden/recipe/eldritch_orb.json", new RecipeSpec("thaumcraft:infusion", "forbidden:eldritch_orb", "forbidden:eldritch_orb", 1, 2, "bloodmagic:archmagebloodorb", List.of("thaumcraft:primal_pearl", "thaumcraft:eldritch_eye", "thaumcraft:balanced_shard", "thaumcraft:void_ingot", "thaumcraft:void_ingot", "minecraft:nether_star", "thaumcraft:void_ingot", "thaumcraft:void_ingot", "thaumcraft:balanced_shard", "thaumcraft:eldritch_eye"), Map.ofEntries(Map.entry("victus", 64), Map.entry("alienis", 48), Map.entry("tenebrae", 32), Map.entry("vacuos", 64)), Map.of(), List.of(), Map.of(), List.of(), 0, 0, 0, 0, 0)),
-            Map.entry("/packs/bloodmagic_wands/data/forbidden/recipe/wand_cap_alchemical.json", new RecipeSpec("thaumcraft:infusion", "forbidden:cap_alchemical", "forbidden:wand_cap_alchemical", 1, 3, "thaumcraft:iron_wand_cap", List.of("bloodmagic:reagentbinding", "bloodmagic:reagentbinding", "bloodmagic:reagentbinding"), Map.ofEntries(Map.entry("victus", 12), Map.entry("aqua", 6)), Map.of(), List.of(), Map.of(), List.of(), 0, 0, 0, 0, 0)),
+            Map.entry("/packs/bloodmagic_wands/data/forbidden/recipe/wand_cap_alchemical.json", new RecipeSpec("thaumcraft:infusion", "forbidden:cap_alchemical", "forbidden:wand_cap_alchemical", 1, 3, "thaumcraft:gold_wand_cap", List.of("bloodmagic:reagentbinding", "bloodmagic:reagentbinding", "bloodmagic:reagentbinding"), Map.ofEntries(Map.entry("victus", 12), Map.entry("aqua", 6)), Map.of(), List.of(), Map.of(), List.of(), 0, 0, 0, 0, 0)),
             Map.entry("/packs/bloodmagic_wands/data/forbidden/recipe/wand_rod_blood.json", new RecipeSpec("thaumcraft:infusion", "forbidden:rod_blood", "forbidden:wand_rod_blood_inert", 1, 2, "bloodmagic:masterbloodorb", List.of("bloodmagic:reagentbinding", "bloodmagic:infusedslate", "bloodmagic:infusedslate", "bloodmagic:reagentvoid", "bloodmagic:reagentbloodlight", "bloodmagic:reagentwater", "bloodmagic:reagentlava", "bloodmagic:reagentgrowth", "bloodmagic:reagentair"), Map.ofEntries(Map.entry("victus", 32), Map.entry("praecantatio", 12), Map.entry("aqua", 16)), Map.of(), List.of(), Map.of(), List.of(), 0, 0, 0, 0, 0)),
             Map.entry("/packs/bloodmagic_wands/data/forbidden/recipe/wand_rod_blood_staff.json", new RecipeSpec("thaumcraft:arcane", "forbidden:rod_blood_staff", "forbidden:wand_rod_blood_staff", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aer", 26), Map.entry("terra", 26), Map.entry("ignis", 26), Map.entry("aqua", 26), Map.entry("ordo", 26), Map.entry("perditio", 26)), List.of("  D", " B ", "B  "), Map.ofEntries(Map.entry("B", "forbidden:wand_rod_blood"), Map.entry("D", "bloodmagic:demonslate")), List.of(), 0, 0, 0, 0, 0)),
             Map.entry("/packs/botania/data/forbidden/recipe/euclidaisy.json", new RecipeSpec("thaumcraft:infusion", "forbidden:euclidaisy", "forbidden:euclidaisy", 1, 8, "botania:pink_mystical_flower", List.of("thaumcraft:salis_mundus", "botania:mana_pearl", "botania:redstone_root", "botania:pink_mystical_petal", "botania:pink_mystical_petal", "botania:rune_of_sloth", "botania:rune_of_greed"), Map.ofEntries(Map.entry("auram", 8), Map.entry("alienis", 10), Map.entry("praecantatio", 8)), Map.of(), List.of(), Map.of(), List.of(), 0, 0, 0, 0, 0)),
@@ -290,7 +289,6 @@ public final class SemanticDataCheck {
             Map.entry("/packs/cage/data/forbidden/thaumcraft/research/wrathcage.json", new ResearchSpec("forbidden:wrathcage", -6, -9, 3, 3, List.of("forbidden:fork"), List.of("INFUSION", "THAUMIUM", "DISTILESSENTIA"), List.of("WrathCage", "MobCrystal"), List.of("forbidden.research_page.WRATHCAGE.1", "forbidden.research_page.WRATHCAGE.2", "forbidden.research_page.WRATHCAGE.3"), List.of("forbidden.research_page.WRATHCAGE.1", "WrathCage", "forbidden.research_page.WRATHCAGE.2", "forbidden.research_page.WRATHCAGE.3", "MobCrystal"), Map.ofEntries(Map.entry("forbidden:ira", 5), Map.entry("machina", 3), Map.entry("bestia", 2)), false, false, true, false, false, false, List.of())),
             Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodmagic.json", new ResearchSpec("forbidden:bloodmagic", -1, -1, 1, 0, List.of("forbidden:schools"), List.of(), List.of(), List.of("forbidden.research_page.BLOODMAGIC.1"), List.of("forbidden.research_page.BLOODMAGIC.1"), Map.of(), true, true, false, false, true, false, List.of())),
             Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodrapier.json", new ResearchSpec("forbidden:bloodrapier", 1, -2, 3, 2, List.of("forbidden:bloodmagic", "INFUSION", "VOIDMETAL"), List.of(), List.of("forbidden:blood_rapier"), List.of("forbidden.research_page.BLOODRAPIER.1"), List.of("forbidden.research_page.BLOODRAPIER.1", "forbidden:blood_rapier"), Map.ofEntries(Map.entry("victus", 16), Map.entry("fames", 12), Map.entry("telum", 12), Map.entry("praecantatio", 12)), false, false, true, false, false, false, List.of())),
-            Map.entry("/packs/bloodthorn/data/forbidden/thaumcraft/research/bloodthorn.json", new ResearchSpec("forbidden:bloodthorn", -2, -2, 2, 0, List.of("forbidden:bloodmagic"), List.of(), List.of("forbidden:bloodthorn"), List.of("forbidden.research_page.BLOODTHORN.1"), List.of("forbidden.research_page.BLOODTHORN.1", "forbidden:bloodthorn"), Map.ofEntries(Map.entry("herba", 8), Map.entry("victus", 8), Map.entry("telum", 4)), false, false, true, false, false, false, List.of())),
             Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/bloodwell.json", new ResearchSpec("forbidden:bloodwell", 1, -1, 1, 0, List.of("forbidden:bloodmagic"), List.of(), List.of("forbidden:bloodwell"), List.of("forbidden.research_page.BLOODWELL.1"), List.of("forbidden.research_page.BLOODWELL.1", "forbidden:bloodwell"), Map.ofEntries(Map.entry("victus", 5), Map.entry("cognitio", 4), Map.entry("sensus", 3)), false, false, false, false, false, false, List.of())),
             Map.entry("/packs/bloodmagic_wands/data/forbidden/thaumcraft/research/cap_alchemical.json", new ResearchSpec("forbidden:cap_alchemical", -3, -3, 2, 0, List.of("forbidden:rod_blood", "CAP_gold"), List.of(), List.of("forbidden:wand_cap_alchemical"), List.of("forbidden.research_page.CAP_alchemical.1"), List.of("forbidden.research_page.CAP_alchemical.1", "forbidden:wand_cap_alchemical"), Map.ofEntries(Map.entry("victus", 4), Map.entry("instrumentum", 1), Map.entry("aqua", 3)), false, false, true, true, false, false, List.of())),
             Map.entry("/packs/bloodmagic/data/forbidden/thaumcraft/research/eldritch_orb.json", new ResearchSpec("forbidden:eldritch_orb", 1, -3, 3, 3, List.of("forbidden:bloodmagic", "INFUSION", "PRIMPEARL", "VOIDMETAL"), List.of(), List.of("forbidden:eldritch_orb"), List.of("forbidden.research_page.ELDRITCHORB.1"), List.of("forbidden.research_page.ELDRITCHORB.1", "forbidden:eldritch_orb"), Map.ofEntries(Map.entry("victus", 24), Map.entry("vacuos", 32), Map.entry("vitreus", 24), Map.entry("alienis", 12)), false, false, true, false, false, false, List.of())),
@@ -353,7 +351,7 @@ public final class SemanticDataCheck {
         check(arcaneCount == 11, "exactly 11 arcane workbench recipe variants verified");
         check(crucibleCount == 4, "exactly 4 crucible recipes verified");
         check(infusionCount == 32, "exactly 32 infusion/infusion_enchantment recipes verified");
-        check(craftingCount == 11, "exactly 11 crafting recipes verified");
+        check(craftingCount == 10, "exactly 10 crafting recipes verified");
         check(smeltingCount == 1, "exactly 1 smelting recipe verified");
         check(manaInfusionCount == 3, "exactly 3 mana infusion recipes verified");
         check(altarCount == 2, "exactly 2 altar recipes verified");
@@ -373,6 +371,13 @@ public final class SemanticDataCheck {
         RecipeSpec spec = RECIPE_SPECS.get(file);
         check(spec != null, "recipe spec exists for: " + file);
         check(type.equals(spec.type), "recipe type matches spec: " + type + " vs " + spec.type + " in " + file);
+
+        if (type.equals("bloodmagic:array")) {
+            // User-approved native Binding adaptation of the release ritual.
+            check(json.getAsJsonObject("baseinput").get("item").getAsString().equals("bloodmagic:reagentbinding"), "binding reagent retained");
+            check(json.getAsJsonObject("addedinput").get("item").getAsString().equals("forbidden:crystalwell"), "binding consumes Crystalwell");
+            check(json.get("texture").getAsString().equals("bloodmagic:textures/models/alchemyarrays/bindingarray.png"), "native Binding effect selected");
+        }
 
         // 1. Result verification
         if (!type.equals("thaumcraft:infusion_enchantment")) {
@@ -656,7 +661,7 @@ public final class SemanticDataCheck {
                             && json.getAsJsonArray("aspect_triggers").get(0).getAsString().equals(entry.getValue()),
                     "release aspect trigger retained: " + entry.getKey());
         }
-        check(RESEARCH_FILES.size() == 50, "49 research definitions and hard Cake override indexed");
+        check(RESEARCH_FILES.size() == 49, "48 release research definitions and hard Cake override indexed");
 
         Set<String> uniqueKeys = new HashSet<>();
         Set<String> uniqueCoordinates = new HashSet<>();
@@ -680,8 +685,8 @@ public final class SemanticDataCheck {
             validateResearchJson(json, file);
         }
 
-        check(uniqueKeys.size() == 49, "exactly 49 unique research entries verified");
-        check(uniqueCoordinates.size() == 49, "exactly 49 unique coordinate slots occupied");
+        check(uniqueKeys.size() == 48, "exactly 48 unique research entries verified");
+        check(uniqueCoordinates.size() == 48, "exactly 48 unique coordinate slots occupied");
     }
 
     private static void testNegativeRecipeRegressions() {

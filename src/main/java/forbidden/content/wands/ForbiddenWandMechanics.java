@@ -33,6 +33,8 @@ public final class ForbiddenWandMechanics {
     public static void registerRods() {
         rod("tainted", 150, 12, () -> new ItemStack(ForbiddenContent.item("wand_rod_tainted")), TaintedWandUpdate.INSTANCE);
         rod("infernal", 150, 12, () -> new ItemStack(ForbiddenContent.item("wand_rod_infernal")), InfernalWandUpdate.INSTANCE);
+        // Release registration shares WandCores:11 with dreamwood and has no updater.
+        rod("equivalent", 100, 12, () -> new ItemStack(ForbiddenContent.item("wand_rod_dreamwood")), null);
         rod("profane", 50, 12, () -> new ItemStack(ForbiddenContent.item("wand_rod_profane")), ProfaneWandUpdate.INSTANCE);
         rod("profaned", 50, 1000, () -> new ItemStack(Items.BEDROCK), null);
         var neutronium = rod("neutronium", 9001, 1000, () -> new ItemStack(Items.BEDROCK), CreativeWandUpdate.INSTANCE);

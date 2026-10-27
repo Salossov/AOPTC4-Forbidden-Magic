@@ -114,16 +114,19 @@ public final class P03WrathCageCheck {
         cached(ForbiddenConfig.SILVERFISH_EMERALDS, false);
         check(CageMobCatalog.getAspect(ResourceLocation.parse("minecraft:silverfish")) == Aspect.getAspect("bestia"), "silverfish emeralds disabled");
 
-        // Twilight forest optional mob mapping
+        // This JVM fixture has no loaded Twilight mod. A config flag alone
+        // must not register its mobs; installed profiles cover the enabled route.
         cached(ForbiddenConfig.TWILIGHT_FOREST, true);
-        check(CageMobCatalog.getAspect(ResourceLocation.parse("twilightforest:wild_boar")) == Aspect.getAspect("bestia"), "twilight boar enabled");
-        check(CageMobCatalog.getAspect(ResourceLocation.parse("twilightforest:mini_ghast")) == Aspect.getAspect("forbidden:infernus"), "twilight mini ghast enabled");
-        cached(ForbiddenConfig.NO_LUST, false);
-        check(CageMobCatalog.getAspect(ResourceLocation.parse("twilightforest:pinch_beetle")) == Aspect.getAspect("forbidden:luxuria"), "pinch beetle lust");
+        check(!forbidden.compat.twilight.TwilightCompat.isAvailable(), "Twilight dependency absent in JVM fixture");
+        for (String mob : List.of("boar", "carminite_ghastling", "pinch_beetle")) {
+            var id = ResourceLocation.parse("twilightforest:" + mob);
+            check(!CageMobCatalog.isKnown(id), "absent Twilight rejects catalog " + mob);
+            check(CageMobCatalog.getAspect(id) == Aspect.getAspect("lucrum"), "saved unknown crystal retains release GREED " + mob);
+        }
         cached(ForbiddenConfig.NO_LUST, true);
-        check(CageMobCatalog.getAspect(ResourceLocation.parse("twilightforest:pinch_beetle")) == Aspect.getAspect("bestia"), "pinch beetle no lust");
+        check(!CageMobCatalog.isKnown(ResourceLocation.parse("twilightforest:pinch_beetle")), "No Lust does not bypass missing Twilight");
         cached(ForbiddenConfig.TWILIGHT_FOREST, false);
-        check(!CageMobCatalog.isKnown(ResourceLocation.parse("twilightforest:wild_boar")), "twilight forest disabled gate");
+        check(!CageMobCatalog.isKnown(ResourceLocation.parse("twilightforest:boar")), "twilight forest disabled gate");
 
         // Special Mobs optional mapping
         cached(ForbiddenConfig.SPECIAL_MOBS, true);

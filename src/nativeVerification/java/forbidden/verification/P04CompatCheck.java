@@ -223,7 +223,7 @@ public final class P04CompatCheck {
         check(entries.size() == 35, "exactly 35 unique Twilight Forest mobs registered");
 
         // Verify aspects for all 35 entities
-        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:wild_boar"), false) == Aspect.getAspect("bestia"), "wild boar aspect");
+        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:boar"), false) == Aspect.getAspect("bestia"), "wild boar aspect");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:bighorn_sheep"), false) == Aspect.getAspect("pannus"), "bighorn sheep aspect");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:deer"), false) == Aspect.getAspect("bestia"), "deer aspect");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:redcap"), false) == Aspect.getAspect("metallum"), "redcap aspect");
@@ -237,7 +237,7 @@ public final class P04CompatCheck {
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:tiny_bird"), false) == Aspect.getAspect("volatus"), "tiny bird aspect");
         check(TwilightCageMobRegistry.getSpawnCondition(ResourceLocation.parse("twilightforest:tiny_bird")) == CageMobCatalog.SpawnCondition.AIR, "tiny bird is airborne");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:squirrel"), false) == Aspect.getAspect("bestia"), "squirrel aspect");
-        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:bunny"), false) == Aspect.getAspect("bestia"), "bunny aspect");
+        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:dwarf_rabbit"), false) == Aspect.getAspect("bestia"), "bunny aspect");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:raven"), false) == Aspect.getAspect("volatus"), "raven aspect");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:kobold"), false) == Aspect.getAspect("lucrum"), "kobold aspect");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:mosquito_swarm"), false) == Aspect.getAspect("forbidden:gula"), "mosquito swarm gula");
@@ -254,10 +254,10 @@ public final class P04CompatCheck {
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:maze_slime"), false) == Aspect.getAspect("limus"), "maze slime limus");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:mist_wolf"), false) == Aspect.getAspect("bestia"), "mist wolf bestia");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:king_spider"), false) == Aspect.getAspect("forbidden:superbia"), "king spider superbia");
-        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:mini_ghast"), false) == Aspect.getAspect("forbidden:infernus"), "mini ghast infernus");
-        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:tower_ghast"), false) == Aspect.getAspect("forbidden:infernus"), "tower ghast infernus");
-        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:tower_golem"), false) == Aspect.getAspect("metallum"), "tower golem metallum");
-        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:tower_termite"), false) == Aspect.getAspect("praecantatio"), "tower termite praecantatio");
+        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:carminite_ghastling"), false) == Aspect.getAspect("forbidden:infernus"), "mini ghast infernus");
+        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:carminite_ghastguard"), false) == Aspect.getAspect("forbidden:infernus"), "tower ghast infernus");
+        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:carminite_golem"), false) == Aspect.getAspect("metallum"), "tower golem metallum");
+        check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:towerwood_borer"), false) == Aspect.getAspect("praecantatio"), "tower termite praecantatio");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:upper_goblin_knight"), false) == Aspect.getAspect("metallum"), "upper goblin knight metallum");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:lower_goblin_knight"), false) == Aspect.getAspect("metallum"), "lower goblin knight metallum");
         check(TwilightCageMobRegistry.getAspectForMob(ResourceLocation.parse("twilightforest:helmet_crab"), false) == Aspect.getAspect("metallum"), "helmet crab metallum");
@@ -268,8 +268,8 @@ public final class P04CompatCheck {
         // Dynamic registration into CageMobCatalog
         TwilightCompat.init();
         var catalogEntries = CageMobCatalog.entries();
-        check(catalogEntries.containsKey(ResourceLocation.parse("twilightforest:wild_boar")), "catalog contains wild boar post-init");
-        check(catalogEntries.containsKey(ResourceLocation.parse("twilightforest:winter_wolf")), "catalog contains winter wolf post-init");
+        check(!catalogEntries.containsKey(ResourceLocation.parse("twilightforest:boar")), "absent Twilight dependency prevents catalog registration");
+        check(!catalogEntries.containsKey(ResourceLocation.parse("twilightforest:winter_wolf")), "absent Twilight dependency prevents winter wolf registration");
         check(CageMobCatalog.getSpawnCondition(ResourceLocation.parse("twilightforest:tiny_bird")) == CageMobCatalog.SpawnCondition.AIR, "catalog tiny bird air spawn");
 
         // Resilience check: non-existent mob lookup does not fail
@@ -283,7 +283,7 @@ public final class P04CompatCheck {
 
     private static void testC12ToC15LegacyModStatuses() {
         check(Compat.ARS_MAGICA_STATUS.contains("Blocked: target mod unavailable on 1.21.1 NeoForge"), "C12 Ars Magica 2 blocked status");
-        check(Compat.EE3_STATUS.contains("Blocked: target mod unavailable on 1.21.1 NeoForge"), "C13 EE3 blocked status");
+        check(Compat.EE3_STATUS.contains("Replaced by optional ProjectE"), "C13 approved ProjectE replacement status");
         check(Compat.NATURA_STATUS.contains("Blocked: target mod unavailable on 1.21.1 NeoForge"), "C14 Natura blocked status");
         check(Compat.WITCHERY_STATUS.contains("Blocked: target mod unavailable on 1.21.1 NeoForge"), "C14 Witchery blocked status");
         check(Compat.TINKERS_CONSTRUCT_STATUS.contains("Blocked: target mod unavailable on 1.21.1 NeoForge"), "C15 Tinkers Construct blocked status");

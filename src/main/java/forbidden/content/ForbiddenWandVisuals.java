@@ -7,7 +7,7 @@ import thaumcraft.api.wands.*;
 /** Uses the core's public composite model pipeline and native TC4 geometry. */
 public final class ForbiddenWandVisuals {
     public static void register(){
-        var rods = List.of("tainted","infernal","profane","profaned","neutronium","blood","livingwood","dreamwood");
+        var rods = List.of("tainted","infernal","equivalent","profane","profaned","neutronium","blood","livingwood","dreamwood");
         var baseCaps = List.of("iron","gold","copper","silver","thaumium","void");
         var customCaps = List.of(
             List.of("forbidden:orichalcum","orichalcum"),

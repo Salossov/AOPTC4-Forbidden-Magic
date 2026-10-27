@@ -80,6 +80,7 @@ public final class BotaniaCompat {
                 25,
                 YandereWandUpdate.INSTANCE
         );
+        dreamwoodStaff.setRunes(true);
         WandRod.rods.putIfAbsent("dreamwood_staff", dreamwoodStaff);
 
         // C02: Manasteel Cap (discount 10% -> 0.90f base modifier, cost 6, research "forbidden:cap_manasteel")
