@@ -7,6 +7,7 @@ import forbidden.content.tools.MorphAxeItem;
 import forbidden.content.tools.MorphPickaxeItem;
 import forbidden.content.tools.MorphShovelItem;
 import forbidden.content.tools.MorphSwordItem;
+import forbidden.content.tools.ToolEvents;
 import forbidden.enchantments.DarkEnchantments;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -84,8 +85,11 @@ public final class ForbiddenEvents {
     @SubscribeEvent
     public static void onBlockDrops(BlockDropsEvent event) {
         if (event.getLevel().isClientSide()) return;
+        if (!(event.getBreaker() instanceof Player)) return;
         ItemStack tool = event.getTool();
         if (tool.isEmpty()) return;
+
+        ToolEvents.onBlockDrops(event);
 
         var registry = event.getLevel().registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
         int fortune = tool.getEnchantmentLevel(registry.getOrThrow(Enchantments.FORTUNE));
@@ -122,14 +126,14 @@ public final class ForbiddenEvents {
 
         // 3. Corrupting: turns infused stone drops into sin shards.
         int corruptingLevel = DarkEnchantments.getLevel(tool, DarkEnchantments.CORRUPTING);
-        if (corruptingLevel > 0 && isCorruptibleOre(event.getState()) && rand.nextInt(3) == 1) {
+        if (corruptingLevel > 0 && isCorruptibleOre(event.getState()) && EventRandom.nextInt(3) == 1) {
             List<ItemEntity> newDrops = new ArrayList<>();
             for (ItemEntity entity : event.getDrops()) {
                 ItemStack is = entity.getItem();
                 if (isThaumcraftShard(is)) {
                     int count = is.getCount();
                     for (int i = 0; i < count; i++) {
-                        ItemStack sinShard = getSinShard(rand);
+                        ItemStack sinShard = getSinShard();
                         if (!sinShard.isEmpty()) {
                             ItemEntity newEntity = new ItemEntity(
                                 event.getLevel(),
@@ -149,7 +153,7 @@ public final class ForbiddenEvents {
 
         // 4. Nether Quartz greed shard drop
         if (event.getLevel().dimension() == Level.NETHER && event.getState().is(Blocks.NETHER_QUARTZ_ORE)) {
-            if (fortune > 0 && rand.nextInt(60) <= fortune) {
+            if (fortune > 0 && EventRandom.nextInt(60) <= fortune) {
                 BlockPos pos = event.getPos();
                 ItemEntity greedDrop = new ItemEntity(
                     event.getLevel(),
@@ -186,8 +190,8 @@ public final class ForbiddenEvents {
         return stack.is(TagKey.create(Registries.ITEM, ResourceLocation.parse("forbidden:research_shards")));
     }
 
-    public static ItemStack getSinShard(RandomSource rand) {
-        int x = rand.nextInt(7);
+    public static ItemStack getSinShard() {
+        int x = EventRandom.nextInt(7);
         return switch (x) {
             case 0 -> new ItemStack(ForbiddenContent.item("wrath_shard"));
             case 1 -> new ItemStack(ForbiddenContent.item("envy_shard"));
@@ -195,7 +199,7 @@ public final class ForbiddenEvents {
             case 3 -> new ItemStack(ForbiddenContent.item("pride_shard"));
             case 4 -> {
                 if (ForbiddenConfig.NO_LUST.get()) {
-                    yield getSinShard(rand);
+                    yield getSinShard();
                 }
                 yield new ItemStack(ForbiddenContent.item("lust_shard"));
             }
@@ -300,12 +304,11 @@ public final class ForbiddenEvents {
     public static void onLivingDrops(LivingDropsEvent event) {
         LivingEntity victim = event.getEntity();
         Level level = victim.level();
-        RandomSource rand = level.getRandom();
 
         // 1. Tainted mob weakness blood shard
         if (event.getSource().getEntity() instanceof Player && isTaintedMob(victim)) {
             var weakness = victim.getEffect(MobEffects.WEAKNESS);
-            if (weakness != null && weakness.getAmplifier() >= 2 && rand.nextFloat() < 0.5F) {
+            if (weakness != null && weakness.getAmplifier() >= 2 && Math.random() < 0.5) {
                 addDrop(event, new ItemStack(ForbiddenContent.item("tainted_blood_shard")));
             }
         }
@@ -318,7 +321,7 @@ public final class ForbiddenEvents {
                 int chance = isMountain ? (2 + getLootingLevel(event) * 2) : (1 + getLootingLevel(event) * 3);
                 int bound = isMountain ? 30 : 70;
                 // Release excludes FakePlayer only from the non-mountain branch.
-                if ((isMountain || !(event.getSource().getEntity() instanceof FakePlayer)) && rand.nextInt(bound) <= chance) {
+                if ((isMountain || !(event.getSource().getEntity() instanceof FakePlayer)) && EventRandom.nextInt(bound) <= chance) {
                     addDrop(event, new ItemStack(ForbiddenContent.item("emerald_nugget")));
                 }
             }
@@ -331,11 +334,13 @@ public final class ForbiddenEvents {
             if (greedyLevel > 0 && getLootingLevel(event) <= 0) {
                 if (victim instanceof Villager) {
                     addDrop(event, new ItemStack(Items.EMERALD, 1));
-                } else if (victim instanceof Enemy && rand.nextInt(35) < 3) {
+                } else if (victim instanceof Enemy && EventRandom.nextInt(35) < 3) {
                     addDrop(event, new ItemStack(ForbiddenContent.item("emerald_nugget"), 1));
                 }
             }
         }
+
+        ToolEvents.onLivingDrops(event);
 
         // 4. Nether Shards Matrix
         if (level.dimension() == Level.NETHER) {
@@ -344,8 +349,8 @@ public final class ForbiddenEvents {
                 && !(event.getSource().getEntity() instanceof FakePlayer);
 
             // Passive sloth shard drop
-            if (!isRealPlayerKill && rand.nextInt(30) < 4) {
-                addDrop(event, new ItemStack(ForbiddenContent.item("sloth_shard"), 1 + rand.nextInt(3)));
+            if (!isRealPlayerKill && EventRandom.nextInt(30) < 4) {
+                addDrop(event, new ItemStack(ForbiddenContent.item("sloth_shard"), 1 + EventRandom.nextInt(3)));
             }
 
             // Active player kill in Nether
@@ -393,17 +398,17 @@ public final class ForbiddenEvents {
                     }
 
                     // Wrath roll
-                    if (rand.nextInt(61) <= wrath) {
+                    if (EventRandom.nextInt(61) <= wrath) {
                         addDrop(event, new ItemStack(ForbiddenContent.item("wrath_shard")));
                     }
 
                     // Boss pride roll
                     if (victim.getType().is(Tags.EntityTypes.BOSSES)) {
-                        addDrop(event, new ItemStack(ForbiddenContent.item("pride_shard"), 2 + rand.nextInt(1 + getLootingLevel(event))));
+                        addDrop(event, new ItemStack(ForbiddenContent.item("pride_shard"), 2 + EventRandom.nextInt(1 + getLootingLevel(event))));
                     }
 
                     // Greed roll
-                    if (greed > 0 && rand.nextInt(20) <= greed) {
+                    if (greed > 0 && EventRandom.nextInt(20) <= greed) {
                         addDrop(event, new ItemStack(ForbiddenContent.item("greed_shard")));
                     }
                 }
@@ -490,18 +495,14 @@ public final class ForbiddenEvents {
         if (entity instanceof Player player && event.getItem().has(DataComponents.FOOD)) {
             if (player.level().dimension() == Level.NETHER
                 && !event.getItem().is(ForbiddenContent.item("gluttony_shard"))
-                && player.getRandom().nextInt(10) < 2) {
-                ItemEntity ent = new ItemEntity(
-                    player.level(), player.getX(), player.getY() + 0.5, player.getZ(),
-                    new ItemStack(ForbiddenContent.item("gluttony_shard"))
-                );
-                var rand = player.getRandom();
-                ent.setDeltaMovement(
-                    (rand.nextFloat() - rand.nextFloat()) * 0.1,
-                    rand.nextFloat() * 0.05,
-                    (rand.nextFloat() - rand.nextFloat()) * 0.1
-                );
-                player.level().addFreshEntity(ent);
+                && EventRandom.nextInt(10) < 2) {
+                ItemEntity ent = player.spawnAtLocation(new ItemStack(ForbiddenContent.item("gluttony_shard")), 1.0F);
+                if (ent != null) {
+                    float y = EventRandom.nextFloat() * 0.05F;
+                    float x = (EventRandom.nextFloat() - EventRandom.nextFloat()) * 0.1F;
+                    float z = (EventRandom.nextFloat() - EventRandom.nextFloat()) * 0.1F;
+                    ent.setDeltaMovement(ent.getDeltaMovement().add(x, y, z));
+                }
             }
         }
     }
@@ -514,7 +515,7 @@ public final class ForbiddenEvents {
     public static void onFinalizeSpawn(FinalizeSpawnEvent event) {
         if (event.getLevel().getLevel().dimension() == Level.NETHER
             && event.getEntity() instanceof ZombifiedPiglin piglin
-            && event.getLevel().getRandom().nextInt(175) == 1) {
+            && EventRandom.nextInt(175) == 1) {
             piglin.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(ForbiddenContent.item("envy_shard")));
             // Modern finalizeSpawn populates equipment after this event. Keep the original roll,
             // then restore its result when the fully initialized mob actually joins the world.

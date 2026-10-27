@@ -7,7 +7,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.EntityTypeTags;
-import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -41,6 +40,7 @@ import forbidden.content.CageMobCatalog;
 import forbidden.content.ForbiddenContent;
 import forbidden.content.ForbiddenTools;
 import forbidden.content.baubles.SubCollarItem;
+import forbidden.events.EventRandom;
 
 /** Event subscribers handling tools and accessories mechanics. */
 @EventBusSubscriber(modid = ForbiddenMagic.ID)
@@ -58,7 +58,7 @@ public final class ToolEvents {
         }
     }
 
-    @SubscribeEvent
+    // Called by ForbiddenEvents before the enchantment harvest branches.
     public static void onBlockDrops(BlockDropsEvent event) {
         ItemStack tool = event.getTool();
         BlockState state = event.getState();
@@ -70,7 +70,7 @@ public final class ToolEvents {
             int fortune = tool.getEnchantmentLevel(registry.getOrThrow(Enchantments.FORTUNE));
             boolean silkTouch = tool.getEnchantmentLevel(registry.getOrThrow(Enchantments.SILK_TOUCH)) > 0;
             int chance = 1 + 2 * fortune + (silkTouch ? 6 : 0);
-            if (event.getLevel().getRandom().nextInt(31) <= chance) {
+            if (EventRandom.nextInt(31) <= chance) {
                 BlockPos pos = event.getPos();
                 event.getDrops().add(new ItemEntity(
                     event.getLevel(),
@@ -83,7 +83,7 @@ public final class ToolEvents {
         }
     }
 
-    @SubscribeEvent
+    // Called after Greedy and before Nether drops, as in FMEventHandler.
     public static void onLivingDrops(LivingDropsEvent event) {
         if (!event.isRecentlyHit()) return;
         if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
@@ -93,29 +93,28 @@ public final class ToolEvents {
         var server = player.serverLevel();
         var registry = server.registryAccess().lookupOrThrow(Registries.ENCHANTMENT);
         int looting = weap.getEnchantmentLevel(registry.getOrThrow(Enchantments.LOOTING));
-        RandomSource rand = server.getRandom();
         Entity victim = event.getEntity();
         Item skullItem = null;
         ItemStack customSkull = null;
 
         if (victim instanceof WitherSkeleton) {
-            if (rand.nextInt(26) <= 3 + looting) {
+            if (EventRandom.nextInt(26) <= 3 + looting) {
                 skullItem = Items.WITHER_SKELETON_SKULL;
             }
         } else if (victim instanceof Skeleton) {
-            if (rand.nextInt(26) <= 3 + looting) {
+            if (EventRandom.nextInt(26) <= 3 + looting) {
                 skullItem = Items.SKELETON_SKULL;
             }
         } else if (victim.getType() == EntityType.ZOMBIE) {
-            if (rand.nextInt(26) <= 2 + 2 * looting) {
+            if (EventRandom.nextInt(26) <= 2 + 2 * looting) {
                 skullItem = Items.ZOMBIE_HEAD;
             }
         } else if (victim instanceof Creeper) {
-            if (rand.nextInt(26) <= 2 + 2 * looting) {
+            if (EventRandom.nextInt(26) <= 2 + 2 * looting) {
                 skullItem = Items.CREEPER_HEAD;
             }
         } else if (victim instanceof Player victimPlayer) {
-            if (rand.nextInt(11) <= 1 + looting) {
+            if (EventRandom.nextInt(11) <= 1 + looting) {
                 ItemStack head = new ItemStack(Items.PLAYER_HEAD);
                 head.set(DataComponents.PROFILE, new ResolvableProfile(victimPlayer.getGameProfile()));
                 customSkull = head;
@@ -124,9 +123,13 @@ public final class ToolEvents {
 
         // The release adds this bonus independently of natural head drops.
         if (customSkull != null) {
-            event.getDrops().add(new ItemEntity(server, victim.getX(), victim.getY() + victim.getEyeHeight(), victim.getZ(), customSkull));
+            ItemEntity drop = new ItemEntity(server, victim.getX(), victim.getY(), victim.getZ(), customSkull);
+            drop.setDefaultPickUpDelay();
+            event.getDrops().add(drop);
         } else if (skullItem != null) {
-            event.getDrops().add(new ItemEntity(server, victim.getX(), victim.getY() + victim.getEyeHeight(), victim.getZ(), new ItemStack(skullItem)));
+            ItemEntity drop = new ItemEntity(server, victim.getX(), victim.getY(), victim.getZ(), new ItemStack(skullItem));
+            drop.setDefaultPickUpDelay();
+            event.getDrops().add(drop);
         }
     }
 
@@ -172,21 +175,15 @@ public final class ToolEvents {
                 doses += 3;
                 chance += 3;
             }
-            if (player.level().dimension() == Level.NETHER && player.getRandom().nextInt(30) < chance) {
-                ItemEntity ent = new ItemEntity(
-                    player.level(),
-                    player.getX(),
-                    player.getY() + 0.5,
-                    player.getZ(),
-                    new ItemStack(ForbiddenContent.item("lust_shard"))
-                );
-                var rand = player.getRandom();
-                ent.setDeltaMovement(
-                    (rand.nextFloat() - rand.nextFloat()) * 0.1,
-                    rand.nextFloat() * 0.05,
-                    (rand.nextFloat() - rand.nextFloat()) * 0.1
-                );
-                player.level().addFreshEntity(ent);
+            if (player.level().dimension() == Level.NETHER && EventRandom.nextInt(30) < chance) {
+                ItemEntity ent = player.spawnAtLocation(new ItemStack(ForbiddenContent.item("lust_shard")), 1.0F);
+                if (ent != null) {
+                    var rand = player.level().random;
+                    float y = rand.nextFloat() * 0.05F;
+                    float x = (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                    float z = (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                    ent.setDeltaMovement(ent.getDeltaMovement().add(x, y, z));
+                }
             }
         }
 

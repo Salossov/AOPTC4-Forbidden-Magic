@@ -25,11 +25,11 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 import forbidden.component.CollarState;
 import forbidden.component.ForbiddenComponents;
 import forbidden.content.ForbiddenTools;
+import forbidden.events.EventRandom;
 
 /** Collar of Pain: 250 vis capacity, equips to another player's necklace slot, charges from damage/crop. */
 public class SubCollarItem extends Item implements ICurioItem {
     private static final DecimalFormat FORMAT = new DecimalFormat("#######.##");
-    private static final List<String> PRIMALS = List.of("aer", "terra", "ignis", "aqua", "ordo", "perditio");
 
     public SubCollarItem() {
         super(new Properties().stacksTo(1).rarity(Rarity.RARE));
@@ -123,10 +123,10 @@ public class SubCollarItem extends Item implements ICurioItem {
         CollarState state = stack.getOrDefault(ForbiddenComponents.COLLAR.get(), CollarState.EMPTY);
         Map<String, Integer> visMap = new LinkedHashMap<>(state.vis());
         for (int i = 0; i < doses; i++) {
-            String p = PRIMALS.get(level.random.nextInt(6));
+            String p = EventRandom.nextPrimal().getTag();
             int current = visMap.getOrDefault(p, 0);
             if (current < maxVis()) {
-                visMap.put(p, Math.min(maxVis(), current + 1));
+                visMap.put(p, Math.min(maxVis(), current + WandApi.centivis(1)));
             }
         }
         ForbiddenComponents.collar(level, stack, new CollarState(state.owner(), state.ownerName(), visMap));

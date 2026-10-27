@@ -1,6 +1,6 @@
 package forbidden.content.wands;
 
-import java.util.Random;
+import forbidden.events.EventRandom;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.DamageTypeTags;
@@ -19,7 +19,6 @@ import thaumcraft.api.wands.WandApi;
  * Event subscribers for wand triggers, protections, and tooltips (B18, B19, B20, B22).
  */
 public final class ForbiddenWandEvents {
-    private static final Random RANDOM = new Random();
 
     @SubscribeEvent
     public static void onRightClickBlock(PlayerInteractEvent.RightClickBlock event) {
@@ -54,9 +53,8 @@ public final class ForbiddenWandEvents {
             boolean isTaintDamage = source.typeHolder().unwrapKey()
                     .map(k -> k.location().getPath().contains("taint")).orElse(false);
             if (isTaintDamage) {
-                var primals = Aspects.PRIMALS;
                 for (int i = 0; i < 3; i++) {
-                    var aspect = primals.get(RANDOM.nextInt(primals.size()));
+                    var aspect = EventRandom.nextPrimal();
                     int cur = WandApi.stored(wand, aspect);
                     if (cur < WandApi.capacity(wand)) {
                         WandApi.set(wand, aspect, Math.min(WandApi.capacity(wand), cur + WandApi.centivis(1)));
