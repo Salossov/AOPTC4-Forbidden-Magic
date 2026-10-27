@@ -49,7 +49,8 @@ public class TaintShovelItem extends ShovelItem implements IRepairable {
         if (isTaintMaterial(state)
             && !state.is(ForbiddenContent.TAINT_LOG.get())
             && !state.is(ForbiddenContent.TAINT_PLANKS.get())
-            && !state.is(ForbiddenContent.TAINT_STONE.get())) {
+            && !state.is(ForbiddenContent.TAINT_STONE.get())
+            && !state.is(ForbiddenContent.TAINT_BRICKS.get())) {
             return ForbiddenToolTiers.TAINT.getSpeed();
         }
         return super.getDestroySpeed(stack, state);
