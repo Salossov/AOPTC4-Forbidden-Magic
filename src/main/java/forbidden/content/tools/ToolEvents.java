@@ -137,7 +137,15 @@ public final class ToolEvents {
     @SubscribeEvent
     public static void onLivingDeath(LivingDeathEvent event) {
         if (!(event.getSource().getEntity() instanceof ServerPlayer player)) return;
-        ItemStack weap = player.getMainHandItem();
+        Entity direct = event.getSource().getDirectEntity();
+        ItemStack weap;
+        if (direct instanceof ThrownDiabolistFork fork && fork.getOwner() == player) {
+            weap = fork.getWeaponItem();
+        } else if (direct == player) {
+            weap = player.getMainHandItem();
+        } else {
+            return;
+        }
         if (!weap.is(ForbiddenTools.DIABOLIST_FORK.get())) return;
 
         LivingEntity victim = event.getEntity();

@@ -20,6 +20,12 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 @EventBusSubscriber(modid = ForbiddenMagic.ID, bus = EventBusSubscriber.Bus.MOD)
 public final class ForbiddenTools {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ForbiddenMagic.ID);
+    public static final DeferredRegister<net.minecraft.world.entity.EntityType<?>> ENTITIES =
+        DeferredRegister.create(Registries.ENTITY_TYPE, ForbiddenMagic.ID);
+    public static final java.util.function.Supplier<net.minecraft.world.entity.EntityType<ThrownDiabolistFork>> THROWN_FORK =
+        ENTITIES.register("diabolist_fork", () -> net.minecraft.world.entity.EntityType.Builder
+            .<ThrownDiabolistFork>of(ThrownDiabolistFork::new, net.minecraft.world.entity.MobCategory.MISC)
+            .sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(20).build("forbidden:diabolist_fork"));
 
     public static final DeferredItem<TaintShovelItem> TAINT_SHOVEL = ITEMS.register("taint_shovel", TaintShovelItem::new);
     public static final DeferredItem<TaintPickaxeItem> TAINT_PICKAXE = ITEMS.register("taint_pickaxe", TaintPickaxeItem::new);
@@ -57,6 +63,7 @@ public final class ForbiddenTools {
         initConditional();
         if (!registeredToBus) {
             ITEMS.register(bus);
+            ENTITIES.register(bus);
             registeredToBus = true;
         }
     }

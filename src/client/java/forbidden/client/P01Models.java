@@ -65,6 +65,10 @@ public final class P01Models {
                 ForbiddenTools.DIABOLIST_FORK.get(), id("spork"),
                 (stack,level,entity,seed)->forbidden.config.ForbiddenConfig.SPORK.get()?1:0
             );
+            net.minecraft.client.renderer.item.ItemProperties.register(
+                ForbiddenTools.DIABOLIST_FORK.get(), id("throwing"),
+                (stack,level,entity,seed)->entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1 : 0
+            );
             if(ForbiddenContent.MOB_CRYSTAL!=null) {
                 net.minecraft.client.renderer.item.ItemProperties.register(
                     ForbiddenContent.MOB_CRYSTAL.get(),
