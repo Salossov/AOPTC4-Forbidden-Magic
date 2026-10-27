@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "forbidden.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "HereticTradesMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,6 +1,8 @@
 modLoader="javafml"
 loaderVersion="[4,)"
 license="WTFPL-2.0; original third-party notices apply"
+[[mixins]]
+config="forbidden.mixins.json"
 [[mods]]
 modId="forbidden"
 version="${mod_version}"

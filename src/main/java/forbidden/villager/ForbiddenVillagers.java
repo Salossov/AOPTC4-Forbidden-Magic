@@ -14,6 +14,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.VillagerProfession;
+import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -37,6 +38,28 @@ public final class ForbiddenVillagers {
     public static final ResourceKey<VillagerProfession> HERETIC_PROFESSION_KEY = ResourceKey.create(Registries.VILLAGER_PROFESSION, HERETIC_ID);
 
     public static VillagerProfession HERETIC_PROFESSION;
+
+    /** The release appends the entire list, without vanilla's two-offer sampling. */
+    public static boolean populateReleaseOffers(Villager villager) {
+        var profession = villager.getVillagerData().getProfession();
+        if (profession != HERETIC_PROFESSION && !profession.name().equals(HERETIC_ID.toString()) && !profession.name().equals("heretic")) {
+            return false;
+        }
+        // Level increases must not append another copy of the release inventory.
+        // Existing saved offers/uses are read by vanilla without regenerating them.
+        if (villager.getVillagerData().getLevel() == 1) {
+            var offers = villager.getOffers();
+            var levels = VillagerTrades.TRADES.get(profession);
+            var listings = levels == null ? null : levels.get(1);
+            if (offers.isEmpty() && listings != null) {
+                for (var listing : listings) {
+                    var offer = listing.getOffer(villager, villager.getRandom());
+                    if (offer != null) offers.add(offer);
+                }
+            }
+        }
+        return true;
+    }
 
     @EventBusSubscriber(modid = ForbiddenMagic.ID, bus = EventBusSubscriber.Bus.MOD)
     public static final class ModEvents {
@@ -78,7 +101,7 @@ public final class ForbiddenVillagers {
             trades.add((entity, random) -> new MerchantOffer(
                 new ItemCost(Items.EMERALD, 1 + random.nextInt(2)),
                 new ItemStack(ForbiddenContent.item("greed_shard"), 3 + random.nextInt(2)),
-                12, 2, 0.05F
+                7, 2, 0.0F
             ));
 
             // Trade 2: Lust Shards (2-5) -> Emerald (1) [if !noLust]
@@ -86,7 +109,7 @@ public final class ForbiddenVillagers {
                 trades.add((entity, random) -> new MerchantOffer(
                     new ItemCost(ForbiddenContent.item("lust_shard"), 2 + random.nextInt(4)),
                     new ItemStack(Items.EMERALD, 1),
-                    12, 2, 0.05F
+                    7, 2, 0.0F
                 ));
             }
 
@@ -94,35 +117,35 @@ public final class ForbiddenVillagers {
             trades.add((entity, random) -> new MerchantOffer(
                 new ItemCost(ForbiddenContent.item("wrath_shard"), 4 + random.nextInt(6)),
                 new ItemStack(Items.EMERALD, 1),
-                12, 2, 0.05F
+                7, 2, 0.0F
             ));
 
             // Trade 4: Gluttony Shards (4-9) -> Emerald (1)
             trades.add((entity, random) -> new MerchantOffer(
                 new ItemCost(ForbiddenContent.item("gluttony_shard"), 4 + random.nextInt(6)),
                 new ItemStack(Items.EMERALD, 1),
-                12, 2, 0.05F
+                7, 2, 0.0F
             ));
 
             // Trade 5: Emerald (1-3) -> Skeleton Skull (1)
             trades.add((entity, random) -> new MerchantOffer(
                 new ItemCost(Items.EMERALD, 1 + random.nextInt(3)),
                 new ItemStack(Items.SKELETON_SKULL, 1),
-                12, 2, 0.05F
+                7, 2, 0.0F
             ));
 
             // Trade 6: Emerald (4-7) -> Ghast Tear (1)
             trades.add((entity, random) -> new MerchantOffer(
                 new ItemCost(Items.EMERALD, 4 + random.nextInt(4)),
                 new ItemStack(Items.GHAST_TEAR, 1),
-                12, 2, 0.05F
+                7, 2, 0.0F
             ));
 
             // Trade 7: Emerald (1) -> Glowstone Dust (8-16)
             trades.add((entity, random) -> new MerchantOffer(
                 new ItemCost(Items.EMERALD, 1),
                 new ItemStack(Items.GLOWSTONE_DUST, 8 + random.nextInt(9)),
-                12, 2, 0.05F
+                7, 2, 0.0F
             ));
 
             // Trade 8: Emerald (8-12) + Stick (1) -> Charged Profane Wand (maxUses = 2)
@@ -133,7 +156,7 @@ public final class ForbiddenVillagers {
                     Optional.of(new ItemCost(Items.STICK, 1)),
                     wand,
                     2, // maxUses = 2
-                    10, 0.05F
+                    10, 0.0F
                 );
             });
 
@@ -146,7 +169,7 @@ public final class ForbiddenVillagers {
                     Optional.of(new ItemCost(Items.DIAMOND, 1)),
                     fireFocus,
                     2, // maxUses = 2
-                    10, 0.05F
+                    10, 0.0F
                 );
             });
         }
