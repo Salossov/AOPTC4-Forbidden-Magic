@@ -1,6 +1,7 @@
 package forbidden.compat.bloodmagic;
 
 import forbidden.ForbiddenMagic;
+import forbidden.compat.botania.BotaniaCompat;
 import forbidden.compat.bloodmagic.effects.BloodSealEffect;
 import forbidden.compat.bloodmagic.flowers.BloodthornBlock;
 import forbidden.compat.bloodmagic.flowers.BloodthornBlockEntity;
@@ -44,7 +45,7 @@ public final class BloodMagicItems {
     );
 
     // Items
-    public static final DeferredHolder<Item, Item> BLOODTHORN_ITEM = registerItem("bloodthorn", () -> new BlockItem(BLOODTHORN.get(), new Item.Properties()));
+    public static final DeferredHolder<Item, Item> BLOODTHORN_ITEM = registerGatedItem("bloodthorn", () -> new BlockItem(BLOODTHORN.get(), new Item.Properties()), BloodMagicCompat.isAvailable() && BotaniaCompat.isAvailable());
     public static final DeferredHolder<Item, Item> BLOODWELL = registerBloodMagicItem("bloodwell", () -> {
         if (BloodMagicCompat.isLoaded()) {
             return BloodMagicItemBridge.createBloodwell();
@@ -72,7 +73,11 @@ public final class BloodMagicItems {
 
     private static DeferredHolder<Item, Item> registerBloodMagicItem(String name, Supplier<Item> supplier) {
         // The release registers these four items only inside the Compat.bm branch.
-        if (!BloodMagicCompat.isAvailable()) {
+        return registerGatedItem(name, supplier, BloodMagicCompat.isAvailable());
+    }
+
+    private static DeferredHolder<Item, Item> registerGatedItem(String name, Supplier<Item> supplier, boolean enabled) {
+        if (!enabled) {
             return DeferredHolder.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, name));
         }
         return registerItem(name, supplier);
@@ -85,10 +90,13 @@ public final class BloodMagicItems {
     }
 
     public static void register(IEventBus bus) {
-        EFFECTS.register(bus);
-        BLOCKS.register(bus);
+        if (BloodMagicCompat.isAvailable()) EFFECTS.register(bus);
+        // Bloodthorn is a Botania subtile nested inside its Blood Magic branch.
+        if (BloodMagicCompat.isAvailable() && BotaniaCompat.isAvailable()) {
+            BLOCKS.register(bus);
+            ENTITIES.register(bus);
+        }
         ITEMS.register(bus);
-        ENTITIES.register(bus);
     }
 
     private BloodMagicItems() {}

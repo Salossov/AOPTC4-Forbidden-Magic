@@ -6,9 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.neoforged.bus.api.IEventBus;
@@ -48,15 +48,19 @@ public final class BotaniaItems {
     public static final DeferredHolder<Item, Item> EUCLIDAISY_ITEM = registerItem("euclidaisy", () -> new BlockItem(EUCLIDAISY.get(), new Item.Properties()));
     public static final DeferredHolder<Item, Item> WHISPERWEED_ITEM = registerItem("whisperweed", () -> new BlockItem(WHISPERWEED.get(), new Item.Properties()));
     public static final DeferredHolder<Item, Item> TAINTHISTLE_ITEM = registerItem("tainthistle", () -> new BlockItem(TAINTHISTLE.get(), new Item.Properties()));
-    public static final DeferredHolder<Item, Item> BOTANIST_EMBLEM = registerItem("botanist_emblem", () -> new Item(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)));
 
     private static DeferredHolder<Item, Item> registerItem(String name, Supplier<Item> supplier) {
+        if (!BotaniaCompat.isAvailable()) {
+            return DeferredHolder.create(Registries.ITEM, ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, name));
+        }
         var holder = ITEMS.register(name, supplier);
         ITEMS_MAP.put(name, holder);
         return holder;
     }
 
     public static void register(IEventBus bus) {
+        // Release subtiles exist only inside the enabled Botania branch.
+        if (!BotaniaCompat.isAvailable()) return;
         BLOCKS.register(bus);
         ITEMS.register(bus);
         ENTITIES.register(bus);

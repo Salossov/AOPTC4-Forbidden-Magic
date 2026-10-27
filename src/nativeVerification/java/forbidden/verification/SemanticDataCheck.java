@@ -111,7 +111,6 @@ public final class SemanticDataCheck {
             "/packs/bloodmagic_wands/data/forbidden/recipe/wand_cap_alchemical.json",
             "/packs/bloodmagic_wands/data/forbidden/recipe/wand_rod_blood.json",
             "/packs/bloodmagic_wands/data/forbidden/recipe/wand_rod_blood_staff.json",
-            "/packs/botania/data/forbidden/recipe/botanist_emblem.json",
             "/packs/botania/data/forbidden/recipe/euclidaisy.json",
             "/packs/botania_wands/data/forbidden/recipe/mana_infusion_wand_cap_manasteel.json",
             "/packs/botania_wands/data/forbidden/recipe/mana_infusion_wand_rod_dreamwood.json",
@@ -233,7 +232,6 @@ public final class SemanticDataCheck {
             Map.entry("/packs/bloodmagic_wands/data/forbidden/recipe/wand_cap_alchemical.json", new RecipeSpec("thaumcraft:infusion", "forbidden:cap_alchemical", "forbidden:wand_cap_alchemical", 1, 3, "thaumcraft:iron_wand_cap", List.of("bloodmagic:reagentbinding", "bloodmagic:reagentbinding", "bloodmagic:reagentbinding"), Map.ofEntries(Map.entry("victus", 12), Map.entry("aqua", 6)), Map.of(), List.of(), Map.of(), List.of(), 0, 0, 0, 0, 0)),
             Map.entry("/packs/bloodmagic_wands/data/forbidden/recipe/wand_rod_blood.json", new RecipeSpec("thaumcraft:infusion", "forbidden:rod_blood", "forbidden:wand_rod_blood_inert", 1, 2, "bloodmagic:masterbloodorb", List.of("bloodmagic:reagentbinding", "bloodmagic:infusedslate", "bloodmagic:infusedslate", "bloodmagic:reagentvoid", "bloodmagic:reagentbloodlight", "bloodmagic:reagentwater", "bloodmagic:reagentlava", "bloodmagic:reagentgrowth", "bloodmagic:reagentair"), Map.ofEntries(Map.entry("victus", 32), Map.entry("praecantatio", 12), Map.entry("aqua", 16)), Map.of(), List.of(), Map.of(), List.of(), 0, 0, 0, 0, 0)),
             Map.entry("/packs/bloodmagic_wands/data/forbidden/recipe/wand_rod_blood_staff.json", new RecipeSpec("thaumcraft:arcane", "forbidden:rod_blood_staff", "forbidden:wand_rod_blood_staff", 1, 0, null, List.of(), Map.of(), Map.ofEntries(Map.entry("aer", 26), Map.entry("terra", 26), Map.entry("ignis", 26), Map.entry("aqua", 26), Map.entry("ordo", 26), Map.entry("perditio", 26)), List.of("  D", " B ", "B  "), Map.ofEntries(Map.entry("B", "forbidden:wand_rod_blood"), Map.entry("D", "bloodmagic:demonslate")), List.of(), 0, 0, 0, 0, 0)),
-            Map.entry("/packs/botania/data/forbidden/recipe/botanist_emblem.json", new RecipeSpec("minecraft:crafting_shaped", null, "forbidden:botanist_emblem", 1, 0, null, List.of(), Map.of(), Map.of(), List.of(" P ", "PEP", " P "), Map.ofEntries(Map.entry("P", "#botania:petals"), Map.entry("E", "minecraft:emerald")), List.of(), 0, 0, 0, 0, 0)),
             Map.entry("/packs/botania/data/forbidden/recipe/euclidaisy.json", new RecipeSpec("thaumcraft:infusion", "forbidden:euclidaisy", "forbidden:euclidaisy", 1, 8, "botania:pink_mystical_flower", List.of("thaumcraft:salis_mundus", "botania:mana_pearl", "botania:redstone_root", "botania:pink_mystical_petal", "botania:pink_mystical_petal", "botania:rune_of_sloth", "botania:rune_of_greed"), Map.ofEntries(Map.entry("auram", 8), Map.entry("alienis", 10), Map.entry("praecantatio", 8)), Map.of(), List.of(), Map.of(), List.of(), 0, 0, 0, 0, 0)),
             Map.entry("/packs/botania_wands/data/forbidden/recipe/mana_infusion_wand_cap_manasteel.json", new RecipeSpec("botania:mana_infusion", null, "forbidden:wand_cap_manasteel", 1, 0, "forbidden:wand_cap_manasteel_inert", List.of(), Map.of(), Map.of(), List.of(), Map.of(), List.of(), 1000, 0, 0, 0, 0)),
             Map.entry("/packs/botania_wands/data/forbidden/recipe/mana_infusion_wand_rod_dreamwood.json", new RecipeSpec("botania:mana_infusion", null, "forbidden:wand_rod_dreamwood", 1, 0, "forbidden:wand_rod_dreamwood_inert", List.of(), Map.of(), Map.of(), List.of(), Map.of(), List.of(), 10000, 0, 0, 0, 0)),
@@ -320,7 +318,7 @@ public final class SemanticDataCheck {
     }
 
     private static void testV02Recipes() throws Exception {
-        check(RECIPE_FILES.size() == 65, "all 65 recipe definition files indexed");
+        check(RECIPE_FILES.size() == 64, "all 64 recipe definition files indexed");
 
         int arcaneCount = 0;
         int crucibleCount = 0;
@@ -355,7 +353,7 @@ public final class SemanticDataCheck {
         check(arcaneCount == 11, "exactly 11 arcane workbench recipe variants verified");
         check(crucibleCount == 4, "exactly 4 crucible recipes verified");
         check(infusionCount == 32, "exactly 32 infusion/infusion_enchantment recipes verified");
-        check(craftingCount == 12, "exactly 12 crafting recipes verified");
+        check(craftingCount == 11, "exactly 11 crafting recipes verified");
         check(smeltingCount == 1, "exactly 1 smelting recipe verified");
         check(manaInfusionCount == 3, "exactly 3 mana infusion recipes verified");
         check(altarCount == 2, "exactly 2 altar recipes verified");

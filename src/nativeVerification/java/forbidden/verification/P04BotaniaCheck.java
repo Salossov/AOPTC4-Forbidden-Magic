@@ -491,7 +491,7 @@ public final class P04BotaniaCheck {
                 "wand_cap_manasteel_inert", "mana_infusion_wand_cap_manasteel",
                 "wand_rod_dreamwood", "mana_infusion_wand_rod_dreamwood",
                 "wand_rod_dreamwood_staff", "wand_cap_elementium_inert", "wand_cap_elementium",
-                "wand_cap_terrasteel", "euclidaisy", "whisperweed", "tainthistle", "botanist_emblem"
+                "wand_cap_terrasteel", "euclidaisy", "whisperweed", "tainthistle"
         );
         for (String rec : recipes) {
             String path = "/packs/" + (rec.contains("wand_rod_")||rec.contains("wand_cap_")?"botania_wands":"botania") + "/data/forbidden/recipe/" + rec + ".json";
@@ -609,7 +609,7 @@ public final class P04BotaniaCheck {
     }
 
     private static void testC04EmblemAndVisualsIntegrity() {
-        check(BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse("forbidden:botanist_emblem")), "registered forbidden:botanist_emblem item");
+        check(!BuiltInRegistries.ITEM.containsKey(ResourceLocation.parse("forbidden:botanist_emblem")), "release has no botanist emblem item");
 
         for (var model : WandVisuals.models()) {
             check(P04BotaniaCheck.class.getResource("/assets/" + model.getNamespace() + "/models/" + model.getPath() + ".json") != null,
