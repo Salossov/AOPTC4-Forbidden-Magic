@@ -45,8 +45,9 @@ public final class ForbiddenFoci {
         FocusBehaviors.register(
                 item,
                 new BlinkFocusBehavior(item),
-                ResourceLocation.fromNamespaceAndPath("forbidden", "item/blink_focus"),
-                ResourceLocation.fromNamespaceAndPath("forbidden", "item/blink_focus_orn")
+                ResourceLocation.fromNamespaceAndPath("forbidden", "wand/focus_blink"),
+                ResourceLocation.fromNamespaceAndPath("forbidden", "item/blink_focus_orn"),
+                ResourceLocation.fromNamespaceAndPath("forbidden", "staff/focus_blink")
         );
     }
 
