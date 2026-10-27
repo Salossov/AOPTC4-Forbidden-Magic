@@ -85,6 +85,14 @@ public class TaintShovelItem extends ShovelItem implements IRepairable {
                         // removeBlock restores the fluid's legacy block instead of clearing it.
                         // Match TC4 setBlockToAir, with world changes owned by the server.
                         if (!level.isClientSide) level.setBlock(target, Blocks.AIR.defaultBlockState(), 3);
+                        // The release consumes three coordinate samples for every block,
+                        // even when the dedicated-server proxy renders nothing.
+                        float endX = ex + level.random.nextFloat();
+                        float endY = wy + level.random.nextFloat();
+                        float endZ = zee + level.random.nextFloat();
+                        if (player != null) thaumcraft.api.client.ParticleApi.nodeBolt(level,
+                                (float) player.getX(), (float) player.getY(), (float) player.getZ(),
+                                endX, endY, endZ);
                     }
                 }
             }

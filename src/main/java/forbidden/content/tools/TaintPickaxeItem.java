@@ -30,7 +30,7 @@ public class TaintPickaxeItem extends PickaxeItem implements IRepairable {
     }
 
     public static float calculateTaintPickSpeed(float hardness) {
-        if (hardness <= 0.0F) {
+        if (hardness == 0.0F) {
             return 0.0F;
         } else if (hardness < 5.0F) {
             return 0.1F;

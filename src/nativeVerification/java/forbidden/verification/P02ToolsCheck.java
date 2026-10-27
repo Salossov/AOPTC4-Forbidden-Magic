@@ -87,6 +87,9 @@ public final class P02ToolsCheck {
 
         // 3. B12: TaintPickaxe speed calculation formula (4 tiers)
         check(TaintPickaxeItem.calculateTaintPickSpeed(0.0F) == 0.0F, "tier 0: hardness 0 -> speed 0");
+        check(TaintPickaxeItem.calculateTaintPickSpeed(-1.0F) == 0.1F, "source exact-zero test leaves negative hardness at speed 0.1");
+        check(TaintPickaxeItem.calculateTaintPickSpeed(5.0F) == 2.5F, "source lower inclusive medium boundary");
+        check(TaintPickaxeItem.calculateTaintPickSpeed(Math.nextDown(20.0F)) == Math.nextDown(20.0F) / 2.0F, "source exclusive upper medium boundary");
         check(TaintPickaxeItem.calculateTaintPickSpeed(2.0F) == 0.1F, "tier 1: hardness < 5 -> speed 0.1");
         check(TaintPickaxeItem.calculateTaintPickSpeed(4.99F) == 0.1F, "tier 1: hardness < 5 -> speed 0.1");
         check(TaintPickaxeItem.calculateTaintPickSpeed(10.0F) == 5.0F, "tier 2: hardness 10 -> speed 5 (hardness/2)");
