@@ -17,11 +17,11 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.ItemTags;
@@ -306,7 +306,7 @@ public final class ForbiddenEvents {
         Level level = victim.level();
 
         // 1. Tainted mob weakness blood shard
-        if (event.getSource().getEntity() instanceof Player && isTaintedMob(victim)) {
+        if (event.getSource().getMsgId().equals("player") && isTaintedMob(victim)) {
             var weakness = victim.getEffect(MobEffects.WEAKNESS);
             if (weakness != null && weakness.getAmplifier() >= 2 && Math.random() < 0.5) {
                 addDrop(event, new ItemStack(ForbiddenContent.item("tainted_blood_shard")));
@@ -317,7 +317,10 @@ public final class ForbiddenEvents {
         if (ForbiddenConfig.SILVERFISH_EMERALDS.get() && victim instanceof Silverfish) {
             if (event.isRecentlyHit() && event.getSource().getEntity() instanceof Player) {
                 var biome = level.getBiome(victim.blockPosition());
-                boolean isMountain = biome.is(BiomeTags.IS_MOUNTAIN);
+                // Mojang's biome renames: extreme_hills -> mountains -> windswept_hills.
+                // The release compares the one biome ID, not the mountain family.
+                boolean isMountain = biome.is(ResourceKey.create(Registries.BIOME,
+                    ResourceLocation.withDefaultNamespace("windswept_hills")));
                 int chance = isMountain ? (2 + getLootingLevel(event) * 2) : (1 + getLootingLevel(event) * 3);
                 int bound = isMountain ? 30 : 70;
                 // Release excludes FakePlayer only from the non-mountain branch.
@@ -433,8 +436,8 @@ public final class ForbiddenEvents {
     }
 
     private static boolean isTaintedMob(LivingEntity entity) {
-        ResourceLocation id = BuiltInRegistries.ENTITY_TYPE.getKey(entity.getType());
-        return id.getNamespace().equals("thaumcraft") && id.getPath().contains("taint");
+        return entity.getType().is(TagKey.create(Registries.ENTITY_TYPE,
+            ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, "tainted_mobs")));
     }
 
     private static void addDrop(LivingDropsEvent event, ItemStack drop) {

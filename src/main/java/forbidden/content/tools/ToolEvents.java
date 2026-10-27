@@ -16,6 +16,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Skeleton;
 import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -97,19 +98,19 @@ public final class ToolEvents {
         Item skullItem = null;
         ItemStack customSkull = null;
 
-        if (victim instanceof WitherSkeleton) {
+        if (victim.getClass() == WitherSkeleton.class) {
             if (EventRandom.nextInt(26) <= 3 + looting) {
                 skullItem = Items.WITHER_SKELETON_SKULL;
             }
-        } else if (victim instanceof Skeleton) {
+        } else if (victim.getClass() == Skeleton.class) {
             if (EventRandom.nextInt(26) <= 3 + looting) {
                 skullItem = Items.SKELETON_SKULL;
             }
-        } else if (victim.getType() == EntityType.ZOMBIE) {
+        } else if (victim.getClass() == Zombie.class) {
             if (EventRandom.nextInt(26) <= 2 + 2 * looting) {
                 skullItem = Items.ZOMBIE_HEAD;
             }
-        } else if (victim instanceof Creeper) {
+        } else if (victim.getClass() == Creeper.class) {
             if (EventRandom.nextInt(26) <= 2 + 2 * looting) {
                 skullItem = Items.CREEPER_HEAD;
             }

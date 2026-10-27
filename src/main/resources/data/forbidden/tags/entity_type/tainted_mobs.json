@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "thaumcraft:taint_chicken",
+    "thaumcraft:taint_cow",
+    "thaumcraft:taint_creeper",
+    "thaumcraft:taint_pig",
+    "thaumcraft:taint_sheep",
+    "thaumcraft:taint_spider",
+    "thaumcraft:taint_spore",
+    "thaumcraft:taint_spore_swarmer",
+    "thaumcraft:taint_swarm",
+    "thaumcraft:taint_villager",
+    "thaumcraft:taintacle",
+    "thaumcraft:taintacle_small",
+    "thaumcraft:taintacle_giant",
+    "thaumcraft:thaumic_slime"
+  ]
+}
