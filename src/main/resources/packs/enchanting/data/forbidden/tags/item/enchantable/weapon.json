@@ -1,6 +1,26 @@
 {
   "replace": false,
   "values": [
-    "#minecraft:enchantable/sword"
+    "#minecraft:enchantable/sword",
+    {
+      "id": "thaumcraft:crimson_sword",
+      "required": false
+    },
+    {
+      "id": "thaumcraft:elemental_sword",
+      "required": false
+    },
+    {
+      "id": "thaumcraft:thaumium_sword",
+      "required": false
+    },
+    {
+      "id": "thaumcraft:void_sword",
+      "required": false
+    },
+    {
+      "id": "botania:soulscribe",
+      "required": false
+    }
   ]
 }
