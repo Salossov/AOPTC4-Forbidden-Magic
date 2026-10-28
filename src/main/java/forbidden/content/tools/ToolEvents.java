@@ -141,10 +141,10 @@ public final class ToolEvents {
         ItemStack weap;
         if (direct instanceof ThrownDiabolistFork fork && fork.getOwner() == player) {
             weap = fork.getWeaponItem();
-        } else if (direct == player) {
-            weap = player.getMainHandItem();
         } else {
-            return;
+            // Preserve the release's held-fork check for other player-owned
+            // damage sources; the thrown fork is an additional capture path.
+            weap = player.getMainHandItem();
         }
         if (!weap.is(ForbiddenTools.DIABOLIST_FORK.get())) return;
 

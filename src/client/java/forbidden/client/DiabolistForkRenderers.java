@@ -28,6 +28,12 @@ import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 @EventBusSubscriber(modid = "forbidden", bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class DiabolistForkRenderers {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("forbidden", "textures/entity/diabolist_fork.png");
+    private static TridentModel itemModel;
+
+    @SubscribeEvent
+    public static void reload(net.neoforged.neoforge.client.event.RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener((net.minecraft.server.packs.resources.ResourceManagerReloadListener) manager -> itemModel = null);
+    }
 
     @SubscribeEvent
     public static void items(RegisterClientExtensionsEvent event) {
@@ -41,12 +47,11 @@ public final class DiabolistForkRenderers {
                         @Override
                         public void renderByItem(ItemStack stack, ItemDisplayContext context, PoseStack poses,
                                 MultiBufferSource buffers, int light, int overlay) {
-                            // Bake against the current model set, including after resource reload.
-                            var model = new TridentModel(mc.getEntityModels().bakeLayer(ModelLayers.TRIDENT));
+                            if (itemModel == null) itemModel = new TridentModel(mc.getEntityModels().bakeLayer(ModelLayers.TRIDENT));
                             poses.pushPose();
                             poses.scale(1, -1, -1);
-                            model.renderToBuffer(poses, ItemRenderer.getFoilBufferDirect(buffers,
-                                model.renderType(TEXTURE), false, stack.hasFoil()), light, overlay);
+                            itemModel.renderToBuffer(poses, ItemRenderer.getFoilBufferDirect(buffers,
+                                itemModel.renderType(TEXTURE), false, stack.hasFoil()), light, overlay);
                             poses.popPose();
                         }
                     };
@@ -73,7 +78,8 @@ public final class DiabolistForkRenderers {
             poses.pushPose();
             poses.mulPose(Axis.YP.rotationDegrees(Mth.lerp(partialTick, fork.yRotO, fork.getYRot()) - 90));
             poses.mulPose(Axis.ZP.rotationDegrees(Mth.lerp(partialTick, fork.xRotO, fork.getXRot()) + 90));
-            model.renderToBuffer(poses, buffers.getBuffer(model.renderType(TEXTURE)), light, OverlayTexture.NO_OVERLAY);
+            model.renderToBuffer(poses, ItemRenderer.getFoilBufferDirect(buffers,
+                model.renderType(TEXTURE), false, fork.hasFoil()), light, OverlayTexture.NO_OVERLAY);
             poses.popPose();
             super.render(fork, yaw, partialTick, poses, buffers, light);
         }

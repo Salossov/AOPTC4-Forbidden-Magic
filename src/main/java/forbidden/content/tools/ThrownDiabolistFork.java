@@ -17,6 +17,9 @@ import net.minecraft.world.phys.Vec3;
 
 /** Trident flight and pickup, with the existing fork stack and melee damage. */
 public final class ThrownDiabolistFork extends AbstractArrow {
+    private static final net.minecraft.network.syncher.EntityDataAccessor<Boolean> FOIL =
+        net.minecraft.network.syncher.SynchedEntityData.defineId(ThrownDiabolistFork.class,
+            net.minecraft.network.syncher.EntityDataSerializers.BOOLEAN);
     private boolean dealtDamage;
 
     public ThrownDiabolistFork(EntityType<? extends ThrownDiabolistFork> type, Level level) {
@@ -26,8 +29,17 @@ public final class ThrownDiabolistFork extends AbstractArrow {
     public ThrownDiabolistFork(Level level, LivingEntity owner, ItemStack stack) {
         super(ForbiddenTools.THROWN_FORK.get(), owner, level, stack, null);
         pickup = Pickup.ALLOWED;
+        entityData.set(FOIL, stack.hasFoil());
         setSoundEvent(SoundEvents.TRIDENT_HIT_GROUND);
     }
+
+    @Override
+    protected void defineSynchedData(net.minecraft.network.syncher.SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(FOIL, false);
+    }
+
+    public boolean hasFoil() { return entityData.get(FOIL); }
 
     @Override
     public void tick() {
@@ -84,5 +96,6 @@ public final class ThrownDiabolistFork extends AbstractArrow {
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
         dealtDamage = tag.getBoolean("DealtDamage");
+        entityData.set(FOIL, getPickupItemStackOrigin().hasFoil());
     }
 }
