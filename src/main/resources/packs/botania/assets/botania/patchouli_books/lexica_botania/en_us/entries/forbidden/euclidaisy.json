@@ -1,0 +1,11 @@
+{
+  "name": "forbidden.lexicon.euclidaisy",
+  "category": "botania:functional_flowers",
+  "icon": "forbidden:euclidaisy",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "forbidden.lexicon.euclidaisy.modern"
+    }
+  ]
+}

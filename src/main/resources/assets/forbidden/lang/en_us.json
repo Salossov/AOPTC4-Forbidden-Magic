@@ -574,5 +574,9 @@
   "tc.research_text.forbidden:tainthistle": "It won't clean up your empty pocky containers",
   "tc.research_text.forbidden:subcollar": "Pain and Magic",
   "tc.research_text.forbidden:eldritch_orb": "Orb of Bel-Shamharoth",
-  "tc.research_text.forbidden:bloodthorn": "Bloodthorn"
+  "tc.research_text.forbidden:bloodthorn": "Bloodthorn",
+  "forbidden.lexicon.euclidaisy.modern": "The eerie, pink $(thing)Euclidaisy$() is an oddity. It uses large amounts of mana to conjure some sort of ethereal substance that only seems useful to thaumaturges.$(br2)$(italic)It doesn't combustion bend.$()",
+  "forbidden.lexicon.whisperweed.modern": "The $(thing)Whisperweed$() is an unpleasant plant that whispers secrets into the ears of anyone who'll listen. There doesn't seem to be much point to the plant, since the secrets aren't even relevant to botany.$(br2)$(italic)More secrets than Wan Shi Tong$()",
+  "forbidden.lexicon.tainthistle.modern": "The disgusting $(thing)Tainthistle$() derives sustenance from the tainted runoff of magical experiments. It'll suck up any such substance it can find and try to turn it into mana. Since Botany is an environmentally friendly practice, there doesn't seem to be much point to it.$(br2)$(italic)More intrusive than a Spirit Vine$()",
+  "forbidden.lexicon.bloodthorn.modern": "The results of some sick, twisted Blood Mage's experiments, the $(thing)Bloodthorn$() is a red mystical flower that has been steeped in blood until it developed a taste for the life force of all things. It uses mana to inflict an extreme level of Weakness on surrounding creatures that is unmatched by any conventional alchemy.$(br2)$(italic)Yakone's legacy$()"
 }

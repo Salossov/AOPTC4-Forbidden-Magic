@@ -1,0 +1,11 @@
+{
+  "name": "forbidden.lexicon.whisperweed",
+  "category": "botania:functional_flowers",
+  "icon": "forbidden:whisperweed",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "forbidden.lexicon.whisperweed.modern"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "name": "forbidden.lexicon.tainthistle",
+  "category": "botania:generating_flowers",
+  "icon": "forbidden:tainthistle",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "forbidden.lexicon.tainthistle.modern"
+    }
+  ]
+}
