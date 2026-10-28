@@ -1,77 +1,62 @@
-# Forbidden Magic — неофициальный порт на 1.21.1
+# Forbidden Magic
 
-Неофициальный порт модификации Forbidden Magic 0.575 (автор SpitefulFox) для Minecraft 1.21.1,
-NeoForge 21.1.252, Java 21, локального ядра Thaumcraft/API 1.0.0 и Curios 9.5.1+1.21.1.
+![Forbidden Magic](assets/branding/logo.svg)
 
-## Статус миграции и реализованные пачки
+[English](README.md) · [Русский](README.ru.md)
 
-- **P01 Базовый контент и аспекты:** 7 греховных аспектов (`infernus`, `superbia`, `gula`, `invidia`, `desidia`, `ira`, `luxuria`), осколки Незера, ресурсы порчи, дерево порчи, темные растения, пирог порчи, базовые стержни жезлов, зачарования.
-- **P02 Инструменты, жезлы и фокусы:** Хамелеон-инструменты (Morph) с 3 фазами и Impact 3x3, инструменты порчи, Топор черепов, Вилка диаболиста, Кнут, Кольцо еды, Ошейник послушания, Primewell и Crystalwell, Фокус мерцания (Blink: транзакционное списание 3 perditio, дальность 128 блоков, улучшения Hellfire и Pandemonium).
-- **P03 Клетка гнева и житель:** Клетка гнева (потребление эссенции с suction 256, приоритет особого/ira/desidia топлива, редстоун-контроль, лимит 6 мобов вокруг, каталог 30+ мобов), импринтинг кристалла моба, житель-еретик и рабочий блок Heretic Study с 9 сделками.
-- **P04 Кросс-модовые интеграции:**
-  - **Thaumic Tinkerer (T01):** 8 стоимостей зачарований FM зарегистрированы напрямую в каталоге TT `EnchanterCatalog` через IMC `RegisterEnchantmentCost`; сохранение KAMI аспектов подтверждено.
-  - **Botania:** Стержни из жизнедерева и древесины снов, конверсия маны в вис, 4 цветка Botania (Euclidaisy, Whisperweed, Tainthistle, Manathistle).
-  - **Blood Magic:** Стержень крови, кровавый колпачок, Рапира сангвиника, синергия жертвенного кинжала с LP, цветок Bloodthorn.
-  - **Twilight Forest:** Мобы Сумеречного леса в клетке гнева (Mini Ghast, Tower Ghast и др.) и их аспекты.
-  - **Viewers (JEI / EMI):** Все 5 категорий рецептов (Arcane Shaped, Arcane Shapeless, Crucible, Infusion, Infernal) автоматически индексируются через `thaumcraft_viewers`.
+Неофициальный порт Forbidden Magic 0.575 от SpitefulFox на **Minecraft 1.21.1 / NeoForge**. Добавляет греховные аспекты, тёмные артефакты, зачарования, жезлы, клетку гнева и интеграции с совместимыми магическими модами.
 
-## Верификация и архитектура
+Установите игровой JAR на клиент и сервер вместе с **NeoForge 21.1.252**, **Java 21**, **AOP: Thaumcraft 4 1.0.0**, **AOP UI 0.7.0** и **Curios 9.5.1+**. Для необязательных интеграций нужны совместимые порты; старые переключатели конфига не заменяют отсутствующие зависимости. Исходная интеграция EMC для EE3 адаптирована к ProjectE. JAR исходников и API разработчика в `mods/` не устанавливаются.
 
-13 JVM-наборов проходят 14 649 проверок правил и снимков данных. Независимая legacy-сверка всех рецептов/исследований остаётся открытой:
-1. `foundationRules`: Проверка комбинаций ContentGates (768 профилей, 9 216 проверок).
-2. `semanticDataCheck`: Снимки рецептов/исследований и отрицательные мутации (2 706 проверок).
-3. `componentCodecCheck`: Кодеки компонентов и сетевая сериализация (12 проверок).
-4. `p01ContentNormal`: Стандартный профиль регистрации (322 проверки).
-5. `p01ContentNoLust`: Профиль с отключенной похотью (322 проверки).
-6. `p01ContentNoCage`: Профиль с отключенной клеткой гнева (320 проверок).
-7. `p02ToolsCheck`: Механики инструментов и аксессуаров (40 проверок).
-8. `p02WandCheck`: Жезлы, колпачки, стержни и логика фокуса Blink (258 проверок).
-9. `p03WrathCageCheck`: Логика клетки гнева, suction и спавнера (224 проверки).
-10. `p03VillagerCheck`: Профессия жителя, сделки, POI (65 проверок).
-11. `p04CompatCheck`: Интеграции Thaumic Tinkerer, Twilight Forest, Viewers (163 проверки).
-12. `p04BloodMagicCheck`: Интеграция Blood Magic (443 проверки).
-13. `p04BotaniaCheck`: Интеграция Botania (558 проверок).
+**0.575.0-alpha.1** · WTFPL-2.0
 
-*Игровая приёмка не завершена. Запуск выделенного сервера и EULA для отдельных тестовых миров разрешены пользователем 25.10.2026; клиентская приёмка ещё не выполнена. В реальном мире найдены ошибки, которых не обнаружили офлайн-снимки данных. Успешные JVM-наборы не доказывают полное соответствие оригиналу.*
+## Настройки
 
-### Автоматическая серверная приёмка
+Откройте «Моды» → мод → «Настройки» либо выберите мод в AOP UI. Для всех существующих параметров добавлены русские и английские названия и подсказки. Параметры запуска требуют полного перезапуска; AOP UI показывает ожидающие применения изменения. Новые настройки баланса не добавлены.
+
+## Сборка
+
+Нужны Java 21, Python 3.11+ и архив закреплённых зависимостей. API и игровые JAR зависимостей не включаются в мод.
+
+Задайте `AOP_DEPENDENCIES_URL` — HTTPS-адрес ZIP зависимостей, а `AOP_DEPENDENCIES_SHA256` — его точный SHA-256. Из корня репозитория выполните:
 
 ```powershell
-.\tools\acceptance\Invoke-LiveServerAcceptance.ps1 -AcceptEula -Profiles @('base','no-lust','no-cage','no-enchantments','gluttony-off','gluttony-hard','botania','bloodmagic','tinkerer','integrations','free-cage') -Lifecycle -ContinueOnFailure
+python .github/scripts/ci.py prepare
+python .github/scripts/ci.py build
 ```
 
-Каждый запуск создаёт новый `build/acceptance/<runId>`, принимает EULA только в нём и использует два последовательных процесса для записи/перезапуска/чтения мира. Запускается выделенный сервер `--nogui`; клиент, окно и звук отсутствуют. Проверяется происхождение кода из gameplay JAR, свежесть отчёта, ненулевое число утверждений, отсутствие ошибок загрузки и штатная остановка.
+Скрипт запускает Gradle wrapper напрямую через Java: `clean build sourcesJar` вместе с проверками репозитория. В `dist/` появятся игровой JAR, исходники, журнал и манифест с хешами исходников и зависимостей. Изменение исходников, зависимостей, Java или повреждение кеша требует пересборки.
 
-`base` дополнительно проверяет действия в мире: дерево/куст/торт/краситель/лопату/печь. Он сохраняет неуспешный результат, если обнаружена ошибка; `-ContinueOnFailure` позволяет выполнить независимые профили. Отчёты не заменяют двухклиентский мультиплеер или визуальные проверки. Приёмочный мод находится в `src/acceptance` и не включается в выпускной JAR.
+Для ручной сборки `./gradlew.ps1 build sourcesJar` (PowerShell) и `./gradlew build sourcesJar` (POSIX) принимают параметры `-P<роль>=<абсолютный путь>` из списка ниже. Wrapper загружает закреплённую версию Gradle. Соседние локальные репозитории удобны при разработке; CI использует явные пути.
 
-## Сборка и верификация
+## CI
 
-Запуск лаунчера офлайн-проверок:
+`.github/workflows/build.yml` запускает проверки и сборку на Java 21 при изменениях `main`, pull request и вручную. Укажите переменные репозитория `AOP_DEPENDENCIES_URL` и `AOP_DEPENDENCIES_SHA256` либо их значения при ручном запуске. Workflow сохраняет артефакты сборки; публикации релизов и отправки коммитов в нём нет.
 
-```powershell
-.\tools\verification\Invoke-FmVerification.ps1 -Phase Offline -VerifyArtifacts
+ZIP должен содержать `manifest.json` и только перечисленные в нём JAR:
+
+```json
+{
+  "format": 1,
+  "artifacts": {
+    "thaumcraftApiJar": {
+      "file": "jars/thaumcraft-api-1.0.0.jar",
+      "sha256": "<64 строчных шестнадцатеричных символа>"
+    }
+  }
+}
 ```
 
-Запуск регрессионных тестов парсера и артефактов:
+Добавьте в `artifacts` все роли из списка ниже. У каждой роли — уникальный путь к JAR и SHA-256; для игровых зависимостей можно указать `mod_id` для проверки ID NeoForge. Не добавляйте отдельные записи каталогов ZIP. Перед распаковкой проверяется хеш архива, затем — каждого JAR. Размещайте только зависимости, которые вправе распространять; подойдёт закрытый архив. Адреса конкретной машины и архивы в Git не включены.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verification\Test-FmVerificationParser.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verification\Test-FmArtifactVerification.ps1
-```
+Для локальной проверки workflow используйте `act workflow_dispatch -j build` с двумя переменными зависимостей в env-файле. Локальный HTTP-источник допускается только при `ACT=true`; GitHub CI требует HTTPS. Для связанного worktree Windows перед `act` также выполните `python .github/scripts/ci.py inventory`: его `.git` ссылается на путь хоста. Игнорируемый инвентарь перечисляет отслеживаемые файлы, содержимое которых затем хешируется внутри CI.
 
-## Подготовка комплекта зависимостей
+## Графика и авторство
 
-`tools/acceptance/Install-ProductionJar.ps1` требует Python 3.11+ со стандартным `tomllib` для разбора настоящих TOML-таблиц. Аудит отличает объявления `[[mods]]` от ссылок `[[dependencies.*]]`, проверяет обязательные зависимости и дубликаты mod ID; optional/mandatory=false не считаются обязательными. Результат сохраняется в `dependency-audit.json`. Диапазоны версий проверяются NeoForge при реальном запуске.
+Редактируемый векторный логотип: [assets/branding/logo.svg](assets/branding/logo.svg). Прозрачные PNG 512 × 512 и 64 × 64 экспортированы из него для NeoForge и AOP UI, загружающих PNG-текстуры. Исходником графики остаётся SVG.
 
-Серверная матрица 25.10.2026: 11 профилей, 22 процесса write/read, 1460 assertions PASS. Это покрытие перечисленных сценариев, а не завершение полной приёмки.
+Авторы и условия сторонних материалов: [LICENSE](LICENSE), [NOTICE.md](NOTICE.md). Этот проект не меняет лицензии зависимостей и отдельного ядра Thaumcraft.
 
-## Выпускные артефакты и лицензия
+Обязательные роли зависимостей: `thaumcraftApiJar`, `thaumcraftRuntimeJar`, `aopUiJar`, `botaniaJar`, `bloodMagicJar`, `modopediaJar`, `tinkererJar`.
 
-- **Лицензия:** WTFPL-2.0 (см. `LICENSE`).
-- **Авторы:** Исходный мод Forbidden Magic 0.575 создан SpitefulFox при участии контрибьюторов (см. `NOTICE.md`).
-- **Состав JAR:** Выпускной JAR содержит исключительно классы и ресурсы `main` и `client`. Все тестовые пакеты (`rules`, `nativeVerification`) и классы ядра строго отфильтрованы.
-
-
-### Tested optional dependency set (2026-10-26)
-
-NeoForge21.1.252 / Java21; local Thaumcraft1.0.0 and AOP UI0.7.0, Curios9.5.1+1.21.1. The isolated combined test set also contains Botania456 (snapshot20260912), Blood Magic3.4.0-46-alpha, Thaumic Tinkerer1.0.0, AE2 19.2.18, Compact0.7.0 and EMI1.1.24. Optional integrations remain optional; this list records the tested versions, not full gameplay acceptance or availability of the historical blocked integrations.
+Набор совместимости для сборки: Botania 456 (совместимый бэкпорт AOP), Blood Magic 3.4.0-46-alpha, Modopedia 1.1.5 и Thaumic Tinkerer 2.5.164-port.1. Эти зависимости компиляции и проверок не становятся обязательными для игрока.

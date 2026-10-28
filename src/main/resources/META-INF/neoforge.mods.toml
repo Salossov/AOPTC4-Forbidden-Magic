@@ -7,8 +7,9 @@ config="forbidden.mixins.json"
 modId="forbidden"
 version="${mod_version}"
 displayName="Forbidden Magic"
+logoFile="logo.png"
 authors="SpitefulFox and original contributors; unofficial port contributors"
-description='''Unofficial port of Forbidden Magic 0.575. Base content is implemented; remaining gameplay migration and server/client acceptance testing are incomplete.'''
+description='''Unofficial Forbidden Magic 0.575 port: dark artifacts, sinful aspects, wands and integrations for AOP: Thaumcraft 4.'''
 [[dependencies.forbidden]]
 modId="minecraft"
 type="required"
@@ -29,4 +30,11 @@ side="BOTH"
 modId="curios"
 type="required"
 versionRange="[9.5.1,)"
+side="BOTH"
+
+[[dependencies.forbidden]]
+modId="aop_ui"
+type="required"
+versionRange="[0.7.0,)"
+ordering="AFTER"
 side="BOTH"

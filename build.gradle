@@ -77,18 +77,21 @@ def compatCandidates = [
     file("${projectDir}/../../../../Thaumic_Tinkerer/analysis/compat_reference")
 ]
 def defaultCompatRoot = compatCandidates.find { it.isDirectory() } ?: compatCandidates[0]
-def botaniaJar = file("${defaultCompatRoot}/botania/botania-neoforge-1.21.1-456-20260912.043547-15.jar")
-def bloodMagicJar = file("${defaultCompatRoot}/bloodmagic/bloodmagic-3.4.0-46-alpha.jar")
-def modopediaJar = file("${defaultCompatRoot}/bloodmagic/modopedia-neoforge-1.21.1-1.1.5.jar")
+def botaniaJar = file(providers.gradleProperty('botaniaJar').getOrElse("${defaultCompatRoot}/botania/botania-neoforge-1.21.1-456-20260912.043547-15.jar"))
+def bloodMagicJar = file(providers.gradleProperty('bloodMagicJar').getOrElse("${defaultCompatRoot}/bloodmagic/bloodmagic-3.4.0-46-alpha.jar"))
+def modopediaJar = file(providers.gradleProperty('modopediaJar').getOrElse("${defaultCompatRoot}/bloodmagic/modopedia-neoforge-1.21.1-1.1.5.jar"))
 def ttJarCandidates = [
     file("${projectDir}/../../Thaumic_Tinkerer/repo/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar"),
     file("${projectDir}/../../../../Thaumic_Tinkerer/repo/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar"),
     file("${projectDir}/../../Thaumic_Tinkerer/repo/.worktree/f01-tt-enchanter-api/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar"),
     file("${projectDir}/../../../../Thaumic_Tinkerer/repo/.worktree/f01-tt-enchanter-api/build/libs/ThaumicTinkerer-1.21.1-1.0.0.jar")
 ]
-def tinkererJar = ttJarCandidates.find { it.isFile() } ?: ttJarCandidates[0]
+def tinkererJar = providers.gradleProperty('tinkererJar').isPresent() ? file(providers.gradleProperty('tinkererJar').get()) : (ttJarCandidates.find { it.isFile() } ?: ttJarCandidates[0])
 def acceptanceMods = providers.gradleProperty('acceptanceMods').getOrElse('').tokenize(',')
+def aopUiJar = file(providers.gradleProperty('aopUiJar').getOrElse('../../../aopui/repo/build/libs/aopui-1.21.1-0.7.0.jar'))
+
 dependencies {
+    compileOnly files(aopUiJar)
     acceptanceCompileOnly files(tasks.named('jar'))
     acceptanceCompileOnly files(apiJar)
     acceptanceRuntimeOnly files(tasks.named('jar'))
@@ -124,7 +127,7 @@ dependencies {
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${project.curios_version}"
     runtimeOnly files(providers.gradleProperty('thaumcraftRuntimeJar').getOrElse("${coreRoot}/mod/build/libs/thaumcraft-1.21.1-${project.thaumcraft_version}.jar"))
     // Runtime support for the core is supplied explicitly; never bundle it in this addon.
-    if (providers.gradleProperty('aopUiJar').isPresent()) runtimeOnly files(providers.gradleProperty('aopUiJar').get())
+    runtimeOnly files(aopUiJar)
 }
 repositories {
     mavenCentral()
@@ -142,7 +145,8 @@ neoForge.runs.configureEach {
     if (name != 'acceptanceServer') loadedMods = [neoForge.mods.forbidden]
 }
 tasks.register('verifyApiArtifact') {
-    inputs.file(apiJar)
+    inputs.files(apiJar, aopUiJar)
+    doLast { if (!aopUiJar.isFile()) throw new GradleException("Pass -PaopUiJar=<AOP UI 0.7 gameplay JAR>") }
     doLast { if (!apiJar.isFile()) throw new GradleException("Build the pinned Thaumcraft API or pass -PthaumcraftApiJar=<path>: ${apiJar}") }
 }
 tasks.named('compileJava') { dependsOn 'verifyApiArtifact' }

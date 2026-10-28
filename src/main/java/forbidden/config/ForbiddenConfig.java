@@ -16,40 +16,40 @@ public final class ForbiddenConfig {
     static {
         var b = new ModConfigSpec.Builder();
         b.push("general");
-        NO_LUST = b.define("noLust", false);
-        SILVERFISH_EMERALDS = b.define("silverfishDropEmeraldNuggets", true);
-        TAG_RESEARCH = b.define("tagResearchItems", true);
-        WRATH_CAGE = b.define("wrathCageEnabled", true);
-        GREEDY = b.define("capitalistEnchantment", true);
-        EMERALD_TRANSMUTATION = b.define("emeraldTransmutation", true);
-        CRIES_HAVOC = b.define("wrathCageCriesHavoc", false);
-        ENCHANTING = b.define("enchantmentsEnabled", true);
-        GLUTTONY = b.defineInRange("gluttony", 0, 0, 2);
+        NO_LUST = b.gameRestart().define("noLust", false);
+        SILVERFISH_EMERALDS = b.gameRestart().define("silverfishDropEmeraldNuggets", true);
+        TAG_RESEARCH = b.gameRestart().define("tagResearchItems", true);
+        WRATH_CAGE = b.gameRestart().define("wrathCageEnabled", true);
+        GREEDY = b.gameRestart().define("capitalistEnchantment", true);
+        EMERALD_TRANSMUTATION = b.gameRestart().define("emeraldTransmutation", true);
+        CRIES_HAVOC = b.gameRestart().define("wrathCageCriesHavoc", false);
+        ENCHANTING = b.gameRestart().define("enchantmentsEnabled", true);
+        GLUTTONY = b.gameRestart().defineInRange("gluttony", 0, 0, 2);
         WRATH_COST = b.comment("Legacy default 5; values above 64 can prevent fueling. Zero means free cycles.")
-            .defineInRange("wrathCageFuelCost", 5, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        WRATH_EFFICIENCY = b.defineInRange("wrathCageFuelEfficiency", 4, 0, Integer.MAX_VALUE);
-        GARBAGE_TAGS = b.defineListAllowEmpty("garbageTags", List.of("c:dirt", "c:sands", "c:gravels", "c:cobblestones", "c:netherracks"),
+            .gameRestart().defineInRange("wrathCageFuelCost", 5, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        WRATH_EFFICIENCY = b.gameRestart().defineInRange("wrathCageFuelEfficiency", 4, 0, Integer.MAX_VALUE);
+        GARBAGE_TAGS = b.gameRestart().defineListAllowEmpty("garbageTags", List.of("c:dirt", "c:sands", "c:gravels", "c:cobblestones", "c:netherracks"),
             x -> x instanceof String s && net.minecraft.resources.ResourceLocation.tryParse(s) != null);
         b.pop().push("silly");
-        SPORK = b.define("sporkOfDoom", false);
+        SPORK = b.gameRestart().define("sporkOfDoom", false);
         b.pop().push("compatibility");
-        CROSS_MOD = b.define("crossModInteraction", true);
-        CROSS_WAND = b.define("conversionWands", true);
-        BOTANIA = b.define("botania", true);
-        BLOOD_MAGIC = b.define("bloodMagic", true);
-        ARS_MAGICA = b.define("arsMagica2", true);
-        TINKERER = b.define("thaumicTinkerer", true);
-        TINKERS_CONSTRUCT = b.comment("Legacy unused flag; does not enable invented integrations.").define("tinkersConstruct", true);
-        SPECIAL_MOBS = b.define("specialMobs", true);
-        TWILIGHT_FOREST = b.define("twilightForest", true);
+        CROSS_MOD = b.gameRestart().define("crossModInteraction", true);
+        CROSS_WAND = b.gameRestart().define("conversionWands", true);
+        BOTANIA = b.gameRestart().define("botania", true);
+        BLOOD_MAGIC = b.gameRestart().define("bloodMagic", true);
+        ARS_MAGICA = b.gameRestart().define("arsMagica2", true);
+        TINKERER = b.gameRestart().define("thaumicTinkerer", true);
+        TINKERS_CONSTRUCT = b.comment("Legacy unused flag; does not enable invented integrations.").gameRestart().define("tinkersConstruct", true);
+        SPECIAL_MOBS = b.gameRestart().define("specialMobs", true);
+        TWILIGHT_FOREST = b.gameRestart().define("twilightForest", true);
         EE3 = b.comment("Legacy EMC integration switch; now supplies the release EMC table to optional ProjectE.")
-            .define("equivalentExchange3", true);
+            .gameRestart().define("equivalentExchange3", true);
         b.pop().push("powerConverters");
-        BLOOD_VIS = b.defineInRange("lpPerCentivis", 5, Integer.MIN_VALUE, Integer.MAX_VALUE);
-        MANA_VIS = b.defineInRange("manaPerCentivis", 8, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        BLOOD_VIS = b.gameRestart().defineInRange("lpPerCentivis", 5, Integer.MIN_VALUE, Integer.MAX_VALUE);
+        MANA_VIS = b.gameRestart().defineInRange("manaPerCentivis", 8, Integer.MIN_VALUE, Integer.MAX_VALUE);
         b.pop().push("focusUpgrades");
-        HELLFIRE_UPGRADE = b.defineInRange("hellfire", 42, 0, 32767);
-        PANDEMONIUM_UPGRADE = b.defineInRange("pandemonium", 43, 0, 32767);
+        HELLFIRE_UPGRADE = b.gameRestart().defineInRange("hellfire", 42, 0, 32767);
+        PANDEMONIUM_UPGRADE = b.gameRestart().defineInRange("pandemonium", 43, 0, 32767);
         b.pop();
         SPEC = b.build();
     }

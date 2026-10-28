@@ -1,0 +1,12 @@
+{
+  "mod_id": "forbidden",
+  "dependency_roles": [
+    "thaumcraftApiJar",
+    "thaumcraftRuntimeJar",
+    "aopUiJar",
+    "botaniaJar",
+    "bloodMagicJar",
+    "modopediaJar",
+    "tinkererJar"
+  ]
+}

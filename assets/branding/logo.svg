@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">Forbidden Magic</title>
+  <desc id="desc">The dark book and gold cover sigil from the Forbidden Magic research tab, redrawn as vectors.</desc>
+  <defs>
+    <linearGradient id="cover" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#302733"/><stop offset=".52" stop-color="#161219"/><stop offset="1" stop-color="#29202d"/></linearGradient>
+    <linearGradient id="spine"><stop stop-color="#100e14"/><stop offset=".5" stop-color="#3d2c35"/><stop offset="1" stop-color="#1a151d"/></linearGradient>
+    <linearGradient id="pages" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#9c7143"/><stop offset=".5" stop-color="#b28b5a"/><stop offset="1" stop-color="#62462f"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ac5d11"/><stop offset=".4" stop-color="#f0c346"/><stop offset=".7" stop-color="#997012"/><stop offset="1" stop-color="#d99220"/></linearGradient>
+    <linearGradient id="ribbon"><stop stop-color="#500b13"/><stop offset=".5" stop-color="#a4111b"/><stop offset="1" stop-color="#650713"/></linearGradient>
+  </defs>
+  <path d="M111 70Q77 70 77 105V384Q78 421 116 424H412V84Q409 67 389 67Z" fill="#0c0a0f" stroke="#09080b" stroke-width="10"/>
+  <path d="M109 356H412V416H112Q85 410 86 386Q86 365 109 356Z" fill="url(#pages)" stroke="#3a2824" stroke-width="7"/>
+  <path d="M109 373H402M105 386H402M110 399H402" fill="none" stroke="#513d2a" stroke-width="3" opacity=".6"/>
+  <path d="M177 384H234V478L205 457L177 476Z" fill="url(#ribbon)" stroke="#350b13" stroke-width="5"/>
+  <path d="M105 63H390Q405 63 405 80V362H112Q86 362 86 386V96Q87 63 105 63Z" fill="url(#cover)" stroke="#120f17" stroke-width="9"/>
+  <path d="M106 66Q82 66 82 98V373Q91 358 114 360V66Z" fill="url(#spine)"/>
+  <path d="M119 79H388V344H119" fill="none" stroke="#46313c" stroke-width="4"/>
+  <path d="M126 91V327" fill="none" stroke="#5c3b40" stroke-width="3"/>
+  <g fill="none" stroke="url(#gold)" stroke-width="13" stroke-linecap="square" stroke-linejoin="miter">
+    <path d="M181 116L216 101L200 139L239 118L222 158L265 135L246 177L288 154L271 194L314 172"/>
+    <path d="M178 172L214 155L196 196L237 176L219 217L262 194L242 238L284 215L266 256L309 235"/>
+    <path d="M179 232L212 215L196 253L236 235L219 275L258 256L242 295L281 276L267 311L305 294"/>
+  </g>
+  <path d="M158 108V317M332 111V312" stroke="#5c370d" stroke-width="4" opacity=".6"/>
+  <path d="M399 87V352" stroke="#6c4a34" stroke-width="6"/>
+  <path d="M97 112H120M97 300H120" stroke="#6f4d35" stroke-width="8"/>
+</svg>

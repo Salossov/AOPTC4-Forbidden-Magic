@@ -1,75 +1,62 @@
-# Forbidden Magic — Unofficial 1.21.1 Port
+# Forbidden Magic
 
-Unofficial modern port of Forbidden Magic 0.575 by SpitefulFox for Minecraft 1.21.1,
-NeoForge 21.1.252, Java 21, local Thaumcraft/API 1.0.0 and Curios 9.5.1+1.21.1.
+![Forbidden Magic](assets/branding/logo.svg)
 
-## Migration Status & Implemented Batches
+[English](README.md) · [Русский](README.ru.md)
 
-- **P01 Foundation & Content:** 7 sinful aspects (`infernus`, `superbia`, `gula`, `invidia`, `desidia`, `ira`, `luxuria`), Nether shards, Taint resources, Taint tree/plants, Arcane Cake, standard wand parts, base enchantments.
-- **P02 Tools, Wands & Foci:** Chameleon (Morph) tools with 3-phase cycling and 3x3 Impact mining, Taint tools, Skull Axe, Diabolist Fork, Riding Crop, Ring of Nutrition, Collar of Pain, Primewell & Crystalwell, Blink Focus (transactional vis deduction, 128-block range, Hellfire & Pandemonium upgrades).
-- **P03 Wrath Cage & Villager:** Wrath Cage (essentia consumption with suction 256, special/ira/desidia fuel priority, redstone pause, 6 nearby mob limit, catalog of 30+ mobs), Mob Crystal imprinting, Heretic Villager profession and custom Heretic Study POI with 9 tiered trades.
-- **P04 Cross-Mod Integrations:**
-  - **Thaumic Tinkerer (T01):** 8 enchantment costs registered directly with TT `EnchanterCatalog` via `RegisterEnchantmentCost` IMC; KAMI aspects preservation verified.
-  - **Botania:** Livingwood & Dreamwood wand parts, Mana Vis conversion, 4 Botania flowers (Euclidaisy, Whisperweed, Tainthistle, Manathistle).
-  - **Blood Magic:** Blood wand core & cap, Sanguine Rapier, Sacrificial Dagger LP synergy, Bloodthorn flower.
-  - **Twilight Forest:** Twilight cage mobs (Mini Ghast, Tower Ghast, etc.) and mob aspects.
-  - **Viewers (JEI / EMI):** All 5 recipe categories (Arcane Shaped, Arcane Shapeless, Crucible, Infusion, Infernal) automatically indexed via `thaumcraft_viewers`.
+Unofficial port of SpitefulFox’s Forbidden Magic 0.575 to **Minecraft 1.21.1 / NeoForge**. Adds sinful aspects, dark artifacts, enchantments, wands, the Wrath Cage and integrations with compatible magic mods.
 
-## Verification & Architecture
+Install the gameplay JAR on both client and server with **NeoForge 21.1.252**, **Java 21**, **AOP: Thaumcraft 4 1.0.0**, **AOP UI 0.7.0** and **Curios 9.5.1+**. Use compatible local ports for optional integrations; legacy configuration switches do not supply absent dependencies. The original EE3 EMC integration is adapted to ProjectE. Source and development API JARs do not belong in `mods/`.
 
-13 JVM suites pass 14,649 checks of rules and data snapshots. Independent legacy recipe/research parity remains open:
-1. `foundationRules`: ContentGates cross-product configurations (768 profiles, 9,216 checks).
-2. `semanticDataCheck`: Recipe/research snapshots and negative mutations (2,706 checks).
-3. `componentCodecCheck`: Data component persistence and packet serialization codecs (12 checks).
-4. `p01ContentNormal`: Standard profile registration and content mechanics (322 checks).
-5. `p01ContentNoLust`: Lust-disabled profile gating (322 checks).
-6. `p01ContentNoCage`: Cage-disabled profile gating (320 checks).
-7. `p02ToolsCheck`: Morph tools, Taint tools, accessories mechanics (40 checks).
-8. `p02WandCheck`: Wands, caps, rods, Blink focus behavior (258 checks).
-9. `p03WrathCageCheck`: Wrath Cage logic, essentia suction, mob limits (224 checks).
-10. `p03VillagerCheck`: Heretic Villager profession, trades, POI (65 checks).
-11. `p04CompatCheck`: Thaumic Tinkerer, Twilight Forest, Viewers integration (163 checks).
-12. `p04BloodMagicCheck`: Blood Magic integration (443 checks).
-13. `p04BotaniaCheck`: Botania integration (558 checks).
+**0.575.0-alpha.1** · WTFPL-2.0
 
-*Gameplay acceptance is incomplete. On 2026-10-25 the user authorized dedicated-server runs and EULA acceptance in isolated test worlds. Live runs have exposed defects that the offline snapshots missed. Client/rendering and real two-player acceptance have not been performed.*
+## Settings
 
-### Automated dedicated-server acceptance
+Open the mod through the Mods screen → Config, or select it in AOP UI. All existing settings have English and Russian labels and tooltips. Startup settings require a full restart; AOP UI shows pending changes. No additional balance settings are introduced.
+
+## Build
+
+Requires Java 21, Python 3.11+ and the pinned dependency bundle. The API and runtime JARs are dependencies, never embedded in this mod.
+
+Set `AOP_DEPENDENCIES_URL` to the HTTPS URL of your dependency ZIP and `AOP_DEPENDENCIES_SHA256` to its exact SHA-256. Then run from the repository root:
 
 ```powershell
-.\tools\acceptance\Invoke-LiveServerAcceptance.ps1 -AcceptEula -Profiles @('base','no-lust','no-cage','no-enchantments','gluttony-off','gluttony-hard','botania','bloodmagic','tinkerer','integrations','free-cage') -Lifecycle -ContinueOnFailure
+python .github/scripts/ci.py prepare
+python .github/scripts/ci.py build
 ```
 
-Each invocation uses a fresh `build/acceptance/<runId>` directory, two server processes for persistence checks, `--nogui`, the packaged gameplay JAR, nonce-tagged assertion reports and graceful shutdown. No client, desktop interaction, screenshots or audio are involved. The private `src/acceptance` mod never ships in the gameplay JAR. `base` also exercises actual world interactions and reports known failures rather than suppressing them. These checks do not establish visual or two-player network parity.
+This runs the Gradle wrapper directly through Java, including `clean build sourcesJar` and the repository's checks. Verified gameplay and sources JARs, a build log and a source/dependency hash manifest go to `dist/`. A changed source, dependency, Java runtime or damaged cached JAR requires a rebuild.
 
-## Building & Verification
+For a manual local build, `./gradlew.ps1 build sourcesJar` (PowerShell) or `./gradlew build sourcesJar` (POSIX) accepts explicit `-P<role>=<absolute path>` properties listed below. The wrapper downloads the pinned Gradle distribution. A local checkout layout is only a convenience; CI uses explicit paths.
 
-Run PowerShell verification launcher:
+## CI
 
-```powershell
-.\tools\verification\Invoke-FmVerification.ps1 -Phase Offline -VerifyArtifacts
+`.github/workflows/build.yml` runs checks and Java 21 builds on pushes to `main`, pull requests and manual dispatch. Configure repository variables `AOP_DEPENDENCIES_URL` and `AOP_DEPENDENCIES_SHA256`, or supply the manual dispatch overrides. The workflow uploads build artifacts; it does not publish releases or push commits.
+
+The ZIP contains `manifest.json` and only the JARs it lists:
+
+```json
+{
+  "format": 1,
+  "artifacts": {
+    "thaumcraftApiJar": {
+      "file": "jars/thaumcraft-api-1.0.0.jar",
+      "sha256": "<64 lowercase hexadecimal characters>"
+    }
+  }
+}
 ```
 
-Run parser and artifact regression suites:
+Add every required role below to `artifacts`. Each role has a unique JAR path and SHA-256; runtime entries may also set `mod_id` to validate their NeoForge mod ID. Include files without separate ZIP directory entries. The entire ZIP checksum is checked before extraction and each JAR is checked afterwards. Host only dependencies you are authorized to distribute; a private archive is sufficient. No machine-specific URL or dependency archive is committed.
 
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verification\Test-FmVerificationParser.ps1
-powershell -NoProfile -ExecutionPolicy Bypass -File .\tools\verification\Test-FmArtifactVerification.ps1
-```
+For local workflow verification use `act workflow_dispatch -j build` with the two dependency variables in an environment file. A read-only local HTTP fixture is allowed only under `ACT=true`; GitHub CI requires HTTPS. Windows linked worktrees also need `python .github/scripts/ci.py inventory` before `act`, because their `.git` points to a host path. This exports an ignored tracked-file inventory; CI hashes the actual file contents.
 
-## Dependency staging
+## Artwork and credits
 
-`tools/acceptance/Install-ProductionJar.ps1` requires Python 3.11+ with standard-library `tomllib` to parse actual TOML tables. The audit distinguishes `[[mods]]` declarations from `[[dependencies.*]]` references, detects missing required dependencies and duplicate mod IDs, and honors optional/mandatory=false. It writes `dependency-audit.json`. NeoForge validates version ranges during live startup.
+The editable vector logo is [assets/branding/logo.svg](assets/branding/logo.svg). Its transparent 512 × 512 and 64 × 64 PNG exports are packaged for NeoForge and AOP UI, which load PNG textures. The SVG remains the source of the artwork.
 
-Server matrix on 2026-10-25: 11 profiles, 22 write/read processes, 1460 assertions PASS. This proves the named scenarios, not complete gameplay acceptance.
+See [LICENSE](LICENSE) and [NOTICE.md](NOTICE.md) for authors and third-party terms. Third-party dependencies and the separate Thaumcraft runtime are not relicensed by this project.
 
-## Release Artifacts & Licensing
+Required dependency roles: `thaumcraftApiJar`, `thaumcraftRuntimeJar`, `aopUiJar`, `botaniaJar`, `bloodMagicJar`, `modopediaJar`, `tinkererJar`.
 
-- **License:** WTFPL-2.0 (see `LICENSE`).
-- **Attribution:** Original Forbidden Magic 0.575 by SpitefulFox and contributors (see `NOTICE.md`).
-- **JAR Contents:** Release gameplay JAR contains strictly `main` and `client` classes and resources. All `rules`, `nativeVerification`, test classes, and core leaks are strictly audited and excluded.
-
-
-### Tested optional dependency set (2026-10-26)
-
-NeoForge21.1.252 / Java21; local Thaumcraft1.0.0 and AOP UI0.7.0, Curios9.5.1+1.21.1. The isolated combined test set also contains Botania456 (snapshot20260912), Blood Magic3.4.0-46-alpha, Thaumic Tinkerer1.0.0, AE2 19.2.18, Compact0.7.0 and EMI1.1.24. Optional integrations remain optional; this list records the tested versions, not full gameplay acceptance or availability of the historical blocked integrations.
+Local build compatibility set: Botania 456 (matching AOP backport), Blood Magic 3.4.0-46-alpha, Modopedia 1.1.5 and Thaumic Tinkerer 2.5.164-port.1. These compile/test inputs are not automatically required in a player installation.

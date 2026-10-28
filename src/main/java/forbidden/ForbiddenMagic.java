@@ -25,6 +25,7 @@ public final class ForbiddenMagic {
 
     public ForbiddenMagic(IEventBus bus, ModContainer container) {
         container.registerConfig(ModConfig.Type.STARTUP, ForbiddenConfig.SPEC);
+        ForbiddenSettings.register();
         ForbiddenComponents.register(bus);
         ForbiddenContent.register(bus);
         ForbiddenTools.register(bus);

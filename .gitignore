@@ -11,3 +11,7 @@ __pycache__/
 *.pyc
 .idea/
 *.iml
+
+.dependencies/
+/dist/
+/.ci-source.json

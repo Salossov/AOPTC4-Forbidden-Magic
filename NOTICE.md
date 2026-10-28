@@ -9,3 +9,5 @@ flower source headers additionally credit Vazkii and state CC BY-NC-SA 3.0;
 retain those headers and terms when adapting that code. The adapted Botania flower
 implementations retain their original source headers and applicable terms. Third-party
 libraries are not redistributed in this addon.
+
+The vector logo in assets/branding/logo.svg adapts the original Forbidden Magic research-tab book icon. Its PNG exports are used by the NeoForge mod list and AOP UI. This redraw does not change the original project license.
