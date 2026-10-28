@@ -110,6 +110,8 @@ public class TaintShovelItem extends ShovelItem implements IRepairable {
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
 
-        return super.useOn(context);
+        // The 1.7.10 spade had no path-flattening/campfire action. An empty
+        // purification must not spend durability through the modern fallback.
+        return InteractionResult.PASS;
     }
 }
