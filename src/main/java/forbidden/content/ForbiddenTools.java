@@ -38,7 +38,7 @@ public final class ForbiddenTools {
     public static final DeferredItem<RidingCropItem> RIDING_CROP = ITEMS.register("riding_crop", RidingCropItem::new);
     public static final DeferredItem<CrystalwellItem> CRYSTALWELL = ITEMS.register("crystalwell", CrystalwellItem::new);
     public static final DeferredItem<PrimewellItem> PRIMEWELL = ITEMS.register("primewell", PrimewellItem::new);
-    public static final DeferredItem<RingNutritionItem> RING_NUTRITION = ITEMS.register("ring_nutrition", RingNutritionItem::new);
+    public static final DeferredItem<RingNutritionItem> RING_NUTRITION = ITEMS.register("ring_nutrition", ForbiddenTools::ringNutrition);
     public static DeferredItem<SubCollarItem> SUB_COLLAR;
 
     private static boolean registeredToBus = false;
@@ -51,7 +51,7 @@ public final class ForbiddenTools {
         if (SUB_COLLAR == null) {
             try {
                 if (!ForbiddenConfig.NO_LUST.get()) {
-                    SUB_COLLAR = ITEMS.register("sub_collar", SubCollarItem::new);
+                    SUB_COLLAR = ITEMS.register("sub_collar", ForbiddenTools::subCollar);
                 }
             } catch (Throwable ignored) {
                 // Config not loaded yet; will be re-attempted on registration
@@ -85,13 +85,23 @@ public final class ForbiddenTools {
                     helper.register(ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, "riding_crop"), new RidingCropItem());
                     helper.register(ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, "crystalwell"), new CrystalwellItem());
                     helper.register(ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, "primewell"), new PrimewellItem());
-                    helper.register(ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, "ring_nutrition"), new RingNutritionItem());
+                    helper.register(ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, "ring_nutrition"), ringNutrition());
                     if (!ForbiddenConfig.NO_LUST.get()) {
-                        helper.register(ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, "sub_collar"), new SubCollarItem());
+                        helper.register(ResourceLocation.fromNamespaceAndPath(ForbiddenMagic.ID, "sub_collar"), subCollar());
                     }
                 });
             }
         }
+    }
+
+    private static RingNutritionItem ringNutrition() {
+        return net.neoforged.fml.ModList.get() != null && net.neoforged.fml.ModList.get().isLoaded("botania")
+            ? forbidden.compat.botania.BotaniaBaubleBridge.ring() : new RingNutritionItem();
+    }
+
+    private static SubCollarItem subCollar() {
+        return net.neoforged.fml.ModList.get() != null && net.neoforged.fml.ModList.get().isLoaded("botania")
+            ? forbidden.compat.botania.BotaniaBaubleBridge.collar() : new SubCollarItem();
     }
 
     private ForbiddenTools() {}
