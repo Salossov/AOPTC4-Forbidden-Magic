@@ -28,8 +28,7 @@ import thaumcraft.api.IWarpingGear;
 
 /**
  * Blood Rapier: Rapier of the Strix (C07).
- * Ignores armor and gathers LP / Life Essence upon attack (Sacrificial / Dagger mechanic).
- * Self-repairs slowly over time.
+ * Preserves the release's low sword damage, player LP drain and self-repair.
  * Base class safe for ClassLoader when Blood Magic is not installed.
  */
 public class BaseBloodRapierItem extends SwordItem implements IRepairable, IWarpingGear {
@@ -37,7 +36,7 @@ public class BaseBloodRapierItem extends SwordItem implements IRepairable, IWarp
     public static final Tier BLOODSUCKER_TIER = new Tier() {
         @Override public int getUses() { return 700; }
         @Override public float getSpeed() { return 10.0F; }
-        @Override public float getAttackDamageBonus() { return 1.0F; }
+        @Override public float getAttackDamageBonus() { return -3.0F; }
         @Override public TagKey<Block> getIncorrectBlocksForDrops() { return BlockTags.INCORRECT_FOR_DIAMOND_TOOL; }
         @Override public int getEnchantmentValue() { return 18; }
         @Override public Ingredient getRepairIngredient() {
@@ -48,7 +47,8 @@ public class BaseBloodRapierItem extends SwordItem implements IRepairable, IWarp
     };
 
     public BaseBloodRapierItem() {
-        super(BLOODSUCKER_TIER, new Item.Properties().rarity(Rarity.RARE).attributes(SwordItem.createAttributes(BLOODSUCKER_TIER, 3, -2.0F)));
+        // Release ItemSword used 4 + material damage (-3), plus player base 1.
+        super(BLOODSUCKER_TIER, new Item.Properties().rarity(Rarity.RARE).attributes(SwordItem.createAttributes(BLOODSUCKER_TIER, 4, -2.0F)));
     }
 
     @Override
@@ -59,11 +59,8 @@ public class BaseBloodRapierItem extends SwordItem implements IRepairable, IWarp
             victim.invulnerableTime -= 5;
         }
 
-        // Armor bypass: inflict direct magical damage
-        victim.hurt(attacker.damageSources().magic(), 4.0F);
-
-        // Sacrificial / Dagger mechanics
-        if (attacker instanceof Player player && BloodMagicCompat.isLoaded()) {
+        // The release drains player victims only; ordinary mobs grant no LP.
+        if (attacker instanceof Player && BloodMagicCompat.isLoaded()) {
             if (victim instanceof Player victimPlayer) {
                 int lp = BloodMagicBridge.getPlayerLP(victimPlayer);
                 int drain = Math.max(4000, lp / 4);
@@ -71,9 +68,6 @@ public class BaseBloodRapierItem extends SwordItem implements IRepairable, IWarp
                 if (BloodMagicItems.BLOOD_SEAL != null && BloodMagicItems.BLOOD_SEAL.isBound()) {
                     victimPlayer.addEffect(new MobEffectInstance(BloodMagicItems.BLOOD_SEAL, 1200));
                 }
-            } else {
-                int lpGain = victim.isAlive() ? 100 : 500;
-                BloodMagicBridge.addPlayerLP(player, lpGain, 80_000_000);
             }
         }
         return true;
