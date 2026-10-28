@@ -2,7 +2,7 @@
 
 - Target Minecraft 1.21.1, NeoForge 21.1.252 and Java 21. The permanent namespace is `forbidden`.
 - Reference: Forbidden Magic 1.7.10-0.575, SHA-256 `d6b239a05a630cfb3b6de01fe14a8674ec14ef8fb34ea75d1ad45b79565d8636`.
-- Use only public Thaumcraft APIs, registry IDs, tags and platform events. Propose any missing core contract before implementing it. K01-K03 and T01 were approved and implemented; the T01 receiver was also checked in a real dedicated server on 2026-10-25. K04 remains unapproved.
+- Use only public Thaumcraft APIs, registry IDs, tags and platform events. Propose any missing core contract before implementing it. K01-K03 and T01 were approved and implemented; the T01 receiver was also checked in a real dedicated server on 2026-10-25. K04 was approved on 2026-10-26 for local-only ParticleApi.nodeBolt; reservoirBubble is a legacy no-op.
 - Preserve release behavior, numeric values and random-call order. Individually approved fixes F01-F05 are recorded in the private parent docs; D10 requires separate agreement for other defects.
 - D9 excludes four unreachable classes, not the active anonymous creative tabs or physical meta variants. D13 preserves unused resources without activating unused mechanics.
 - Startup gates must match the release: the cage stays registered when disabled; Gluttony items stay registered; `noLust` removes Luxuria and the collar, but changes shard 4 without changing its ID.
