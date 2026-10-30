@@ -44,7 +44,7 @@ import forbidden.content.baubles.SubCollarItem;
 import forbidden.events.EventRandom;
 
 /** Event subscribers handling tools and accessories mechanics. */
-@EventBusSubscriber(modid = ForbiddenMagic.ID)
+@EventBusSubscriber(modid = ForbiddenMagic.MOD_ID)
 public final class ToolEvents {
 
     @SubscribeEvent

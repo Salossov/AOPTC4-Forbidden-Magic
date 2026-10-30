@@ -73,7 +73,7 @@ import java.util.*;
  * B28 (Cluster, Consuming, Corrupting), B29 (Wrath, Greedy, Educational, Voidtouched, Impact),
  * B30 (Nether mob drops, Silverfish, Gluttony eating, Envy piglin, Tooltips).
  */
-@EventBusSubscriber(modid = ForbiddenMagic.ID)
+@EventBusSubscriber(modid = ForbiddenMagic.MOD_ID)
 public final class ForbiddenEvents {
     private static final Map<UUID, Direction> LAST_CLICKED_FACE = new WeakHashMap<>();
     private static final ThreadLocal<Boolean> IMPACT_MINING = ThreadLocal.withInitial(() -> false);

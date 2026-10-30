@@ -25,7 +25,7 @@ import net.neoforged.neoforge.client.extensions.common.RegisterClientExtensionsE
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 
 /** One red trident mesh for held, inventory, dropped and projectile views. */
-@EventBusSubscriber(modid = "forbidden", bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = "forbidden_aop", bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public final class DiabolistForkRenderers {
     private static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath("forbidden", "textures/entity/diabolist_fork.png");
     private static TridentModel itemModel;

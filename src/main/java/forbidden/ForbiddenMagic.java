@@ -19,12 +19,13 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 
 /** Forbidden Magic port entry point. */
-@Mod(ForbiddenMagic.ID)
+@Mod(ForbiddenMagic.MOD_ID)
 public final class ForbiddenMagic {
     public static final String ID = "forbidden";
+    public static final String MOD_ID = "forbidden_aop";
 
     public ForbiddenMagic(IEventBus bus, ModContainer container) {
-        container.registerConfig(ModConfig.Type.STARTUP, ForbiddenConfig.SPEC);
+        container.registerConfig(ModConfig.Type.STARTUP, ForbiddenConfig.SPEC, "forbidden-startup.toml");
         ForbiddenSettings.register();
         ForbiddenComponents.register(bus);
         ForbiddenContent.register(bus);

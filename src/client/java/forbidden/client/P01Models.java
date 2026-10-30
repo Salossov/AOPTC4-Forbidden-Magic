@@ -23,7 +23,7 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 import net.neoforged.neoforge.client.model.BakedModelWrapper;
 import net.neoforged.neoforge.client.model.data.*;
 
-@EventBusSubscriber(modid="forbidden",bus=EventBusSubscriber.Bus.MOD,value=Dist.CLIENT)
+@EventBusSubscriber(modid="forbidden_aop",bus=EventBusSubscriber.Bus.MOD,value=Dist.CLIENT)
 public final class P01Models {
     private static final java.util.Map<String,String> RESEARCH_PREFIXES=java.util.Map.ofEntries(
         java.util.Map.entry("forbidden:bloodmagic","[BM] "),

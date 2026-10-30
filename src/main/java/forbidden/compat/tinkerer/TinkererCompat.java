@@ -18,7 +18,7 @@ import thaumcraft.api.aspects.AspectList;
  * - Safe inter-mod communications (IMC) and reflection resilience.
  */
 public final class TinkererCompat {
-    public static final String MODID = "thaumictinkerer";
+    public static final String MODID = "thaumictinkerer_aop";
     public static final String IMC_REGISTER_ENCHANTMENT = "RegisterEnchantmentCost";
 
     public static final ResourceLocation NETHER_SHARD = ResourceLocation.parse("thaumictinkerer:nether_shard");

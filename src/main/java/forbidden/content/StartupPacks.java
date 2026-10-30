@@ -32,6 +32,6 @@ public final class StartupPacks {
             if(forbidden.compat.bloodmagic.BloodMagicCompat.isAvailable())add(event,"bloodmagic_wands");
         }
     }
-    private static void add(AddPackFindersEvent event,String name){event.addPackFinders(ResourceLocation.fromNamespaceAndPath("forbidden","packs/"+name),event.getPackType(),Component.literal("Forbidden Magic: "+name),PackSource.BUILT_IN,true,Pack.Position.TOP);}
+    private static void add(AddPackFindersEvent event,String name){event.addPackFinders(ResourceLocation.fromNamespaceAndPath(forbidden.ForbiddenMagic.MOD_ID,"packs/"+name),event.getPackType(),Component.literal("Forbidden Magic: "+name),PackSource.BUILT_IN,true,Pack.Position.TOP);}
     private StartupPacks(){}
 }

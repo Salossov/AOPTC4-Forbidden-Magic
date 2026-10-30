@@ -1,0 +1,20 @@
+{
+  "botaniaJar": {
+    "url": "https://maven.blamejared.com/vazkii/botania/botania-neoforge-1.21.1/456-SNAPSHOT/botania-neoforge-1.21.1-456-20260912.043547-15.jar",
+    "sha256": "c3e588a9a7a3fe39830dd079c6f1e5e3f8670c4eefc822a6df0aef5200763fe0",
+    "file": "botania-neoforge-1.21.1-456-20260912.043547-15.jar",
+    "mod_id": "botania"
+  },
+  "bloodMagicJar": {
+    "url": "https://mediafilez.forgecdn.net/files/8855/778/bloodmagic-3.4.0-46-alpha.jar",
+    "sha256": "c87230217aba9da849176eb2c25d566c4a233c47a04862793e28bb60ce46ae53",
+    "file": "bloodmagic-3.4.0-46-alpha.jar",
+    "mod_id": "bloodmagic"
+  },
+  "modopediaJar": {
+    "url": "https://mediafilez.forgecdn.net/files/6765/935/modopedia-neoforge-1.21.1-1.1.5.jar",
+    "sha256": "59efe079a2b8c954c2f0687bbeb500fceaf66ec143341d1729ab62f518016cd4",
+    "file": "modopedia-neoforge-1.21.1-1.1.5.jar",
+    "mod_id": "modopedia"
+  }
+}

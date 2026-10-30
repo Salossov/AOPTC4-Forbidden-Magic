@@ -4,37 +4,37 @@ license="WTFPL-2.0; original third-party notices apply"
 [[mixins]]
 config="forbidden.mixins.json"
 [[mods]]
-modId="forbidden"
+modId="forbidden_aop"
 version="${mod_version}"
 displayName="Forbidden Magic"
 logoFile="logo.png"
 authors="SpitefulFox and original contributors; unofficial port contributors"
 description='''Unofficial Forbidden Magic 0.575 port: dark artifacts, sinful aspects, wands and integrations for AOP: Thaumcraft 4.'''
-[[dependencies.forbidden]]
+[[dependencies.forbidden_aop]]
 modId="minecraft"
 type="required"
 versionRange="[1.21.1]"
 side="BOTH"
-[[dependencies.forbidden]]
+[[dependencies.forbidden_aop]]
 modId="neoforge"
 type="required"
-versionRange="[21.1.252,)"
+versionRange="[21.1.166,)"
 side="BOTH"
-[[dependencies.forbidden]]
-modId="thaumcraft"
+[[dependencies.forbidden_aop]]
+modId="thaumcraft_aop"
 type="required"
-versionRange="[1.0.0,2)"
+versionRange="[1.1.0,2)"
 ordering="AFTER"
 side="BOTH"
-[[dependencies.forbidden]]
+[[dependencies.forbidden_aop]]
 modId="curios"
 type="required"
-versionRange="[9.5.1,)"
+versionRange="[9.5.0,)"
 side="BOTH"
 
-[[dependencies.forbidden]]
+[[dependencies.forbidden_aop]]
 modId="aop_ui"
 type="required"
-versionRange="[0.7.0,)"
+versionRange="[0.8.0,)"
 ordering="AFTER"
 side="BOTH"

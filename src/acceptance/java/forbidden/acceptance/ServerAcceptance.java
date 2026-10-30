@@ -124,7 +124,7 @@ public final class ServerAcceptance {
             }
             check("bloodthorn_recipe_requires_both_mods", server.getRecipeManager().byKey(id("bloodthorn")).isPresent()
                 == (forbidden.compat.botania.BotaniaCompat.isAvailable() && forbidden.compat.bloodmagic.BloodMagicCompat.isAvailable()));
-            if (net.neoforged.fml.ModList.get().isLoaded("thaumictinkerer")) {
+            if (net.neoforged.fml.ModList.get().isLoaded("thaumictinkerer_aop")) {
                 var catalog = Class.forName("thaumic.tinkerer.enchantment.EnchanterCatalog");
                 for (String name : List.of("wrath", "cluster", "greedy", "consuming", "educational", "corrupting", "voidtouched", "impact"))
                     check("T01_live_receiver_" + name, catalog.getMethod("find", ResourceLocation.class).invoke(null, id(name)) != null);

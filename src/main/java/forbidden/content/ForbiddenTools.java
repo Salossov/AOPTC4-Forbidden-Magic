@@ -17,7 +17,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import net.neoforged.neoforge.registries.RegisterEvent;
 
 /** Registration class for P02 tools and accessories. */
-@EventBusSubscriber(modid = ForbiddenMagic.ID, bus = EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = ForbiddenMagic.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public final class ForbiddenTools {
     public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(ForbiddenMagic.ID);
     public static final DeferredRegister<net.minecraft.world.entity.EntityType<?>> ENTITIES =

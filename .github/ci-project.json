@@ -1,5 +1,5 @@
 {
-  "mod_id": "forbidden",
+  "mod_id": "forbidden_aop",
   "dependency_roles": [
     "thaumcraftApiJar",
     "thaumcraftRuntimeJar",
@@ -8,5 +8,9 @@
     "bloodMagicJar",
     "modopediaJar",
     "tinkererJar"
-  ]
+  ],
+  "name": "Forbidden Magic",
+  "repository": "Salossov/AOPTC4-Forbidden-Magic",
+  "requirements": "Minecraft 1.21.1, Java 21, NeoForge 21.1.166, AOP: Thaumcraft 4 1.1.0 and AOP UI 0.8.0. Curios is required.",
+  "namespace": "forbidden"
 }

@@ -61,7 +61,7 @@ public final class ForbiddenVillagers {
         return true;
     }
 
-    @EventBusSubscriber(modid = ForbiddenMagic.ID, bus = EventBusSubscriber.Bus.MOD)
+    @EventBusSubscriber(modid = ForbiddenMagic.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
     public static final class ModEvents {
         @SubscribeEvent
         public static void onRegister(RegisterEvent event) {
@@ -87,7 +87,7 @@ public final class ForbiddenVillagers {
         }
     }
 
-    @EventBusSubscriber(modid = ForbiddenMagic.ID, bus = EventBusSubscriber.Bus.GAME)
+    @EventBusSubscriber(modid = ForbiddenMagic.MOD_ID, bus = EventBusSubscriber.Bus.GAME)
     public static final class GameEvents {
         @SubscribeEvent
         public static void onVillagerTrades(VillagerTradesEvent event) {

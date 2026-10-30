@@ -10,7 +10,7 @@ import net.neoforged.fml.ModList;
  * exposing Forbidden Magic recipes to existing Thaumcraft recipe categories without duplicating categories.
  */
 public final class ViewersCompat {
-    public static final String VIEWERS_MODID = "thaumcraft_viewers";
+    public static final String VIEWERS_MODID = "thaumcraft_compact";
     public static final String JEI_MODID = "jei";
     public static final String EMI_MODID = "emi";
 
